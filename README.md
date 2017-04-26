@@ -6,7 +6,7 @@ Project Ganymede's Greenfield Project
 
 [Pierry Etienne](https://github.com/petienne1)
 
-[Giancarlo Guzman](https://github.com/GianGuzmanOki)
+[Giancarlo Guzman Oki](https://github.com/GianGuzmanOki)
 
 [Duncan Pedersen](https://github.com/dppedersen)
 
