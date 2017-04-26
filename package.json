@@ -1,0 +1,19 @@
+{
+  "name": "project-ganymede",
+  "version": "0.0.1",
+  "description": "Project Ganymede's Greenfield Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Project-Ganymede/Greenfield.git"
+  },
+  "author": "Project Ganymede",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Project-Ganymede/Greenfield/issues"
+  },
+  "homepage": "https://github.com/Project-Ganymede/Greenfield#readme"
+}
