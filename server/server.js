@@ -7,7 +7,7 @@ const express = require('express');
 
 // Middleware
 const parser = require('body-parser');
-
+const path = require('path');
 // Router
 const router = require('./routes.js');
 
@@ -21,8 +21,8 @@ Placeholder for router
  */
 
 // Serve our client files and node modules.
-app.use(express.static(__dirname + '/../client'));
-app.use(express.static(__dirname + '/../node_modules'));
+app.use(express.static(path.join(__dirname, '/../client')));
+app.use(express.static(path.join(__dirname, '/../node_modules')));
 
 // Sets the port to either the Process Environment's or 3000.
 let port = process.env.PORT || 3000;

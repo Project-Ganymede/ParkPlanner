@@ -33,9 +33,6 @@ db.knex.schema.hasTable('parks').then((exists) => {
   }
 });
 
-
-=======
-
 db.knex.schema.hasTable('rides').then(function(exists) {
 	if(!exists) {
 		db.knex.schema.createTable('rides', function(ride) {
