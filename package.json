@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/Project-Ganymede/Greenfield/issues"
   },
-  "homepage": "https://github.com/Project-Ganymede/Greenfield#readme"
+  "homepage": "https://github.com/Project-Ganymede/Greenfield#readme",
+  "dependencies": {
+    "bookshelf": "^0.10.3",
+    "knex": "^0.12.9"
+  }
 }
