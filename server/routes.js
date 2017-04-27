@@ -3,7 +3,7 @@ This file is responsible for connecting controller methods
 to their corresponding routes.
  */
 
-const controller = require('./controllers');
+// <PUT CONTROLLER DEFINITION HERE>
 const router = require('express').Router();
 
 router.get('/', (req, res, next) => {
