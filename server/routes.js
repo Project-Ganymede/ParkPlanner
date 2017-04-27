@@ -8,6 +8,8 @@ const Parks = require('./collections/parks.js');
 const Park = require('./models/parkModel.js');
 const Rides = require('./collections/rides.js');
 const Ride = require('./models/rideModel.js');
+const WaitTimes = require('./collections/waitTime.js');
+const WaitTime = require('./models/wait_timeModel.js');
 
 const app = require('./server.js');
 
