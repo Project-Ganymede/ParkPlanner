@@ -1,6 +1,5 @@
-
-var path = require('path')
-var knex = require('knex')({
+const path = require('path');
+const knex = require('knex')({
   client: 'mysql',
   connection: {
     host: process.env.HOST,
@@ -33,9 +32,6 @@ db.knex.schema.hasTable('parks').then((exists) => {
   }
 });
 
-
-=======
-
 db.knex.schema.hasTable('rides').then(function(exists) {
 	if(!exists) {
 		db.knex.schema.createTable('rides', function(ride) {
@@ -46,14 +42,14 @@ db.knex.schema.hasTable('rides').then(function(exists) {
 			ride.integer('capacity');
 			ride.integer('throughput');
 		}).then(function(table){
-			console.log('Created "rides" Table', table)
+			console.log('Created "rides" Table', table);
 		});
   }
 });
 
 db.knex.schema.hasTable('wait_time').then(function(exists) {
 	if(!exists) {
-		dd.knex.schema.createTable('wait_time', function(time) {
+		db.knex.schema.createTable('wait_time', function(time) {
 			time.increments('id').primary();
 			time.integer('temperature');
 			time.integer('wait_time');
@@ -62,7 +58,7 @@ db.knex.schema.hasTable('wait_time').then(function(exists) {
 			time.time('time');
 			time.foreign('ride_id').references('rides.ride_id');
 		}).then((table) => {
-			console.log('Created "wait_time" Table', table)
+			console.log('Created "wait_time" Table', table);
 		});
 	}
 });
