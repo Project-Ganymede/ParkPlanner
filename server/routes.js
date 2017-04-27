@@ -22,6 +22,7 @@ app.get('/parks', (req, res) => {
       res.status(200).send(parks.models);
     })
     .catch(err => {
+      res.status(404).send(err);
       console.error('GET Parks Error:', err);
     });
 });
@@ -32,10 +33,11 @@ app.get('/rides', (req, res) => {
       res.status(200).send(rides.models);
     })
     .catch(err => {
+      res.status(404).send(err);
       console.error('GET Rides Error:', err);
     });
 });
 
 app.post('/', (req, res) => {
-  res.send('Wait times go here');
+  res.status(201).send('Wait times go here');
 });
