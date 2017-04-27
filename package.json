@@ -17,11 +17,12 @@
   },
   "homepage": "https://github.com/Project-Ganymede/Greenfield#readme",
   "dependencies": {
+    "angular": "^1.6.4",
     "body-parser": "^1.17.1",
+    "bookshelf": "^0.10.3",
     "cron": "^1.2.1",
     "express": "^4.15.2",
-    "morgan": "^1.8.1",
-    "bookshelf": "^0.10.3",
-    "knex": "^0.12.9"
+    "knex": "^0.12.9",
+    "morgan": "^1.8.1"
   }
 }
