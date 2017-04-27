@@ -1,5 +1,5 @@
-var path = require('path')
-var knex = require('knex')({
+const path = require('path');
+const knex = require('knex')({
   client: 'mysql',
   connection: {
     host: process.env.HOST,
@@ -10,7 +10,7 @@ var knex = require('knex')({
   }
 });
 
-var db = require('bookshelf')(knex);
+const db = require('bookshelf')(knex);
 
 db.knex.schema.hasTable('parks').then((exists) => {
   if (!exists) {
@@ -25,7 +25,7 @@ db.knex.schema.hasTable('parks').then((exists) => {
         park.string('extra_1', 100);
         park.string('extra_2', 100);
       }).then((table) => {
-        console.log('Created "parks" Table', table)
+        console.log('Created "parks" Table', table);
       });
   }
 });
