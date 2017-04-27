@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 var path = require('path')
 var knex = require('knex')({
   client: 'mysql',
@@ -11,7 +11,7 @@ var knex = require('knex')({
   }
 });
 
-var db = require('bookshelf')(knex);
+const db = require('bookshelf')(knex);
 
 db.knex.schema.hasTable('parks').then((exists) => {
   if (!exists) {
@@ -28,7 +28,7 @@ db.knex.schema.hasTable('parks').then((exists) => {
         park.string('extra_2', 100);
 
       }).then((table) => {
-        console.log('Created "parks" Table', table)
+        console.log('Created "parks" Table', table);
       });
   }
 });
@@ -68,4 +68,3 @@ db.knex.schema.hasTable('wait_time').then(function(exists) {
 });
 
 module.exports = db;
->>>>>>> 3-rideSchema

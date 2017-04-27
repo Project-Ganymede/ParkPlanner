@@ -3,7 +3,26 @@ This is our main server file.
 */
 
 const express = require('express');
+// <PUT Database DEFINITION HERE>
+
+// Middleware
+const parser = require('body-parser');
+
+// Router
+const router = require('./routes.js');
+
 const app = express();
+
+// Parse JSON Data
+app.use(parser.json());
+
+/*
+Placeholder for router
+ */
+
+// Serve our client files and node modules.
+app.use(express.static(__dirname + '/../client'));
+app.use(express.static(__dirname + '/../node_modules'));
 
 // Sets the port to either the Process Environment's or 3000.
 let port = process.env.PORT || 3000;
