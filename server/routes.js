@@ -3,19 +3,39 @@ This file is responsible for connecting controller methods
 to their corresponding routes.
  */
 
-// <PUT CONTROLLER DEFINITION HERE>
-const router = require('express').Router();
+// Define our Collection and Model Variables
+const Parks = require('./collections/parks.js');
+const Park = require('./models/parkModel.js');
+const Rides = require('./collections/rides.js');
+const Ride = require('./models/rideModel.js');
 
-router.get('/', (req, res, next) => {
+const app = require('./server.js');
+
+// Initial GET request for index.html
+app.get('/', (req, res) => {
   res.render('index');
 });
 
-router.get('/PLACEHOLDER_1', controller.PLACEHOLDER_1.get);
+app.get('/parks', (req, res) => {
+  Parks.fetch()
+    .then(parks => {
+      res.status(200).send(parks.models);
+    })
+    .catch(err => {
+      console.error('GET Parks Error:', err);
+    });
+});
 
-router.post('/PLACEHOLDER_1', controller.PLACEHOLDER_1.post);
+app.get('/rides', (req, res) => {
+  Rides.fetch()
+    .then(rides => {
+      res.status(200).send(rides.models);
+    })
+    .catch(err => {
+      console.error('GET Rides Error:', err);
+    });
+});
 
-router.get('/PLACEHOLDER_2', controller.PLACEHOLDER_2.get);
-
-router.post('/PLACEHOLDER_2', controller.PLACEHOLDER_2.post);
-
-module.exports = router;
+app.post('/', (req, res) => {
+  res.send('Wait times go here');
+});
