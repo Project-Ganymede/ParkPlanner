@@ -31,9 +31,8 @@ db.knex.schema.hasTable('parks').then((exists) => {
   }
 });
 
-module.exports = db;
+
 =======
-var db = require('bookshelf')(knex);
 
 db.knex.schema.hasTable('rides').then(function(exists) {
 	if(!exists) {
@@ -45,7 +44,7 @@ db.knex.schema.hasTable('rides').then(function(exists) {
 			ride.integer('capacity');
 			ride.integer('throughput');
 		}).then(function(table){
-			console.log('Created Table', table)
+			console.log('Created "rides" Table', table)
 		});
   }
 });
@@ -54,13 +53,17 @@ db.knex.schema.hasTable('wait_time').then(function(exists) {
 	if(!exists) {
 		dd.knex.schema.createTable('wait_time', function(time) {
 			time.increments('id').primary();
-			time.foreign('ride_id', 100);
+			time.integer('temperature');
 			time.integer('wait_time');
+			time.integer('precipitation');
 			time.date('date');
 			time.time('time');
-			time.integer('temperature');
-			time.integer('precipitation');
-		})
+			time.foreign('ride_id').references('rides.ride_id');
+		}).then((table) => {
+			console.log('Created "wait_time" Table', table)
+		});
 	}
-})
+});
+
+module.exports = db;
 >>>>>>> 3-rideSchema
