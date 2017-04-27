@@ -3,7 +3,7 @@ This is our main server file.
 */
 
 const express = require('express');
-// <PUT DB DEFINITION HERE>
+// <PUT Database DEFINITION HERE>
 
 // Middleware
 const morgan = require('morgan');
