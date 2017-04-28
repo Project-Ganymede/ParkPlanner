@@ -8,6 +8,8 @@ const Parks = require('./collections/parks.js');
 const Park = require('./models/parkModel.js');
 const Rides = require('./collections/rides.js');
 const Ride = require('./models/rideModel.js');
+const WaitTimes = require('./collections/waitTime.js');
+const WaitTime = require('./wait_timeModel.js');
 
 const app = require('./server.js');
 
@@ -38,6 +40,15 @@ app.get('/rides', (req, res) => {
     });
 });
 
-app.post('/', (req, res) => {
-  res.status(201).send('Wait times go here');
+app.post('/rideList', (req, res) => {
+  app.get('/waitTimes', (req, res) => {
+    WaitTimes.fetch()
+      .then(times => {
+        res.status(200).send(times.model);
+      })
+      .catch(err => {
+        res.status(404).send(err);
+        console.error('GET Wait Time Error:', err);
+      });
+  });
 });
