@@ -19,12 +19,15 @@ Placeholder for router
  */
  app.set('view engine', 'html');
 
-app.get('/', (req, res) => {
+
+
+  // Serve our client files and node modules.
+  app.use(express.static(__dirname + '/../client'));
+  app.use(express.static(__dirname + '/../node_modules'));
+
+app.get('/*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname + '/../client/app/layout/index.html'));
 });
-// Serve our client files and node modules.
-app.use(express.static(__dirname + '/../client'));
-app.use(express.static(__dirname + '/../node_modules'));
 
 // Sets the port to either the Process Environment's or 3000.
 let port = process.env.PORT || 3000;
