@@ -1,10 +1,10 @@
 let db = require('../config');
-let Park = required('./ride');
+let Park = require('./ride');
 
 let Ride = db.Model.extend({
 	tableName: 'rides',
 	hasTimestamps: true,
-	rides: () => this.hasMany(Ride),
+	park: () => this.belongsTo(Park),
 })
 
 module.exports = Ride;
