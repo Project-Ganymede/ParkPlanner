@@ -1,9 +1,9 @@
 var moment = require('moment')
 
 var db = require('../config');
-var Wait_time = require('./ride');
+const Ride = require('./rideModel');
 
-var Wait_time = db.Model.extend({
+var rideWaitTime = db.Model.extend({
   tableName: 'wait_time',
   hasTimestamps: true,
   rides: () => this.hasMany(Ride),
