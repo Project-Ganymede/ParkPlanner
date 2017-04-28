@@ -1,8 +1,14 @@
 const path = require('path');
+
+console.log(process.env.DB_HOST,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD)
+
 const knex = require('knex')({
   client: 'mysql',
   connection: {
-    host: process.env.HOST,
+    host: process.env.DB_HOST,
+
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: 'ganymede_greenfield',
@@ -47,7 +53,7 @@ db.knex.schema.hasTable('rides').then(function(exists) {
 
 db.knex.schema.hasTable('ride_wait_times').then(function(exists) {
 	if(!exists) {
-		db.knex.schema.createTable('ride_wait_times', function(time) {
+		db.knex.schema.createTable('ride_wait_times', function(waitTime) {
 			waitTime.increments('id').primary();
 			waitTime.integer('wait_time');
       waitTime.string('status');

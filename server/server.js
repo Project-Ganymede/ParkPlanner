@@ -1,9 +1,10 @@
 /*
 This is our main server file.
 */
-
+require('dotenv').config()
 const express = require('express');
 // <PUT Database DEFINITION HERE>
+const db = require('./config/config.js')
 
 // Middleware
 const parser = require('body-parser');
