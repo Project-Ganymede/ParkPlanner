@@ -7,10 +7,7 @@ const express = require('express');
 
 // Middleware
 const parser = require('body-parser');
-
-// Router
-const router = require('./routes.js');
-
+const path = require('path');
 const app = express();
 
 // Parse JSON Data
@@ -19,7 +16,11 @@ app.use(parser.json());
 /*
 Placeholder for router
  */
+ app.set('view engine', 'html');
 
+app.get('/', (req, res) => {
+  res.status(200).sendFile(path.join(__dirname + '/../client/app/layout/index.html'));
+});
 // Serve our client files and node modules.
 app.use(express.static(__dirname + '/../client'));
 app.use(express.static(__dirname + '/../node_modules'));
