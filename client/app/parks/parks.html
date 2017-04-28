@@ -1,3 +1,20 @@
-<div class="parks">
-  
-</div>
+<div id="parksDiv">
+  <h1 id="appName" class="display-1">ParkPlanner</h1>
+  <div class="col-xs-5"></div>
+  <div class="dropdown col-xs-2">
+    <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Select a Park
+      <span class="caret"></span></button>
+    <ul class="dropdown-menu centered" role="menu" aria-labelledby="menu1">
+      <li ng-repeat="park in data.parks" role="presentation"><a role="menuitem" tabindex="-1" href="#!/rides">{{park.name}}</a></li>
+    </ul>
+  </div>
+  <div class="col-xs-5"></div>
+<style>
+  body {
+    background-image: url("assets/images/superman_background.JPG");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+  }
+</style>
