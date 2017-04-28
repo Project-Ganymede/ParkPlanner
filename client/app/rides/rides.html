@@ -1,0 +1,31 @@
+<div id='container'>
+  <div class="col-md-12">
+    <div class="col-md-offset-2 col-md-8">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="search" placeholder="Filter">
+        <span class="input-group-addon">
+          <i class="glyphicon glyphicon-search"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" style="margin-top: 3%;">
+    <div class="col-md-1"></div>
+    <div ng-repeat='rideSelected in rideList' class="col-md-2" style="margin: 2% 0">
+      <div class="col-md-12" ng-click="removeRideFromList($index)">
+        <p class="text-center">{{ rideSelected.id + '-' + rideSelected.name }}</p>
+        <img ng-src="{{ rideSelected.image }}" class="img-circle img-thumbnail">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" style="margin-top: 3%;">
+    <div ng-repeat='ride in rides' class="col-md-3" style="margin: 2% 0;">
+      <div class="col-md-12" ng-click="addRideToList(ride)">
+        <p>{{ ride.id + '-' + ride.name }}</p>
+        <img ng-src="{{ ride.image }}" class="img-responsive img-rounded">
+        <p style="margin-top: 2%;">{{ ride.opening_time }}</p>
+        <p>{{ ride.closing_time }}</p>
+      </div>
+    </div>
+  </div>
+</div>

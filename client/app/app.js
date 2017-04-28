@@ -1,5 +1,12 @@
 angular
-  .config(function ($routeProvider) {
+  .module('app', [
+      'app.parks',
+      'app.rides',
+      'app.services',
+      'ngRoute'
+    ]
+  )
+  .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'app/parks/parks.html',
