@@ -1,5 +1,5 @@
 var db = require('../config');
-var Ride = require('./ride');
+var Ride = require('../rideModel');
 
 var Park = db.Model.extend({
   tableName: 'parks',
