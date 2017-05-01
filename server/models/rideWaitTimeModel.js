@@ -1,16 +1,16 @@
-var moment = require('moment')
+const moment = require('moment');
 
-var db = require('../config');
+const db = require('../config');
 const Ride = require('./rideModel');
 
-var rideWaitTime = db.Model.extend({
+let rideWaitTime = db.Model.extend({
   tableName: 'wait_time',
   hasTimestamps: true,
   rides: () => this.hasMany(Ride),
   initialize: () => {
-    this.date = moment().format('L')
-    this.time = moment().format('LT')
-  },
-})
+    this.date = moment().format('L');
+    this.time = moment().format('LT');
+  }
+});
 
-module.exports = Wait_time;
+module.exports = rideWaitTime;

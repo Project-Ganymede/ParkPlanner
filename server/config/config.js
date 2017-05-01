@@ -1,9 +1,5 @@
 const path = require('path');
 
-console.log(process.env.DB_HOST,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD)
-
 const knex = require('knex')({
   client: 'mysql',
   connection: {
@@ -22,12 +18,19 @@ db.knex.schema.hasTable('parks').then((exists) => {
   if (!exists) {
       db.knex.schema.createTable('parks', (park) => {
         park.increments('id').primary();
-        park.integer('api_code').notNullable();
-        park.string('park_name', 100).notNullable();
-        park.string('company_name', 100).notNullable();
 
-        // This park's location as a "GeoLocation" object. Inputs will need to be stringified from API call before construction of new park and JSON.parsed when used. See GeoLocation Docs for available methods/properties)
-        park.json('location')
+        // API references parks by name
+        // park.integer('api_code').notNullable();
+
+        park.string('park_name', 100).notNullable();
+
+        // API includes Company in name
+        //park.string('company_name', 100).notNullable();
+
+        /* This park's location as a "GeoLocation" object. Inputs will need to be stringified from
+        // API call before construction of new park and JSON.parsed when used.
+        // See GeoLocation Docs for available methods/properties) */
+        park.json('location');
 
       }).then((table) => {
         console.log('Created "parks" Table', table);
@@ -57,7 +60,7 @@ db.knex.schema.hasTable('ride_wait_times').then(function(exists) {
 			waitTime.increments('id').primary();
 			waitTime.integer('wait_time');
       waitTime.string('status');
-      waitTime.bool('isActive')
+      waitTime.bool('isActive');
       waitTime.integer('temp');
 			waitTime.integer('chancePrecip');
 		}).then((table) => {
