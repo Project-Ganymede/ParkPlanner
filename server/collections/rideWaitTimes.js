@@ -1,4 +1,4 @@
-const db = require('../config');
+const db = require('../config/config');
 const RideWaitTime = require('../models/rideWaitTimeModel');
 
 const RideWaitTimes = new db.Collection();

@@ -3,7 +3,7 @@ const Themeparks = require('themeparks');
 
 const Rides = require('../collections/rides');
 const Ride = require('../models/rideModel');
-const Parks = require('../collections/park');
+const Parks = require('../collections/parks');
 const Park = require('../models/parkModel');
 const RideWaitTimes = require('../collections/rideWaitTimes');
 const RideWaitTime = require('../models/rideWaitTimeModel');

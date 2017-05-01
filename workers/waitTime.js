@@ -1,8 +1,8 @@
-var CronJob = require('cron').CronJob;
-var helpers = require('../server/config/helpers')
-var Rides = require('../server/collections/rides');
+const CronJob = require('cron').CronJob;
+const helpers = require('../server/config/helpers');
+const Rides = require('../server/collections/rides');
 
-exports.job = new CronJob({
+exports.getWaitTimes = new CronJob({
   cronTime: '0 */4 * * *',
   onTick: () => {
     helpers.getWaitTimes();
