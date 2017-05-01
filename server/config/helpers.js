@@ -13,14 +13,14 @@ const RideWaitTime = require('../models/rideWaitTimeModel');
 // Helper Functions
 
 
-module.exports = {
+let helperFuncs = {
   getWaitTimes : () => {
-    this.getRidesFromAPI()
+    helperFuncs.getRidesFromAPI()
       .then((arrayOfRideObjects) => {
-        this.queryWeatherAPI()
+        helperFuncs.queryWeatherAPI()
           .then((weatherObj)=> {
             arrayOfRideObjects.forEach((rideObj) => {
-              this.createNewWaitEntry(rideObj, weatherObj);
+              helperFuncs.createNewWaitEntry(rideObj, weatherObj);
             });
           });
         });
@@ -57,11 +57,11 @@ module.exports = {
 
   populateRideTable: () => {
     // Queries ThemeparkAPI and inserts any new rides into rides table
-    this.getRidesFromAPI().then(apiArrayOfRideObjects => {
+    helperFuncs.getRidesFromAPI().then(apiArrayOfRideObjects => {
       apiArrayOfRideObjects.each( apiObject => {
-        this.checkIfRideExists(apiObject).then(exists => {
+        helperFuncs.checkIfRideExists(apiObject).then(exists => {
           if(!exists) {
-            this.createNewRide(apiObject);
+            helperFuncs.createNewRide(apiObject);
           }
         });
       });
@@ -81,25 +81,6 @@ module.exports = {
       fastPass: rideObj.fastPass,
     });
   },
-
-  populateParks : () => {
-    let parkArr = [];
-    for( let park in Themeparks.Parks) {
-      if (Themeparks.Parks.hasOwnProperty(park)) {
-        let currPark = new Themeparks.Parks[park]();
-        parkArr.push({
-          'parkName': Park.Name,
-          'location' : this.stringToJsonObj(Park.Location.toString()),
-          'fastPass' : Park.FastPass
-        });
-
-      }
-    }
-    parkArr.forEach(parkObj => {
-      this.createNewPark(parkObj);
-    });
-  },
-
   stringToJsonObj : string => {
     let arr  = string.replace('(','').replace(')','').split(',');
     return JSON.stringify({
@@ -108,12 +89,31 @@ module.exports = {
     });
   },
 
+  populateParks : () => {
+    let parkArr = [];
+    for( let park in Themeparks.Parks) {
+      if (Themeparks.Parks.hasOwnProperty(park)) {
+        let currPark = new Themeparks.Parks[park]();
+        parkArr.push({
+          'parkName': currPark.Name,
+          'location' : helperFuncs.stringToJsonObj(currPark.Location.toString()),
+          'fastPass' : currPark.FastPass
+        });
+
+      }
+    }
+    parkArr.forEach(parkObj => {
+      helperFuncs.createNewPark(parkObj);
+    });
+  },
+
+
   createNewPark: parkObj => {
     return new Park({
       parkName : parkObj.parkName,
       location : parkObj.location,
-      fastPass : parkObj.fastPass,
-    })
+      hasFastPass : parkObj.fastPass,
+    }).save()
     .then( themepark => {
       console.log(themepark);
     })
@@ -122,3 +122,5 @@ module.exports = {
     });
   }
 };
+
+module.exports = helperFuncs;

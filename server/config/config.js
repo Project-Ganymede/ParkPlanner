@@ -18,14 +18,17 @@ db.knex.schema.hasTable('parks').then((exists) => {
   if (!exists) {
       db.knex.schema.createTable('parks', (park) => {
         park.increments('id').primary();
+        park.string('parkName', 100).notNullable();
+        park.date('created_at');
+        park.date('updated_at');
+        park.bool('hasFastPass');
 
+        //park.date('updated_at');
         // API references parks by name
         // park.integer('api_code').notNullable();
 
-        park.string('parkName', 100).notNullable();
-
         // API includes Company in name
-        //park.string('company_name', 100).notNullable();
+        // park.string('company_name', 100).notNullable();
 
         /* This park's location as a "GeoLocation" object. Inputs will need to be stringified from
         // API call before construction of new park and JSON.parsed when used.
