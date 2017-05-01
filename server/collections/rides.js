@@ -1,5 +1,5 @@
-const db = require('../config');
-const Ride = require('../models/ride');
+const db = require('./../config/config');
+const Ride = require('../models/rideModel');
 
 const Rides = new db.Collection();
 
