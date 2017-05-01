@@ -40,8 +40,8 @@ module.exports = {
     .then( model => {
       if(model) {
         return new RideWaitTime({
-          api_id: model.id,
-          wait_time: rideObj.waitTime,
+          apiId: model.id,
+          waitTime: rideObj.waitTime,
           status: rideObj.status,
           active: rideObj.active,
           temp: weatherObj.temp,
@@ -75,8 +75,8 @@ module.exports = {
 
   createNewRide : rideObj => {
     return new Ride({
-      api_id : rideObj.id,
-      ride_name: rideObj.name,
+      apiId : rideObj.id,
+      rideName: rideObj.name,
       //location: getRideLocation() Use GeoLocation to get ride coords
       fastPass: rideObj.fastPass,
     });
@@ -88,7 +88,7 @@ module.exports = {
       if (Themeparks.Parks.hasOwnProperty(park)) {
         let currPark = new Themeparks.Parks[park]();
         parkArr.push({
-          'park_name': Park.Name,
+          'parkName': Park.Name,
           'location' : this.stringToJsonObj(Park.Location.toString()),
           'fastPass' : Park.FastPass
         });
@@ -110,10 +110,15 @@ module.exports = {
 
   createNewPark: parkObj => {
     return new Park({
-      park_name : parkObj.park_name,
+      parkName : parkObj.parkName,
       location : parkObj.location,
       fastPass : parkObj.fastPass,
+    })
+    .then( themepark => {
+      console.log(themepark);
+    })
+    .catch( err => {
+      console.error(err);
     });
   }
-
 };
