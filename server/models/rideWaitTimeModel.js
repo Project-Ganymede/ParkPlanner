@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-const db = require('../config');
+const db = require('../config/config');
 const Ride = require('./rideModel');
 
 let rideWaitTime = db.Model.extend({

@@ -1,6 +1,6 @@
-const db = require('../config');
-const Park = require('../parkModel');
-const	RideWaitTime = require('../rideWaitTimeModel');
+const db = require('../config/config');
+const Park = require('./parkModel');
+const	RideWaitTime = require('./rideWaitTimeModel');
 
 let Ride = db.Model.extend({
 	tableName: 'rides',

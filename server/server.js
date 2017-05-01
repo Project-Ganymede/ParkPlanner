@@ -1,10 +1,9 @@
 /*
 This is our main server file.
 */
-require('dotenv').config()
+require('dotenv').config();
 const express = require('express');
-// <PUT Database DEFINITION HERE>
-const db = require('./config/config.js')
+const db = require('./config/config.js');
 
 // Middleware
 const parser = require('body-parser');
@@ -34,5 +33,10 @@ if(!module.parent) {
   app.listen(port);
   console.log('Listening on:', port);
 }
+
+// Testing helpers.populateParks func.
+const help = require('./config/helpers');
+help.populateParks();
+
 
 module.exports = app;
