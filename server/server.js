@@ -34,9 +34,9 @@ if(!module.parent) {
   console.log('Listening on:', port);
 }
 
-// Testing helpers.populateParks func.
-const help = require('./config/helpers');
-help.populateParks();
+// Testing helpers populate functions.
+// const help = require('./config/helpers');
+
 
 
 module.exports = app;
