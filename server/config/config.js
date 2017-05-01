@@ -47,10 +47,13 @@ db.knex.schema.hasTable('rides').then(function(exists) {
 			ride.increments('id').primary();
       ride.string('apiId', 200).notNullable();
       ride.string('rideName', 100).notNullable();
+      ride.integer('parkId').references('parks.id');
       ride.bool('hasFastPass');
 			ride.integer('location');
 			ride.integer('capacity');
 			ride.integer('throughput');
+      ride.date('created_at');
+      ride.date('updated_at');
 		}).then(function(table){
 			console.log('Created "rides" Table', table);
 		});
@@ -61,6 +64,7 @@ db.knex.schema.hasTable('ride_wait_times').then(function(exists) {
 	if(!exists) {
 		db.knex.schema.createTable('ride_wait_times', function(waitTime) {
 			waitTime.increments('id').primary();
+      waitTime.foreign('rideId').references('rides.id');
 			waitTime.integer('waitTime');
       waitTime.string('status');
       waitTime.bool('isActive');

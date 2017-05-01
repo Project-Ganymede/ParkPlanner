@@ -3,7 +3,7 @@ This is our main server file.
 */
 require('dotenv').config();
 const express = require('express');
-const db = require('./config/config.js');
+require('./config/config.js');
 
 // Middleware
 const parser = require('body-parser');
@@ -36,6 +36,7 @@ if(!module.parent) {
 
 // Testing helpers populate functions.
 // const help = require('./config/helpers');
+
 
 
 
