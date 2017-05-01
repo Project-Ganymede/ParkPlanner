@@ -1,5 +1,5 @@
-const db = require('../config');
-const Park = require('../models/park');
+const db = require('../config/config');
+const Park = require('../models/parkModel');
 
 const Parks = new db.Collection();
 

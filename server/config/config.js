@@ -1,9 +1,5 @@
 const path = require('path');
 
-console.log(process.env.DB_HOST,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD)
-
 const knex = require('knex')({
   client: 'mysql',
   connection: {
@@ -22,12 +18,22 @@ db.knex.schema.hasTable('parks').then((exists) => {
   if (!exists) {
       db.knex.schema.createTable('parks', (park) => {
         park.increments('id').primary();
-        park.integer('api_code').notNullable();
-        park.string('park_name', 100).notNullable();
-        park.string('company_name', 100).notNullable();
+        park.string('parkName', 100).notNullable();
+        park.date('created_at');
+        park.date('updated_at');
+        park.bool('hasFastPass');
 
-        // This park's location as a "GeoLocation" object. Inputs will need to be stringified from API call before construction of new park and JSON.parsed when used. See GeoLocation Docs for available methods/properties)
-        park.json('location')
+        //park.date('updated_at');
+        // API references parks by name
+        // park.integer('api_code').notNullable();
+
+        // API includes Company in name
+        // park.string('company_name', 100).notNullable();
+
+        /* This park's location as a "GeoLocation" object. Inputs will need to be stringified from
+        // API call before construction of new park and JSON.parsed when used.
+        // See GeoLocation Docs for available methods/properties) */
+        park.json('location');
 
       }).then((table) => {
         console.log('Created "parks" Table', table);
@@ -39,8 +45,8 @@ db.knex.schema.hasTable('rides').then(function(exists) {
 	if(!exists) {
 		db.knex.schema.createTable('rides', function(ride) {
 			ride.increments('id').primary();
-      ride.string('api_id', 200).notNullable();
-      ride.string('ride_name', 100).notNullable();
+      ride.string('apiId', 200).notNullable();
+      ride.string('rideName', 100).notNullable();
       ride.bool('hasFastPass');
 			ride.integer('location');
 			ride.integer('capacity');
@@ -55,9 +61,9 @@ db.knex.schema.hasTable('ride_wait_times').then(function(exists) {
 	if(!exists) {
 		db.knex.schema.createTable('ride_wait_times', function(waitTime) {
 			waitTime.increments('id').primary();
-			waitTime.integer('wait_time');
+			waitTime.integer('waitTime');
       waitTime.string('status');
-      waitTime.bool('isActive')
+      waitTime.bool('isActive');
       waitTime.integer('temp');
 			waitTime.integer('chancePrecip');
 		}).then((table) => {
