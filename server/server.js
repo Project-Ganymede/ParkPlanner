@@ -37,6 +37,4 @@ if(!module.parent) {
 // Testing helpers populate functions.
 // const help = require('./config/helpers');
 
-
-
 module.exports = app;
