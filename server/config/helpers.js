@@ -7,51 +7,63 @@ const Parks = require('../collections/parks');
 const Park = require('../models/parkModel');
 const RideWaitTimes = require('../collections/rideWaitTimes');
 const RideWaitTime = require('../models/rideWaitTimeModel');
+const WeatherEntries = require('../collections/WeatherEntries');
+const Weather = require('../models/weatherModel');
+
 
 
 
 // Helper Functions
 
 
-let helperFuncs = {
+let helper = {
   getWaitTimes : () => {
-    helperFuncs.getRidesFromAPI()
-      .then((arrayOfRideObjects) => {
-        helperFuncs.queryWeatherAPI()
-          .then((weatherObj)=> {
-            arrayOfRideObjects.forEach((rideObj) => {
-              helperFuncs.createNewWaitEntry(rideObj, weatherObj);
+    Park.fetchAll()
+      .then(arrayOfParkObjects => {
+        arrayOfParkObjects.forEach(parkObj => {
+          Weather.fetch({'location': parkObj.location})
+            .then(weatherModel => {
+              new Themeparks.Parks[parkObj.apiParkName]().GetWaitTimes
+                .then(waitTimesArray => {
+                  waitTimesArray.forEach(waitTimeObj => {
+                    Ride.fetchOne({'apiId': waitTimeObj.id})
+                      .then(rideModel => {
+                        helper.createNewWaitEntry(rideModel, waitTimeObj, weatherModel);
+                      });
+                  });
+                });
             });
-          });
         });
+      });
   },
 
-  getWeatherFromAPI : () => {
-    return {'temp': temp, 'precip': precip};
-  },
-
-  createNewWaitEntry : (rideObj, weatherObj) => {
-    Ride.fetchOne({'api_id': rideObj.id})
-    .then( model => {
-      if(model) {
+  createNewWaitEntry : (rideModel, waitTimeObj, weatherModel) => {
         return new RideWaitTime({
-          apiId: model.id,
-          waitTime: rideObj.waitTime,
-          status: rideObj.status,
-          active: rideObj.active,
-          temp: weatherObj.temp,
-          precip: weatherObj.precip,
-
-          // Move the time creation to rideModel.js
-          date: moment().formate('L'),
-          time: moment().format('LT'),
+          rideId: rideModel.id,
+          waitTime: waitTimeObj.waitTime,
+          status: waitTimeObj.status,
+          active: waitTimeObj.active,
+          temp: weatherModel.weather.currently.apparentTemperature,
+          precip: weatherModel.weather.currently.precipIntensity,
         });
-      }
-    });
   },
+
+  /*======================================
+    ======     POPULATION HELPERS    =====
+    The functions below serve only to populate
+    the "rides" and "parks" tables for future use.
+    Do not call these functions once the tables
+    have been created as they do not check if the
+    model already exists and will duplicate entries,
+    doubling the run time of functions that iterate through each park or ride.
+    ====================================== */
+
+
 
   populateRidesTable: () => {
-    // Queries ThemeparkAPI and inserts any new rides into rides table
+    // ======================================
+    // ======     ONLY RUN ONE TIME     =====
+    // ======================================
     for( let park in Themeparks.Parks) {
       if (Themeparks.Parks.hasOwnProperty(park)) {
         let parkObj = new Themeparks.Parks[park]();
@@ -61,7 +73,7 @@ let helperFuncs = {
           parkObj.GetWaitTimes()
             .then(apiRidesArr => {
               apiRidesArr.forEach(apiRideObj=> {
-                helperFuncs.createNewRide(apiRideObj, parkEntry.id);
+                helper.createNewRide(apiRideObj, parkEntry);
               });
             });
         });
@@ -76,20 +88,13 @@ let helperFuncs = {
       .catch(err => console.error(err));
   },
 
-  createNewRide : (apiRideObj, parkId) => {
-    // helperFuncs.checkIfRideExists(apiRideObj)
-    //   .then(exists => {
-    //     if(!exists) {
-    //       console.log('~~~~~~~~~~~~~');
-    //       console.log(apiRideObj);
-    //       console.log(exists);
-    //       console.log('~~~~~~~~~~~~~');
+  createNewRide : (apiRideObj, parkEntry) => {
           return new Ride({
             apiId : apiRideObj.id,
             rideName: apiRideObj.name,
-            parkId : parkId,
+            parkId : parkEntry.id,
             hasFastPass: apiRideObj.fastPass,
-            //location: getRideLocation() Use GeoLocation to get ride coords
+            location: parkEntry.location
           }).save()
           .then( ride => {
             //console.log(ride);
@@ -97,41 +102,40 @@ let helperFuncs = {
           .catch( err => {
             console.error(err);
           });
-      //   }
-      // });
-  },
-  stringToJsonObj : string => {
-    let arr  = string.replace('(','').replace(')','').split(',');
-    return JSON.stringify({
-      'latitude': arr[0],
-      'longitude': arr[1]
-    });
   },
 
   populateParksTable : () => {
+    // ======================================
+    // ======     ONLY RUN ONE TIME     =====
+    // ======================================
     let parkArr = [];
     for( let park in Themeparks.Parks) {
       if (Themeparks.Parks.hasOwnProperty(park)) {
         let currPark = new Themeparks.Parks[park]();
         parkArr.push({
+          'apiParkName' : park,
           'parkName': currPark.Name,
-          'location' : helperFuncs.stringToJsonObj(currPark.Location.toString()),
+          'location' : JSON.stringify({
+            'latitude' : currPark.Location.LatitudeRaw,
+            'longitude' :currPark.Location.LongitudeRaw
+          }),
           'fastPass' : currPark.FastPass
         });
 
       }
     }
     parkArr.forEach(parkObj => {
-      helperFuncs.createNewPark(parkObj);
+      helper.createNewPark(parkObj);
     });
   },
 
   createNewPark: parkObj => {
-    helperFuncs.checkIfParkExists()
+    helper.checkIfParkExists(parkObj)
       .then(exists => {
         if(!exists) {
           return new Park({
           parkName : parkObj.parkName,
+          apiParkName : parkObj.apiParkName,
           location : parkObj.location,
           hasFastPass : parkObj.fastPass,
         }).save()
@@ -153,4 +157,4 @@ let helperFuncs = {
   },
 };
 
-module.exports = helperFuncs;
+module.exports = helper;

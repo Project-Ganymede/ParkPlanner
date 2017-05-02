@@ -5,7 +5,7 @@ angular.module('app.services', [])
   var getAll = function () {
     return $http({
       method: 'GET',
-      url: 'str'//TO DO
+      url: '/parks'//TO DO
     }).then(function (resp) {
       return resp.data;
     });
@@ -18,7 +18,7 @@ angular.module('app.services', [])
 .factory('Rides', function ($http) {
   var getParkRides = function () {
     return [
-    { 
+    {
       id: 1,
       api_code: 'WaltDisneyWorldEpcot_80010199',
       name: 'Test Track',
@@ -29,8 +29,8 @@ angular.module('app.services', [])
       status: 'Operating',
       opening_time: '2017-04-27T09:00:00-04:00',
       closing_time: '2017-04-27T21:00:00-04:00'
-    }, 
-    { 
+    },
+    {
       id: 2,
       api_code: 'WaltDisneyWorldEpcot_80010199',
       name: 'Test Track',
@@ -41,8 +41,8 @@ angular.module('app.services', [])
       status: 'Operating',
       opening_time: '2017-04-27T10:00:00-04:00',
       closing_time: '2017-04-27T21:00:00-04:00'
-    }, 
-    { 
+    },
+    {
       id: 3,
       api_code: 'WaltDisneyWorldEpcot_80010199',
       name: 'Test Track',
@@ -53,8 +53,8 @@ angular.module('app.services', [])
       status: 'Operating',
       opening_time: '2017-04-27T11:00:00-04:00',
       closing_time: '2017-04-27T21:00:00-04:00'
-    }, 
-    { 
+    },
+    {
       id: 4,
       api_code: 'WaltDisneyWorldEpcot_80010199',
       name: 'Test Track',
@@ -65,8 +65,8 @@ angular.module('app.services', [])
       status: 'Operating',
       opening_time: '2017-04-27T12:00:00-04:00',
       closing_time: '2017-04-27T21:00:00-04:00'
-    }, 
-    { 
+    },
+    {
       id: 5,
       api_code: 'WaltDisneyWorldEpcot_80010199',
       name: 'Test Track',

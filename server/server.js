@@ -1,29 +1,14 @@
-/*
-This is our main server file.
-*/
+// modules ================================================
 require('dotenv').config();
 const express = require('express');
-const db = require('./config/config.js');
-
-// Middleware
-const parser = require('body-parser');
-const path = require('path');
 const app = express();
 
-// Parse JSON Data
-app.use(parser.json());
+// CONFIGURATION ===========================================
 
-/*
-Placeholder for router
- */
- app.set('view engine', 'html');
+// configure our server with all the middleware and routing
+require('./config/middleware.js')(app, express);
+require('./config/routes.js')(app, express);
 
-app.get('/', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname + '/../client/app/layout/'));
-});
-// Serve our client files and node modules.
-app.use(express.static(__dirname + '/../client'));
-app.use(express.static(__dirname + '/../node_modules'));
 
 // Sets the port to either the Process Environment's or 3000.
 let port = process.env.PORT || 3000;
@@ -35,6 +20,7 @@ if(!module.parent) {
 }
 
 // Testing helpers populate functions.
-// const help = require('./config/helpers');
+ //const help = require('./config/helpers');
+ //help.populateParksTable();
 
 module.exports = app;
