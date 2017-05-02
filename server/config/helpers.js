@@ -26,11 +26,6 @@ let helperFuncs = {
         });
   },
 
-  getRidesFromAPI : () => {
-
-    return arrayOfRideObjects;
-  },
-
   getWeatherFromAPI : () => {
     return {'temp': temp, 'precip': precip};
   },
@@ -55,31 +50,55 @@ let helperFuncs = {
     });
   },
 
-  populateRideTable: () => {
+  populateRidesTable: () => {
     // Queries ThemeparkAPI and inserts any new rides into rides table
-    helperFuncs.getRidesFromAPI().then(apiArrayOfRideObjects => {
-      apiArrayOfRideObjects.each( apiObject => {
-        helperFuncs.checkIfRideExists(apiObject).then(exists => {
-          if(!exists) {
-            helperFuncs.createNewRide(apiObject);
-          }
+    for( let park in Themeparks.Parks) {
+      if (Themeparks.Parks.hasOwnProperty(park)) {
+        let parkObj = new Themeparks.Parks[park]();
+        let name = parkObj.Name;
+        Park.where('parkName', name).fetch()
+        .then(parkEntry => {
+          parkObj.GetWaitTimes()
+            .then(apiRidesArr => {
+              apiRidesArr.forEach(apiRideObj=> {
+                helperFuncs.createNewRide(apiRideObj, parkEntry.id);
+              });
+            });
         });
-      });
-    });
+      }
+    }
   },
 
   checkIfRideExists: apiRideObj => {
     // Returns a promise that eventually resolves to true or false
-    Ride.fetch({'api_id': apiRideObj.id} ).then(exists => !!exists);
+    return Rides.fetchOne({'apiId': apiRideObj.id})
+      .then(exists => !!exists)
+      .catch(err => console.error(err));
   },
 
-  createNewRide : rideObj => {
-    return new Ride({
-      apiId : rideObj.id,
-      rideName: rideObj.name,
-      //location: getRideLocation() Use GeoLocation to get ride coords
-      fastPass: rideObj.fastPass,
-    });
+  createNewRide : (apiRideObj, parkId) => {
+    // helperFuncs.checkIfRideExists(apiRideObj)
+    //   .then(exists => {
+    //     if(!exists) {
+    //       console.log('~~~~~~~~~~~~~');
+    //       console.log(apiRideObj);
+    //       console.log(exists);
+    //       console.log('~~~~~~~~~~~~~');
+          return new Ride({
+            apiId : apiRideObj.id,
+            rideName: apiRideObj.name,
+            parkId : parkId,
+            hasFastPass: apiRideObj.fastPass,
+            //location: getRideLocation() Use GeoLocation to get ride coords
+          }).save()
+          .then( ride => {
+            //console.log(ride);
+          })
+          .catch( err => {
+            console.error(err);
+          });
+      //   }
+      // });
   },
   stringToJsonObj : string => {
     let arr  = string.replace('(','').replace(')','').split(',');
@@ -89,7 +108,7 @@ let helperFuncs = {
     });
   },
 
-  populateParks : () => {
+  populateParksTable : () => {
     let parkArr = [];
     for( let park in Themeparks.Parks) {
       if (Themeparks.Parks.hasOwnProperty(park)) {
@@ -107,20 +126,31 @@ let helperFuncs = {
     });
   },
 
-
   createNewPark: parkObj => {
-    return new Park({
-      parkName : parkObj.parkName,
-      location : parkObj.location,
-      hasFastPass : parkObj.fastPass,
-    }).save()
-    .then( themepark => {
-      console.log(themepark);
-    })
-    .catch( err => {
-      console.error(err);
-    });
-  }
+    helperFuncs.checkIfParkExists()
+      .then(exists => {
+        if(!exists) {
+          return new Park({
+          parkName : parkObj.parkName,
+          location : parkObj.location,
+          hasFastPass : parkObj.fastPass,
+        }).save()
+          .then( themepark => {
+            console.log(themepark);
+          })
+          .catch( err => {
+            console.error(err);
+          });
+        }
+      });
+  },
+
+  checkIfParkExists: apiParkObj => {
+    // Returns a promise that eventually resolves to true or false
+    return Parks.fetchOne({'apiId': apiParkObj.id})
+      .then(exists => !!exists)
+      .catch(err => console.error(err));
+  },
 };
 
 module.exports = helperFuncs;
