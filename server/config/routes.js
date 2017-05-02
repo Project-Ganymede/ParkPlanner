@@ -4,14 +4,15 @@ to their corresponding routes.
  */
 
 // Define our Collection and Model Variables
-const Parks = require('./collections/parks.js');
-const Park = require('./models/parkModel.js');
-const Rides = require('./collections/rides.js');
-const Ride = require('./models/rideModel.js');
-const WaitTimes = require('./collections/waitTime.js');
-const WaitTime = require('./wait_timeModel.js');
+const Parks = require('../collections/parks.js');
+const Park = require('../models/parkModel.js');
+const Rides = require('../collections/rides.js');
+const Ride = require('../models/rideModel.js');
+const WaitTimes = require('../collections/rideWaitTimes.js');
+const WaitTime = require('../rideWaitTimeModel.js');
 
-const app = require('./server.js');
+const express = require('express');
+const app = express();
 
 // Initial GET request for index.html
 app.get('/', (req, res) => {

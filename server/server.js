@@ -19,7 +19,7 @@ Placeholder for router
  app.set('view engine', 'html');
 
 app.get('/', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname + '/../client/app/layout/index.html'));
+  res.status(200).sendFile(path.join(__dirname + '/../client/app/layout/'));
 });
 // Serve our client files and node modules.
 app.use(express.static(__dirname + '/../client'));
