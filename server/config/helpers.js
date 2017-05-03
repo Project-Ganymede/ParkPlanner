@@ -1,6 +1,7 @@
 const moment = require('moment');
 const Themeparks = require('themeparks');
 
+const util = require('./utils');
 const Rides = require('../collections/rides');
 const Ride = require('../models/rideModel');
 const Parks = require('../collections/parks');
@@ -17,6 +18,59 @@ const Weather = require('../models/weatherModel');
 
 
 let helper = {
+
+  returnWaitTimes : rideIdList => {
+    /* accepts input of [id1, id2, id3]
+        returns output of [ { ride1Data : {ride1ModelObj},
+                          timeData : [time1WaitTime, time2WaitTime .....]
+                        },
+                        { ride2Data : {ride2ModelObj},
+                          timeData : [time1WaitTime, time2WaitTime .....]
+                        }] */
+    Promise.all(rideIdList.map(rideId => {
+      // Promise.all is required since we are returning an alteration of the original list, when each change
+      // requires data from an async function.
+      return new Promise((resolve, reject) => {
+          RideWaitTimes.fetchAll({'rideId' : rideId})
+            .then(modelArray => {
+            // timeData will be a reduction of the list of RideN entries to a single object :
+            // { '12:00am': [45, 20, 16, 25, 52], '12.15am' : [60, 50, 55 ...], ....}
+              let rideInfo = {'timeData' : util.reduceTimeData(modelArray)};
+
+              // Get the modelObj from the 'rides' table to pass back data about each ride
+              Rides.fetchOne({'id' : modelArray[0].rideId})
+                .then(rideModel => {
+                  rideInfo['rideData'] = rideModel;
+                  resolve(rideInfo);
+                })
+                .catch(err => console.error(err));
+            })
+            .catch(err => reject(err));
+      });
+    }))
+    .then(rideInfoArray => {
+      // Should return an array of objs: [{rideData: {}, timeData: []}]
+      console.log(rideInfoArray);
+
+      return  rideInfoArray.map(rideObj => {
+        let timeArr = [];
+        /* rideObj = {timeData : {
+                        'time1' : [wait1, wait2, wait3],
+                        'time2' : [wait1, wait2, wait3]},
+                      'rideData' : rideDataObj}
+                    */
+        Object.key(rideObj.timeData).sort().forEach( key => {
+          let waitTotal = rideObj.timeData.key.reduce((acc, item) =>  acc + item);
+          let waitAvg = waitTotal / rideObj.timeData.key.length;
+          timeArr.push(waitAvg);
+        });
+        rideObj.timeData = timeArr;
+        return rideObj;
+      });
+    })
+    .catch(err => console.error(err));
+  },
+  
   getWaitTimes : () => {
     Park.fetchAll()
       .then(arrayOfParkObjects => {
@@ -43,8 +97,8 @@ let helper = {
           waitTime: waitTimeObj.waitTime,
           status: waitTimeObj.status,
           active: waitTimeObj.active,
-          temp: weatherModel.weather.currently.apparentTemperature,
-          precip: weatherModel.weather.currently.precipIntensity,
+          temp: weatherModel.weather.currently.apparentTemperature || null,
+          precip: weatherModel.weather.currently.precipIntensity || null,
         });
   },
 
