@@ -5,8 +5,9 @@ angular.module('app.services', [])
   var getAll = function () {
     return $http({
       method: 'GET',
-      url: '/parks'//TO DO
+      url: '/parks'
     }).then(function (resp) {
+      console.log(resp.data);
       return resp.data;
     });
   };
