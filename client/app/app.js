@@ -17,7 +17,7 @@ angular
         templateUrl: 'app/rides/rides.html',
         controller: 'RidesController'
       })
-      .when('/ridelist', {
+      .when('/rideslist', {
         templateUrl: 'app/rides/rides-list-details.html',
         controller: 'RidesController'
       })
