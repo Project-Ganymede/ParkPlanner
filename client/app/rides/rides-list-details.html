@@ -1,5 +1,5 @@
 <div id="container">
-  <div class="col-xs-12">
+  <div class="col-xs-12" style="margin-top: 3%;">
     <div class="col-xs-3">
       <h1 class="text-center">Your Rides</h1>
     </div>
@@ -8,15 +8,15 @@
     </div>
     <div class="col-xs-4"></div>
     <div class="col-xs-4">
-      <h1 class="text-center">Your Queue</h1>
+      <h2 class="text-center">Your Queue</h2>
     </div>
   </div>
-  <div class="col-xs-8">
+  <div class="col-xs-8" style="margin-top: 3%;">
     <div class="col-xs-12" ng-repeat="rideSelected in rideQueue">
       <div class="col-xs-4">
         <div class="col-xs-12">
-          <p class="text-center">{{ rideSelected.name }}</p>
-          <img ng-src="{{ rideSelected.image }}" class="img-circle img-thumbnail">
+          <p class="h3 text-center">{{ rideSelected.name }}</p>
+          <img ng-src="{{ rideSelected.image }}" class="img-responsive">
         </div>
       </div>
       <div class="col-xs-8">
@@ -26,28 +26,28 @@
       </div>
     </div>
   </div>
-  <div class="col-xs-4">
+  <div class="col-xs-4" style="margin-top: 3%;">
     <div class="col-xs-12">
       <div class="col-xs-3">
-        <p class="text-center">When</p>
+        <p class="h5 text-center">When</p>
       </div>
       <div class="col-xs-6">
-        <p class="text-center">Where</p>
+        <p class="h4 text-center">Where</p>
       </div>
       <div class="col-xs-3">
-        <p class="text-center">Wait</p>
+        <p class="h5 text-center">Wait</p>
       </div>
     </div>
     <div class="col-xs-12" ng-repeat="rideQueued in rideQueue">
       <div class="col-xs-3">
-        <p class="text-center">{{ rideQueued.time }}</p>
+        <p class="h6 text-center">{{ rideQueued.time }}</p>
       </div>
       <div class="col-xs-6">
-        <p class="text-center">{{ rideQueued.name }}</p>
+        <p class="h6 text-center">{{ rideQueued.name }}</p>
         <img ng-src="{{ rideQueued.image }}" class="img-circle img-thumbnail">
       </div>
       <div class="col-xs-3">
-        <p class="text-center">{{ rideQueued.wait }}</p>
+        <p class="h6 text-center">{{ rideQueued.wait }}</p>
       </div>
     </div>
   </div>
