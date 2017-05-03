@@ -14,5 +14,7 @@ angular.module('app.parks', [])
       });
   };
 
-  initializeParks();
+  // initializeParks();
+  $scope.data.parks = [{name:'Disney World: Epcot'}, {name:'Disney World: Magic Kingdom'}];
+
 });

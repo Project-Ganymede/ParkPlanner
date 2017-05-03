@@ -1,6 +1,23 @@
-<div class="parks">
-
-  PARKS PARKS PARKS  
-
-
+<div id="container">
+  <div class="col-md-12">
+    <h1 class="display-1 text-center">ParkPlanner</h1>
+  </div>
+  <div class="col-md-5"></div>
+    <div class="dropdown col-md-2">
+      <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Select a Park
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu centered" role="menu" aria-labelledby="menu1">
+        <li ng-repeat="park in data.parks" role="presentation"><a role="menuitem" tabindex="-1" href="#!/rides">{{park.name}}</a></li>
+      </ul>
+    </div>
+  <div class="col-md-5"></div>
 </div>
+<style>
+  body {
+    background-image: url("assets/images/superman_background.JPG");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+  }
+</style>

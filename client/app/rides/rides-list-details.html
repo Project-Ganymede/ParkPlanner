@@ -1,0 +1,54 @@
+<div id="container">
+  <div class="col-xs-12">
+    <div class="col-xs-3">
+      <h1 class="text-center">Your Rides</h1>
+    </div>
+    <div class="col-xs-1">
+      <a href="#!/rides" class="btn btn-danger">Add More Rides</a>
+    </div>
+    <div class="col-xs-4"></div>
+    <div class="col-xs-4">
+      <h1 class="text-center">Your Queue</h1>
+    </div>
+  </div>
+  <div class="col-xs-8">
+    <div class="col-xs-12" ng-repeat="rideSelected in rideQueue">
+      <div class="col-xs-4">
+        <div class="col-xs-12">
+          <p class="text-center">{{ rideSelected.name }}</p>
+          <img ng-src="{{ rideSelected.image }}" class="img-circle img-thumbnail">
+        </div>
+      </div>
+      <div class="col-xs-8">
+        <div class="col-xs-12">
+          <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-4">
+    <div class="col-xs-12">
+      <div class="col-xs-3">
+        <p class="text-center">When</p>
+      </div>
+      <div class="col-xs-6">
+        <p class="text-center">Where</p>
+      </div>
+      <div class="col-xs-3">
+        <p class="text-center">Wait</p>
+      </div>
+    </div>
+    <div class="col-xs-12" ng-repeat="rideQueued in rideQueue">
+      <div class="col-xs-3">
+        <p class="text-center">{{ rideQueued.time }}</p>
+      </div>
+      <div class="col-xs-6">
+        <p class="text-center">{{ rideQueued.name }}</p>
+        <img ng-src="{{ rideQueued.image }}" class="img-circle img-thumbnail">
+      </div>
+      <div class="col-xs-3">
+        <p class="text-center">{{ rideQueued.wait }}</p>
+      </div>
+    </div>
+  </div>
+</div>

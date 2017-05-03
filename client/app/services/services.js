@@ -28,7 +28,9 @@ angular.module('app.services', [])
       active: true,
       status: 'Operating',
       opening_time: '2017-04-27T09:00:00-04:00',
-      closing_time: '2017-04-27T21:00:00-04:00'
+      closing_time: '2017-04-27T21:00:00-04:00',
+      wait: '15min',
+      time: '1:00pm'
     },
     {
       id: 2,
@@ -40,7 +42,9 @@ angular.module('app.services', [])
       active: true,
       status: 'Operating',
       opening_time: '2017-04-27T10:00:00-04:00',
-      closing_time: '2017-04-27T21:00:00-04:00'
+      closing_time: '2017-04-27T21:00:00-04:00',
+      wait: '15min',
+      time: '1:00pm'
     },
     {
       id: 3,
@@ -52,7 +56,9 @@ angular.module('app.services', [])
       active: false,
       status: 'Operating',
       opening_time: '2017-04-27T11:00:00-04:00',
-      closing_time: '2017-04-27T21:00:00-04:00'
+      closing_time: '2017-04-27T21:00:00-04:00',
+      wait: '15min',
+      time: '1:00pm'
     },
     {
       id: 4,
@@ -64,7 +70,9 @@ angular.module('app.services', [])
       active: true,
       status: 'Operating',
       opening_time: '2017-04-27T12:00:00-04:00',
-      closing_time: '2017-04-27T21:00:00-04:00'
+      closing_time: '2017-04-27T21:00:00-04:00',
+      wait: '15min',
+      time: '1:00pm'
     },
     {
       id: 5,
@@ -76,7 +84,9 @@ angular.module('app.services', [])
       active: true,
       status: 'Operating',
       opening_time: '2017-04-27T13:00:00-04:00',
-      closing_time: '2017-04-27T21:00:00-04:00'
+      closing_time: '2017-04-27T21:00:00-04:00',
+      wait: '15min',
+      time: '1:00pm'
     }];
   };
   return {

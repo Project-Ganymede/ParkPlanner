@@ -3,7 +3,8 @@ angular
       'app.parks',
       'app.rides',
       'app.services',
-      'ngRoute'
+      'ngRoute',
+      'chart.js'
     ]
   )
   .config(function ($routeProvider, $locationProvider) {
@@ -14,6 +15,10 @@ angular
       })
       .when('/rides', {
         templateUrl: 'app/rides/rides.html',
+        controller: 'RidesController'
+      })
+      .when('/rideslist', {
+        templateUrl: 'app/rides/rides-list-details.html',
         controller: 'RidesController'
       })
       .otherwise({
