@@ -19,6 +19,7 @@
   "dependencies": {
     "angular": "^1.6.4",
     "angular-chart.js": "^1.1.1",
+    "async": "^2.4.0",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "bookshelf": "^0.10.3",

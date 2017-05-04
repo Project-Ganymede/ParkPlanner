@@ -70,9 +70,24 @@ db.knex.schema.hasTable('ride_wait_times').then(function(exists) {
       waitTime.string('status');
       waitTime.bool('isActive');
       waitTime.integer('temp');
-			waitTime.integer('chancePrecip');
+			waitTime.integer('precip');
+      waitTime.string('date');
+      waitTime.string('hour');
 		}).then((table) => {
 			console.log('Created "ride_wait_times" Table', table);
+		});
+	}
+});
+
+
+db.knex.schema.hasTable('weather_entries').then(function(exists) {
+	if(!exists) {
+		db.knex.schema.createTable('weather_entries', function(weather) {
+			weather.increments('id').primary();
+      weather.json('location');
+      weather.json('weatherObj');
+		}).then((table) => {
+			console.log('Created "weather_entries" Table', table);
 		});
 	}
 });
