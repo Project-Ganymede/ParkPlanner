@@ -1,7 +1,10 @@
 angular.module('app.rides', [])
 
 .controller('RidesController', function ($scope, $routeParams, Rides) {
-  $scope.rides = Rides.getParkRides($routeParams.id);
+  Rides.getParkRides($routeParams.id).then(function(data) {
+    $scope.rides = data;
+  })
+  console.log('little string', $scope.rides);
   $scope.rideList = [];
   $scope.addRideToList = function (ride) {
     $scope.rideList.push(ride);
