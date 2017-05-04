@@ -7,7 +7,7 @@ const knex = require('knex')({
 
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: 'ganymede_greenfield',
+    database: 'ganymede_greenfield_2',
     charset: 'utf8'
   }
 });

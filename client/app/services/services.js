@@ -23,6 +23,7 @@ angular.module('app.services', [])
       url: '/rides',
       data: { parkId: parkID }
     }).then(function (resp) {
+      console.log(resp.data);
       return resp.data;
     });
   };
