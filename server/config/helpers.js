@@ -21,7 +21,7 @@ const Weather = require('../models/weatherModel');
 let helper = {
 
   returnWaitTimes : rideIdList => {
-    
+
     return Promise.all(eval(rideIdList).map(rideId => {
       return new Promise((resolve, reject) => {
           RideWaitTime.where({'rideId' : rideId}).fetchAll()
@@ -106,7 +106,7 @@ let helper = {
   createNewWaitEntry : (rideModel, waitTimeObj, weatherModel) => {
         return new RideWaitTime({
           rideId: rideModel.attributes.id,
-          waitTime: waitTimeObj.active === true ? waitTimeObj.waitTime : null,
+          waitTime: waitTimeObj.waitTime,
           status: waitTimeObj.status,
           isActive: waitTimeObj.active,
           temp: /*weatherModel.weather.currently.apparentTemperature ||*/ null,
