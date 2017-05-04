@@ -21,25 +21,16 @@ const Weather = require('../models/weatherModel');
 let helper = {
 
   returnWaitTimes : rideIdList => {
-    /* accepts input of [id1, id2, id3]
-        returns output of [ { ride1Data : {ride1ModelObj},
-                          timeData : [time1WaitTime, time2WaitTime .....]
-                        },
-                        { ride2Data : {ride2ModelObj},
-                          timeData : [time1WaitTime, time2WaitTime .....]
-                        }] */
-    Promise.all(rideIdList.map(rideId => {
-      // Promise.all is required since we are returning an alteration of the original list, when each change
-      // requires data from an async function.
+    
+    return Promise.all(eval(rideIdList).map(rideId => {
       return new Promise((resolve, reject) => {
-          RideWaitTimes.fetchAll({'rideId' : rideId})
+          RideWaitTime.where({'rideId' : rideId}).fetchAll()
             .then(modelArray => {
             // timeData will be a reduction of the list of RideN entries to a single object :
             // { '12:00am': [45, 20, 16, 25, 52], '12.15am' : [60, 50, 55 ...], ....}
-              let rideInfo = {'timeData' : util.reduceTimeData(modelArray)};
-
+              let rideInfo = {'timeData' : util.reduceTimeData(modelArray.models)};
               // Get the modelObj from the 'rides' table to pass back data about each ride
-              Rides.fetchOne({'id' : modelArray[0].rideId})
+              Ride.where({'id' : modelArray.models[0].attributes.rideId}).fetch()
                 .then(rideModel => {
                   rideInfo['rideData'] = rideModel;
                   resolve(rideInfo);
@@ -51,18 +42,11 @@ let helper = {
     }))
     .then(rideInfoArray => {
       // Should return an array of objs: [{rideData: {}, timeData: []}]
-      console.log(rideInfoArray);
-
       return  rideInfoArray.map(rideObj => {
         let timeArr = [];
-        /* rideObj = {timeData : {
-                        'time1' : [wait1, wait2, wait3],
-                        'time2' : [wait1, wait2, wait3]},
-                      'rideData' : rideDataObj}
-                    */
-        Object.key(rideObj.timeData).sort().forEach( key => {
-          let waitTotal = rideObj.timeData.key.reduce((acc, item) =>  acc + item);
-          let waitAvg = waitTotal / rideObj.timeData.key.length;
+        Object.keys(rideObj.timeData).sort().forEach( key => {
+          let waitTotal = rideObj.timeData[key].reduce((acc, item) =>  acc + item);
+          let waitAvg = waitTotal / rideObj.timeData[key].length;
           timeArr.push(waitAvg);
         });
         rideObj.timeData = timeArr;
