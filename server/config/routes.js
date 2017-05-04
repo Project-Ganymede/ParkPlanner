@@ -6,7 +6,7 @@ const Ride = require('../models/rideModel.js');
 const WaitTimes = require('../collections/rideWaitTimes.js');
 const WaitTime = require('../models/rideWaitTimeModel.js');
 const helpers = require('./helpers');
-
+const request = require('request');
 
 module.exports = (app, express) => {
 
@@ -26,8 +26,14 @@ module.exports = (app, express) => {
   });
 
   app.get('/rides', (req, res) => {
-    Rides.fetch()
+    console.log(req.headers.parkid);
+    Ride.where({parkId: req.headers.parkid}).fetchAll()
     .then(rides => {
+      rides.forEach(ride => {
+        request(`http://en.wikipedia.org/w/api.php?action=query&titles=${ride.attributes.rideName}&prop=images&format=json&indexpageids`, (err, res, body) => {
+          console.log('error', err);
+        })
+      })
       res.status(200).send(rides.models);
     })
     .catch(err => {
