@@ -1,7 +1,7 @@
 angular.module('app.rides', [])
 
-.controller('RidesController', function ($scope, Rides) {
-  $scope.rides = Rides.getParkRides();
+.controller('RidesController', function ($scope, $routeParams, Rides) {
+  $scope.rides = Rides.getParkRides($routeParams.id);
   $scope.rideList = [];
   $scope.addRideToList = function (ride) {
     $scope.rideList.push(ride);

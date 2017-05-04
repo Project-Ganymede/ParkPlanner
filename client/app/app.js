@@ -13,7 +13,7 @@ angular
         templateUrl: 'app/parks/parks.html',
         controller: 'ParksController'
       })
-      .when('/rides', {
+      .when('/park/:id', {
         templateUrl: 'app/rides/rides.html',
         controller: 'RidesController'
       })
