@@ -50,16 +50,16 @@ module.exports = (app, express) => {
   });
 
   app.get('/test', (req, res) => {
-    helpers.getWaitTimes();
-    setTimeout(function() {
-      WaitTimes.fetch()
-      .then(rides => {
-        res.status(200).send(rides.models);
+    console.log(req.headers.rides);
+    helpers.returnWaitTimes(req.headers.rides)
+      .then(data => {
+        console.log(data);
+        res.status(200).send(data);
       })
       .catch(err => {
         res.status(404).send(err);
         console.error('GET Rides Error:', err);
+
       });
-    }, 2000);
   });
 };
