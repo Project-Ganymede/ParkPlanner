@@ -73,7 +73,6 @@ let helper = {
   },
 
   getWaitTimes : () => {
-
     util.gatherParks()
       .then(parks => {
         Promise.all(
@@ -86,11 +85,8 @@ let helper = {
                         Promise.all(
                           waitTimes.map(waitTimeObj => {
                             return new Promise((resolve, reject) => {
-                              // console.log(waitTimeObj.id);
-                              var id = waitTimeObj.id;
-                              util.gatherRide(id)
+                              util.gatherRide(waitTimeObj.id)
                                 .then(ride => {
-                                  //console.log(ride);
                                   resolve({
                                     'ride' : ride,
                                     'waitTime' : waitTimeObj
@@ -99,8 +95,6 @@ let helper = {
                             });
                           })
                         )
-                        // promises = [{ride1 : {model}, waitTime : {waitTime}},
-                        //             {ride2 : {model}, waitTime : {waitTime}}, .... ]
                         .then(promises => {
                           resolve(
                             promises.map(promise => {
@@ -115,8 +109,6 @@ let helper = {
             });
           })
         )
-        // promises = [{ride1 : {model}, waitTime : {waitTime}, weather : {weather}},
-        //             {ride2 : {model}, waitTime : {waitTime}, weather : {weather}},  .... ]
         .then(promises => {
           promises.forEach(promise => {
             promise.forEach(entryData => {
@@ -125,65 +117,12 @@ let helper = {
           });
         });
       });
-
-
-    // Park.fetchAll()
-    //   .then(arrayOfParkObjects => {
-    //     async.eachSeries(arrayOfParkObjects.models, parkObj => {
-    //       Weather.fetchAll({'location': parkObj.location})
-    //         .then(weatherModel => {
-    //           new Themeparks.Parks[parkObj.attributes.apiParkName]().GetWaitTimes()
-    //             .then(waitTimesArray => {
-    //               async.eachSeries(waitTimesArray, function(waitTimeObj) {
-    //                 Rides.fetchOne({'apiId': waitTimeObj.id})
-    //                 .then(rideModel => {
-    //                   helper.createNewWaitEntry(rideModel.attributes, waitTimeObj, weatherModel);
-    //                 })
-    //                 .catch(err => console.error(err));
-    //               });
-    //             });
-                  //
-                  // Promise.all(
-                  //   waitTimesArray.map(waitTimeObj => {
-                  //     //console.log(waitTimeObj);
-                  //     return new Promise((resolve, reject) => {
-                  //       Rides.fetchOne({'apiId': waitTimeObj.id})
-                  //       .then(rideModel => {
-                  //         resolve({
-                  //           'rideModel': rideModel.attributes,
-                  //           'waitTimeObj' : waitTimeObj
-                  //         });
-                  //       })
-                  //       .catch(err => reject(err));
-                  //     });
-                  //   })
-                  // )
-                  // .then(promiseArray => {
-                  //   promiseArray.forEach(promise => {
-                  //     console.log(promise);
-                  //     console.log(weatherModel);
-                  //     helper.createNewWaitEntry(promise.rideModel, promise.waitTimeObj, weatherModel);
-                  //   });
-                  // })
-                  // .catch(err => console.error(err));
-        //         });
-        //     });
-        // });
-      },
+  },
 
   createNewWaitEntry : (rideModel, waitTimeObj, weatherModel) => {
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('rideModel.attributes');
-    console.log(rideModel.attributes);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('waitTimeObj');
-    console.log(waitTimeObj);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('weatherModel');
-    console.log(weatherModel);
         return new RideWaitTime({
           rideId: rideModel.attributes.id,
-          waitTime: waitTimeObj.waitTime,
+          waitTime: waitTimeObj.active === true ? waitTimeObj.waitTime : null,
           status: waitTimeObj.status,
           isActive: waitTimeObj.active,
           temp: /*weatherModel.weather.currently.apparentTemperature ||*/ null,
@@ -192,8 +131,8 @@ let helper = {
           hour : moment().format('LT'),
         }).save()
         .then(newModel => {
-          // console.log('~~~~~~~~~~~~~~~~~~~~~~~');
-          // console.log('Stored new model: ', newModel);
+          console.log('~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log('Stored new model: ', newModel);
         })
         .catch(err => console.error(err));
   },
