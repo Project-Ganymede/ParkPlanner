@@ -10,7 +10,7 @@ let Ride = db.Model.extend({
 	park: () => this.belongsTo(Park),
 	rideWaitTime: () => this.belongsToMany(RideWaitTime),
 	initialize: () => {
-		this.date = moment().formate('L');
+		this.date = moment().format('L');
 		this.time = moment().format('LT');
 	},
 });
