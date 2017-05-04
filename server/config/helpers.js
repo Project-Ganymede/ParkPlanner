@@ -1,5 +1,6 @@
 const moment = require('moment');
 const Themeparks = require('themeparks');
+const async = require('async');
 
 const util = require('./utils');
 const Rides = require('../collections/rides');
@@ -8,7 +9,7 @@ const Parks = require('../collections/parks');
 const Park = require('../models/parkModel');
 const RideWaitTimes = require('../collections/rideWaitTimes');
 const RideWaitTime = require('../models/rideWaitTimeModel');
-const WeatherEntries = require('../collections/WeatherEntries');
+// const WeatherEntries = require('../collections/WeatherEntries');
 const Weather = require('../models/weatherModel');
 
 
@@ -70,36 +71,70 @@ let helper = {
     })
     .catch(err => console.error(err));
   },
-  
+
   getWaitTimes : () => {
-    Park.fetchAll()
-      .then(arrayOfParkObjects => {
-        arrayOfParkObjects.forEach(parkObj => {
-          Weather.fetch({'location': parkObj.location})
-            .then(weatherModel => {
-              new Themeparks.Parks[parkObj.apiParkName]().GetWaitTimes
-                .then(waitTimesArray => {
-                  waitTimesArray.forEach(waitTimeObj => {
-                    Ride.fetchOne({'apiId': waitTimeObj.id})
-                      .then(rideModel => {
-                        helper.createNewWaitEntry(rideModel, waitTimeObj, weatherModel);
-                      });
+    util.gatherParks()
+      .then(parks => {
+        Promise.all(
+          parks.map(park => {
+            return new Promise((resolve, reject) => {
+              util.gatherWeather(park.attributes.location)
+                .then(weather => {
+                  util.gatherWaitTimes(park.attributes.apiParkName)
+                  .then(waitTimes => {
+                        Promise.all(
+                          waitTimes.map(waitTimeObj => {
+                            return new Promise((resolve, reject) => {
+                              util.gatherRide(waitTimeObj.id)
+                                .then(ride => {
+                                  resolve({
+                                    'ride' : ride,
+                                    'waitTime' : waitTimeObj
+                                  });
+                                });
+                            });
+                          })
+                        )
+                        .then(promises => {
+                          resolve(
+                            promises.map(promise => {
+                              promise['weather'] = weather;
+                              return promise;
+                            })
+                          );
+                        })
+                        .catch(err => console.error(err));
                   });
                 });
             });
+          })
+        )
+        .then(promises => {
+          promises.forEach(promise => {
+            promise.forEach(entryData => {
+              helper.createNewWaitEntry(entryData.ride, entryData.waitTime, entryData.weather);
+            });
+          });
         });
       });
   },
 
   createNewWaitEntry : (rideModel, waitTimeObj, weatherModel) => {
         return new RideWaitTime({
-          rideId: rideModel.id,
-          waitTime: waitTimeObj.waitTime,
+          rideId: rideModel.attributes.id,
+          waitTime: waitTimeObj.active === true ? waitTimeObj.waitTime : null,
           status: waitTimeObj.status,
-          active: waitTimeObj.active,
-          temp: weatherModel.weather.currently.apparentTemperature || null,
-          precip: weatherModel.weather.currently.precipIntensity || null,
-        });
+          isActive: waitTimeObj.active,
+          temp: /*weatherModel.weather.currently.apparentTemperature ||*/ null,
+          precip: /*weatherModel.weather.currently.precipIntensity ||*/ null,
+          date : moment().format('L'),
+          hour : moment().format('LT'),
+        }).save()
+        .then(newModel => {
+          console.log('~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log('Stored new model: ', newModel);
+        })
+        .catch(err => console.error(err));
   },
 
   /*======================================

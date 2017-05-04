@@ -21,6 +21,6 @@ if(!module.parent) {
 
 // Testing helpers populate functions.
  //const help = require('./config/helpers');
- //help.populateParksTable();
+ //help.populateRidesTable();
 
 module.exports = app;
