@@ -21,10 +21,16 @@ angular.module('app.services', [])
     return $http({
       method: 'GET',
       url: '/rides',
-      data: { parkId: parkID }
+      headers: {
+        'parkId': parkID
+      },
     }).then(function (resp) {
+      console.log(resp.data)
       return resp.data;
-    });
+    })
+    .catch(err => {
+      console.err(err);
+    })
   };
   return {
     getParkRides: getParkRides
