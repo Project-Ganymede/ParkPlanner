@@ -59,46 +59,39 @@ let helper = {
   getWaitTimes : () => {
     util.gatherParks()
       .then(parks => {
-        Promise.all(
-          parks.map(park => {
-            return new Promise((resolve, reject) => {
-              util.gatherWeather(park.attributes.location)
-                .then(weather => {
-                  util.gatherWaitTimes(park.attributes.apiParkName)
-                  .then(waitTimes => {
-                        Promise.all(
-                          waitTimes.map(waitTimeObj => {
-                            return new Promise((resolve, reject) => {
-                              util.gatherRide(waitTimeObj.id)
-                                .then(ride => {
-                                  resolve({
-                                    'ride' : ride,
-                                    'waitTime' : waitTimeObj
-                                  });
-                                });
-                            });
-                          })
-                        )
-                        .then(promises => {
-                          resolve(
-                            promises.map(promise => {
-                              promise['weather'] = weather;
-                              return promise;
-                            })
-                          );
-                        })
-                        .catch(err => console.error(err));
-                  });
+        parks.forEach(park => {
+          util.gatherWeather(park.attributes.location)
+            .then(weather => {
+              util.gatherWaitTimes(park.attributes.apiParkName)
+              .then(waitTimes => {
+                waitTimes.forEach(waitTimeObj => {
+                  util.gatherRide(waitTimeObj.id)
+                    .then(ride => {
+                      helper.createNewWaitEntry(ride, waitTimeObj, weather);
+                    })
+                    .catch(err => {
+                      process.on('uncaughtException', function (err) {
+                        console.log(err);
+                      });
+                    });
                 });
+              })
+              .catch(err => {
+                process.on('uncaughtException', function (err) {
+                  console.log(err);
+                });
+              });
+            })
+            .catch(err => {
+              process.on('uncaughtException', function (err) {
+                console.log(err);
+              });
             });
-          })
-        )
-        .then(promises => {
-          promises.forEach(promise => {
-            promise.forEach(entryData => {
-              helper.createNewWaitEntry(entryData.ride, entryData.waitTime, entryData.weather);
-            });
-          });
+        });
+      })
+      .catch(err => {
+        process.on('uncaughtException', function (err) {
+          console.log(err);
         });
       });
   },
@@ -115,8 +108,7 @@ let helper = {
           hour : moment().format('LT'),
         }).save()
         .then(newModel => {
-          console.log('~~~~~~~~~~~~~~~~~~~~~~~');
-          console.log('Stored new model: ', newModel);
+          console.log('Stored new model: ', newModel.attributes);
         })
         .catch(err => console.error(err));
   },
