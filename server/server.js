@@ -28,6 +28,7 @@ if(!module.parent) {
  // let getCurrentPosition = function(position) {
  let data = require('../data/parkLocations');
 
+
  // data.forEach(loc => {
  // 	let long = loc.location.longitude;
  // 	let lat = loc.location.latitude;
