@@ -27,27 +27,14 @@ if(!module.parent) {
 
  // let getCurrentPosition = function(position) {
  let data = require('../data/parkLocations');
- console.log(data[1]);
- let latitude = data[1].location.latitude;
- let longitude = data[0].location.longitude;
 
- // app.get('/weather', function(request, response) {
- //  url: 'https://api.darksky.net/forecast/c2d6de716a385a456114233b74fe0d50/',
- //  data: JSON.stringify(location),
- //  contentType: 'application/json',
- //  success: function (data) {
-	//   console.log()
-
-	// response.JSON(data);
-	// }
- // });
  data.forEach(loc => {
  	let long = loc.location.longitude;
  	let lat = loc.location.latitude;
  	request(`https://api.darksky.net/forecast/c2d6de716a385a456114233b74fe0d50/${lat},${long}`, (err, res, body) => {
- 	console.error(err);
- 	console.log('BODY:', body);
- })
+ 		console.error(err);
+ 		console.log('BODY:', body);
+ 	})
  })
  // app.get('/weather', function(request, response) {
  // 	let coordinates = WeatherAPI.findWeather(temp);
