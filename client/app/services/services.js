@@ -17,6 +17,7 @@ angular.module('app.services', [])
   };
 })
 .factory('Rides', function ($http) {
+
   var getParkRides = function (parkID) {
     return $http({
       method: 'GET',

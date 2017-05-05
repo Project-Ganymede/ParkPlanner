@@ -1,3 +1,80 @@
-parks {
-  background: url('')
+#container {
+  margin-top: 25px;
+  margin-left: 5%;
+  width: 90%
+}
+
+.submit-button {
+  margin-top: 20px;
+  margin-left: 45%;
+  width: 10%;
+}
+
+button {
+  width: 100%;
+  font-size: 20px;
+}
+
+.gallery_product
+{
+    margin-top: 15px;
+}
+
+.gallery_product > div
+{
+    height: 200px;
+}
+
+
+
+.ride_name {
+  border-left: 10px;
+}
+
+.gallery-title
+{
+    font-size: 36px;
+    color: #42B32F;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 40px;
+}
+
+.gallery-title:after {
+    content: "";
+    position: absolute;
+    width: 70%;
+    left: 15%;
+    height: 45px;
+    border-bottom: 1px solid #5e5e5e;
+}
+
+.filter-button
+{
+    font-size: 18px;
+    border: 1px solid #d97a17;
+    border-radius: 5px;
+    text-align: center;
+    color: #d97a17;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    width: 30%;
+}
+
+.filter-button:hover
+{
+    font-size: 18px;
+    font-weight: 200 !important;
+    border: 1px solid #d97a17;
+    border-radius: 5px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #d97a17;
+
+}
+
+.btn-default:active .filter-button:active
+{
+    background-color: #d97a17;
+    color: white;
 }
