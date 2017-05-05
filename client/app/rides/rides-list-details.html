@@ -7,13 +7,12 @@
     <a href="#!/park/{{ parkId }}" class="btn btn-danger text-center">Add More Rides</a>
   </div>
   <!-- <div class="col-xs-offset-3 col-xs-6" ng-repeat="rideSelected in rideQueue" style="margin-top: 3%; border: 5px solid black; border-radius: 20px; background-image: linear-gradient(to right, #ffffff, #999999);"> -->
-  <div class="col-xs-offset-3 col-xs-6" ng-repeat="rideSelected in rideQueue" style="margin-top: 3%; border: 5px solid black; border-radius: 20px; background: #999999);">
+  <div class="col-xs-offset-3 col-xs-6" ng-repeat="rideSelected in rideQueue" style="margin-top: 3%; border: 5px solid black; border-radius: 20px; background: #999999);" ng-click="showDescription=!showDescription">
     <div class="col-xs-3" style="padding-right: 0; padding-left: 0">
       <div class="col-xs-12" style="padding-left: 0; padding-right: 0">
         <img ng-src="{{ rideSelected.image }}" class="img-thumbnail" style="margin-top: 3%; border: 0; padding: 0">
         <p class="h3 text-center">{{ rideSelected.rideName }}</p>
         <p class="h5 text-center">(Click for Details)</p>
-        {{rideSelected.description}}
       </div>
     </div>
     <div class="col-xs-9" style="padding-left: 0; padding-right: 0">
@@ -21,7 +20,8 @@
         <canvas id="line" class="chart chart-line" chart-data="rideSelected.data" chart-labels="labels" height="80" style="margin-top: 5%" chart-options="options" chart-colors="colors"></canvas>
       </div>
     </div>
-    <div class="col-xs-3">
+    <div class="col-xs-12" ng-show="showDescription">
+      <p>{{rideSelected.description}}</p>
     </div>
   </div>
 </div>

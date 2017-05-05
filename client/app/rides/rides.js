@@ -3,7 +3,9 @@ angular.module('app.rides', [])
 .controller('RidesController', function ($scope, $routeParams, $location, Rides) {
   Rides.getParkRides($routeParams.id).then(function(data) {
     $scope.rides = data;
-  })
+  });
+  $scope.showDescription = false;
+
   $scope.rideList = [];
 
   $scope.addRideToList = function (ride) {
