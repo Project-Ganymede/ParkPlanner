@@ -1,25 +1,15 @@
 angular.module('app.rides', [])
 
-<<<<<<< HEAD
 .controller('RidesController', function ($scope, $routeParams, $location, Rides) {
-=======
-.controller('RidesController', function ($scope, $routeParams, Rides) {
   Rides.getParkRides($routeParams.id).then(function(data) {
     $scope.rides = data;
   })
->>>>>>> Not allowing duplicates
   $scope.rideList = [];
 
   $scope.addRideToList = function (ride) {
-<<<<<<< HEAD
-
-    $scope.rideList.push(ride);
-    console.log('ridelist',$scope.rideList);
-=======
     if (!$scope.rideList.includes(ride)) {
       $scope.rideList.push(ride);
     }
->>>>>>> Not allowing duplicates
   };
 
   $scope.removeRideFromList = function (indexToRemove) {
