@@ -36,6 +36,7 @@ if(!module.parent) {
  		console.log('BODY:', body);
  	})
  })
+ //THIS IS A TEST
  // app.get('/weather', function(request, response) {
  // 	let coordinates = WeatherAPI.findWeather(temp);
  // 	Weather.location({})
