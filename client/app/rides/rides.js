@@ -1,17 +1,33 @@
 angular.module('app.rides', [])
 
 .controller('RidesController', function ($scope, $routeParams, Rides) {
-  Rides.getParkRides($routeParams.id).then(function(data) {
-    $scope.rides = data;
-  })
-  console.log('little string', $scope.rides);
+
   $scope.rideList = [];
+
   $scope.addRideToList = function (ride) {
+
     $scope.rideList.push(ride);
   };
+
   $scope.removeRideFromList = function (indexToRemove) {
     $scope.rideList.splice(indexToRemove,1);
   };
+
+  Rides.getParkRides($routeParams.id)
+    .then(function(data) {
+      let temp = data.map(rideObj => {
+        if(rideObj.rideName.length > 35) {
+          rideObj['displayName'] = rideObj.rideName.slice(0,35) + '...';
+          return rideObj;
+        } else {
+          rideObj['displayName'] = rideObj.rideName;
+          return rideObj;
+        }
+      });
+      console.log(temp);
+      $scope.rides = temp;
+    });
+
 
   //THE FOLLOWING CODE IS TO INITIALIZE RIDES AND PLOT
   //DATA FOR THE PURPOSE OF TESTING THE RIDES-LIST-VIEW
@@ -21,6 +37,7 @@ angular.module('app.rides', [])
   for (var i = 0; i < $scope.rideList.length; i++) {
     $scope.rideList[i].data = [65, 59, 80, 81, 56, 55, 40];
   }
+
   $scope.options = {
     scales: {
       yAxes: [{

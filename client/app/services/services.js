@@ -17,6 +17,7 @@ angular.module('app.services', [])
   };
 })
 .factory('Rides', function ($http) {
+
   var getParkRides = function (parkID) {
     return $http({
       method: 'GET',
@@ -25,13 +26,13 @@ angular.module('app.services', [])
         'parkId': parkID
       },
     }).then(function (resp) {
-      console.log(resp.data)
       return resp.data;
     })
     .catch(err => {
-      console.err(err);
-    })
+      console.error(err);
+    });
   };
+
   return {
     getParkRides: getParkRides
   };
