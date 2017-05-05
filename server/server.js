@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-
+const request = require('request');
 // CONFIGURATION ===========================================
 
 // configure our server with all the middleware and routing
@@ -36,6 +36,7 @@ if(!module.parent) {
  		console.log('BODY:', body);
  	})
  })
+ //THIS IS A TEST
  // app.get('/weather', function(request, response) {
  // 	let coordinates = WeatherAPI.findWeather(temp);
  // 	Weather.location({})
