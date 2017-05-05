@@ -44,8 +44,6 @@ module.exports = (app, express) => {
             ride.attributes.imageUrl = 'https://static-communitytable.parade.com/wp-content/uploads/2013/07/roller-coaster-ftr.jpg';
             ride.save();
           }
-
-
         })
       })
       res.send(rides);
@@ -57,20 +55,6 @@ module.exports = (app, express) => {
     });
   });
 
-<<<<<<< HEAD
-  // app.post('/rideList', (req, res) => {
-  //   app.get('/waitTimes', (req, res) => {
-  //     WaitTimes.fetch()
-  //     .then(times => {
-  //       res.status(200).send(times.model);
-  //     })
-  //     .catch(err => {
-  //       res.status(404).send(err);
-  //       console.error('GET Wait Time Error:', err);
-  //     });
-  //   });
-  // });
-=======
   app.post('/rideList', (req, res) => {
     app.get('/waitTimes', (req, res) => {
       WaitTimes.fetch().then(times => {
@@ -81,9 +65,8 @@ module.exports = (app, express) => {
       });
     });
   });
->>>>>>> images
 
-  app.get('/rideList', (req, res) => {
+  app.get('/test', (req, res) => {
     console.log(req.headers.rides);
     helpers.returnWaitTimes(req.headers.rides).then(data => {
       console.log(data);
