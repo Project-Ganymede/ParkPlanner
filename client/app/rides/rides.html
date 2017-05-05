@@ -21,6 +21,8 @@
   <div class="col-md-12" style="margin-top: 3%;">
     <div ng-repeat='ride in rides' class="col-md-3" style="margin: 2% 0;">
       <div class="col-md-12" ng-click="addRideToList(ride)">
+        <img src="{{ride.imageUrl}}" style="height: 200px; width: 200px;"/>
+
         <p>{{ ride.id + '-' + ride.rideName }}</p>
         <img ng-src="{{ ride.image }}" class="img-responsive img-rounded">
         <p style="margin-top: 2%;">{{ ride.opening_time }}</p>
