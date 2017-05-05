@@ -1,5 +1,6 @@
 const moment = require('moment');
 const Themeparks = require('themeparks');
+const async = require('async');
 
 const util = require('./utils');
 const Rides = require('../collections/rides');
@@ -11,7 +12,8 @@ const RideWaitTime = require('../models/rideWaitTimeModel');
 // const WeatherEntries = require('../collections/WeatherEntries');
 const Weather = require('../models/weatherModel');
 const request = require('request');
-const BING_API_KEY = require('./apiKey');
+const regex = require('regex');
+
 
 
 
@@ -176,44 +178,7 @@ let helper = {
             console.error(err);
           });
   },
-  // getRideImages : () => {
-  //   Ride.fetchAll()
-  //     .then(rides => {
-  //       rides.models.forEach(ride => {
-  //
-  //         let options = {
-  //           url: `https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${ride.attributes.rideName}&mkt=en-us&count=1`,
-  //           port: 3000,
-  //           headers: {
-  //             'Ocp-Apim-Subscription-Key': BING_API_KEY,
-  //             'content-type': 'application/json'
-  //           },
-  //           json: true
-  //         };
-  //         request(options, (err, res, body) => {
-  //           if(body) {
-  //           if (body.value) {
-  //             // console.log('Value', body.value[0].thumbnailUrl)
-  //             ride.attributes.imageUrl = body.value.thumbnailUrl;
-  //             ride.save();
-  //           } else if(body.queryExpansion) {
-  //             ride.attributes.imageUrl = body.queryExpansion[0].thumbnailUrl;
-  //             ride.save();
-  //           } else {
-  //             console.log(body);
-  //             ride.attributes.imageUrl = 'http://i.imgur.com/6qLHhrl.png';
-  //             ride.save();
-  //           }
-  //         } else {
-  //           // console.log('No Body');
-  //         }
-  //       })
-  //       })
-  //     })
-  //     .catch(err => {
-  //       console.log('Get Ride Images Error:', err);
-  //     });
-  //   },
+
   populateParksTable : () => {
     // ======================================
     // ======     ONLY RUN ONE TIME     =====
@@ -265,6 +230,39 @@ let helper = {
       .then(exists => !!exists)
       .catch(err => console.error(err));
   },
+
+  addRideDescriptions: () => {
+    console.log('ADDING RIDE DESCRIPTIONS');
+    Ride.fetchAll()
+      .then(rides => {
+        rides.forEach(ride => {
+          var options = {
+            url: `https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=explaintext&titles=${ride.attributes.rideName}&redirects=1`,
+            port: 3000,
+            json: true
+          };
+          request(options, (err, res, body) => {
+            if (body !== undefined && body.query !== undefined) {
+              for (var key in body.query.pages) {
+                var pageid = key;
+              }
+              var description = body.query.pages[pageid].extract;
+              if (description !== null && description !== undefined) {
+                description = description.replace(/<{1}[^<>]{1,}>{1}/g,"");
+                ride.attributes.description = description;
+                ride.save();
+              } else {
+                ride.attributes.description = 'No Description!';
+                ride.save();
+              }
+            } else {
+              ride.attributes.description = 'No Description!';
+              ride.save();
+            }
+          });
+        });
+    });
+  }
 };
 
 module.exports = helper;
