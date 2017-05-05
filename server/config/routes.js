@@ -43,12 +43,12 @@ module.exports = (app, express) => {
             ride.attributes.imageUrl = body.queryExpansions[0].thumbnail.thumbnailUrl;
             ride.save();
           } else {
-            ride.attributes.imageUrl = 'https://static-communitytable.parade.com/wp-content/uploads/2013/07/roller-coaster-ftr.jpg';
+            ride.attributes.imageUrl = 'http://i.imgur.com/6qLHhrl.png';
             ride.save();
           }
         })
       })
-      res.send(rides);
+      return rides;
     }).then(rides => {
       res.send(rides);
     }).catch(err => {
