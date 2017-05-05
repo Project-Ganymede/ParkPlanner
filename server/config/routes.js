@@ -8,6 +8,7 @@ const WaitTime = require('../models/rideWaitTimeModel.js');
 const helpers = require('./helpers');
 const request = require('request');
 const db = require('./config');
+const BING_API_KEY = require('./apiKey');
 module.exports = (app, express) => {
 
   app.get('/', (req, res) => {
@@ -26,11 +27,12 @@ module.exports = (app, express) => {
   app.get('/rides', (req, res) => {
     Ride.where({parkId: req.headers.parkid}).fetchAll().then(rides => {
       rides.forEach(ride => {
+        // Set Headers for Bing API
         let options = {
           url: `https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${ride.attributes.rideName}&mkt=en-us&count=1`,
           port: 3000,
           headers: {
-            'Ocp-Apim-Subscription-Key': 'eb1beb0cc2ed4250b08068220954be33',
+            'Ocp-Apim-Subscription-Key': BING_API_KEY,
             'content-type': 'application/json'
           },
           json: true
