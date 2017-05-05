@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-
+const request = require('request');
 // CONFIGURATION ===========================================
 
 // configure our server with all the middleware and routing
