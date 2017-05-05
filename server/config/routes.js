@@ -81,4 +81,10 @@ module.exports = (app, express) => {
 
     });
   });
+
+  app.post('/test', (req, res) => {
+    console.log('get post to test');
+    helpers.addRideDescriptions();
+  });
+
 };

@@ -11,6 +11,8 @@ const RideWaitTimes = require('../collections/rideWaitTimes');
 const RideWaitTime = require('../models/rideWaitTimeModel');
 // const WeatherEntries = require('../collections/WeatherEntries');
 const Weather = require('../models/weatherModel');
+const request = require('request');
+const regex = require('regex');
 
 
 
@@ -228,6 +230,39 @@ let helper = {
       .then(exists => !!exists)
       .catch(err => console.error(err));
   },
+
+  addRideDescriptions: () => {
+    console.log('ADDING RIDE DESCRIPTIONS');
+    Ride.fetchAll()
+      .then(rides => {
+        rides.forEach(ride => {
+          var options = {
+            url: `https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=explaintext&titles=${ride.attributes.rideName}&redirects=1`,
+            port: 3000,
+            json: true
+          };
+          request(options, (err, res, body) => {
+            if (body !== undefined && body.query !== undefined) {
+              for (var key in body.query.pages) {
+                var pageid = key;
+              }
+              var description = body.query.pages[pageid].extract;
+              if (description !== null && description !== undefined) {
+                description = description.replace(/<{1}[^<>]{1,}>{1}/g,"");
+                ride.attributes.description = description;
+                ride.save();
+              } else {
+                ride.attributes.description = 'No Description!';
+                ride.save();
+              }
+            } else {
+              ride.attributes.description = 'No Description!';
+              ride.save();
+            }
+          });
+        });
+    });
+  }
 };
 
 module.exports = helper;
