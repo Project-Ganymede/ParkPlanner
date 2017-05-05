@@ -7,7 +7,7 @@ const WaitTimes = require('../collections/rideWaitTimes.js');
 const WaitTime = require('../models/rideWaitTimeModel.js');
 const helpers = require('./helpers');
 const request = require('request');
-
+const db = require('./config');
 module.exports = (app, express) => {
 
   app.get('/', (req, res) => {
@@ -15,28 +15,43 @@ module.exports = (app, express) => {
   });
 
   app.get('/parks', (req, res) => {
-    Parks.fetch()
-    .then(parks => {
+    Parks.fetch().then(parks => {
       res.status(200).send(parks.models);
-    })
-    .catch(err => {
+    }).catch(err => {
       res.status(404).send(err);
       console.error('GET Parks Error:', err);
     });
   });
 
   app.get('/rides', (req, res) => {
-    console.log(req.headers.parkid);
-    Ride.where({parkId: req.headers.parkid}).fetchAll()
-    .then(rides => {
+    Ride.where({parkId: req.headers.parkid}).fetchAll().then(rides => {
       rides.forEach(ride => {
-        request(`http://en.wikipedia.org/w/api.php?action=query&titles=${ride.attributes.rideName}&prop=images&format=json&indexpageids`, (err, res, body) => {
-          console.log('error', err);
+        let options = {
+          url: `https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${ride.attributes.rideName}&mkt=en-us&count=1`,
+          port: 3000,
+          headers: {
+            'Ocp-Apim-Subscription-Key': 'eb1beb0cc2ed4250b08068220954be33',
+            'content-type': 'application/json'
+          },
+          json: true
+        };
+        request(options, (err, res, body) => {
+          if (body.queryExpansions !== undefined) {
+            //console.log(body.queryExpansions[0].thumbnail.thumbnailUrl)
+            ride.attributes.imageUrl = body.queryExpansions[0].thumbnail.thumbnailUrl;
+            ride.save();
+          } else {
+            ride.attributes.imageUrl = 'https://static-communitytable.parade.com/wp-content/uploads/2013/07/roller-coaster-ftr.jpg';
+            ride.save();
+          }
+
+
         })
       })
-      res.status(200).send(rides.models);
-    })
-    .catch(err => {
+      res.send(rides);
+    }).then(rides => {
+      res.send(rides);
+    }).catch(err => {
       res.status(404).send(err);
       console.error('GET Rides Error:', err);
     });
@@ -57,15 +72,13 @@ module.exports = (app, express) => {
 
   app.get('/rideList', (req, res) => {
     console.log(req.headers.rides);
-    helpers.returnWaitTimes(req.headers.rides)
-      .then(data => {
-        console.log(data);
-        res.status(200).send(data);
-      })
-      .catch(err => {
-        res.status(404).send(err);
-        console.error('GET Rides Error:', err);
+    helpers.returnWaitTimes(req.headers.rides).then(data => {
+      console.log(data);
+      res.status(200).send(data);
+    }).catch(err => {
+      res.status(404).send(err);
+      console.error('GET Rides Error:', err);
 
-      });
+    });
   });
 };
