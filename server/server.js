@@ -32,8 +32,7 @@ if(!module.parent) {
  	let long = loc.location.longitude;
  	let lat = loc.location.latitude;
  	request(`https://api.darksky.net/forecast/c2d6de716a385a456114233b74fe0d50/${lat},${long}`, (err, res, body) => {
- 		console.error(err);
- 		console.log('BODY:', body);
+
  	})
  })
  //THIS IS A TEST
