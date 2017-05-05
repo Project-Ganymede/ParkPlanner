@@ -3,7 +3,7 @@ const helpers = require('../server/config/helpers');
 const Rides = require('../server/collections/rides');
 
 var job = new CronJob({
-  cronTime: '00 */15 6-20 * * *',
+  cronTime: '00 */15 * * * *',
   onTick: function() {
     /*
      * Runs every weekday (Monday through Friday)

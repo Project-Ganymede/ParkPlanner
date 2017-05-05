@@ -17,7 +17,7 @@ module.exports = {
   reduceTimeData : modelArray => {
     /* accepts arrays of RideWaitTimes table models */
     return modelArray.reduce((acc, model, index) => {
-      let atts = model.attributes
+      let atts = model.attributes;
       if(atts.isActive) {
         if(acc[atts.hour]) {
           acc[atts.hour].push(atts.waitTime);
