@@ -47,6 +47,6 @@ if(!module.parent) {
  // });
 
 
- const db = require('../config/config');
+ const db = require('./config/config');
 
 module.exports = app;
