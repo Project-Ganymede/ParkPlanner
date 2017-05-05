@@ -44,8 +44,6 @@ module.exports = (app, express) => {
             ride.attributes.imageUrl = 'https://static-communitytable.parade.com/wp-content/uploads/2013/07/roller-coaster-ftr.jpg';
             ride.save();
           }
-
-
         })
       })
       res.send(rides);
