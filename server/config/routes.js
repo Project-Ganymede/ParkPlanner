@@ -26,30 +26,31 @@ module.exports = (app, express) => {
 
   app.get('/rides', (req, res) => {
     Ride.where({parkId: req.headers.parkid}).fetchAll().then(rides => {
-      rides.forEach(ride => {
-        // Set Headers for Bing API
-        let options = {
-          url: `https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${ride.attributes.rideName}&mkt=en-us&count=1`,
-          port: 3000,
-          headers: {
-            'Ocp-Apim-Subscription-Key': BING_API_KEY,
-            'content-type': 'application/json'
-          },
-          json: true
-        };
-        request(options, (err, res, body) => {
-          if (body.queryExpansions !== undefined) {
-            //console.log(body.queryExpansions[0].thumbnail.thumbnailUrl)
-            ride.attributes.imageUrl = body.queryExpansions[0].thumbnail.thumbnailUrl;
-            ride.save();
-          } else {
-            ride.attributes.imageUrl = 'http://i.imgur.com/6qLHhrl.png';
-            ride.save();
-          }
-        })
-      })
-      return rides;
-    }).then(rides => {
+      // rides.models.forEach(ride => {
+      //   // Set Headers for Bing API
+      //   let options = {
+      //     url: `https://api.cognitive.microsoft.com/bing/v5.0/images/search?q=${ride.attributes.rideName}&mkt=en-us&count=1`,
+      //     port: 3000,
+      //     headers: {
+      //       'Ocp-Apim-Subscription-Key': BING_API_KEY,
+      //       'content-type': 'application/json'
+      //     },
+      //     json: true
+      //   };
+      //   request(options, (err, res, body) => {
+      //     if(body.value) {
+      //       ride.attributes.imageUrl = body.value[0].thumbnailUrl;
+      //       ride.save();
+      //     } else if (body.queryExpansions) {
+      //       //console.log(body.queryExpansions[0].thumbnail.thumbnailUrl)
+      //       ride.attributes.imageUrl = body.queryExpansions[0].thumbnail.thumbnailUrl;
+      //       ride.save();
+      //     } else {
+      //       ride.attributes.imageUrl = 'http://i.imgur.com/6qLHhrl.png';
+      //     }
+      //   })
+      // })
+      // return rides;
       res.send(rides);
     }).catch(err => {
       res.status(404).send(err);
