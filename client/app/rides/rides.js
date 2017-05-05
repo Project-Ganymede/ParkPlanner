@@ -1,6 +1,8 @@
 angular.module('app.rides', [])
 
 .controller('RidesController', function ($scope, $routeParams, $location, Rides) {
+  $scope.showDescription = false;
+
   $scope.rideList = [];
 
   $scope.addRideToList = function (ride) {
