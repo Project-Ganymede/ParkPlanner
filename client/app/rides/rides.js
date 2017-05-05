@@ -4,10 +4,11 @@ angular.module('app.rides', [])
   Rides.getParkRides($routeParams.id).then(function(data) {
     $scope.rides = data;
   })
-  console.log('little string', $scope.rides);
   $scope.rideList = [];
   $scope.addRideToList = function (ride) {
-    $scope.rideList.push(ride);
+    if (!$scope.rideList.includes(ride)) {
+      $scope.rideList.push(ride);
+    }
   };
   $scope.removeRideFromList = function (indexToRemove) {
     $scope.rideList.splice(indexToRemove,1);
