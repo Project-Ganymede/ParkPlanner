@@ -42,20 +42,20 @@ module.exports = (app, express) => {
     });
   });
 
-  app.post('/rideList', (req, res) => {
-    app.get('/waitTimes', (req, res) => {
-      WaitTimes.fetch()
-      .then(times => {
-        res.status(200).send(times.model);
-      })
-      .catch(err => {
-        res.status(404).send(err);
-        console.error('GET Wait Time Error:', err);
-      });
-    });
-  });
+  // app.post('/rideList', (req, res) => {
+  //   app.get('/waitTimes', (req, res) => {
+  //     WaitTimes.fetch()
+  //     .then(times => {
+  //       res.status(200).send(times.model);
+  //     })
+  //     .catch(err => {
+  //       res.status(404).send(err);
+  //       console.error('GET Wait Time Error:', err);
+  //     });
+  //   });
+  // });
 
-  app.get('/test', (req, res) => {
+  app.get('/rideList', (req, res) => {
     console.log(req.headers.rides);
     helpers.returnWaitTimes(req.headers.rides)
       .then(data => {
