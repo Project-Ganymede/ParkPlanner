@@ -51,7 +51,14 @@ module.exports = (app, express) => {
       //   })
       // })
       // return rides;
-      res.send(rides);
+      Park.where({id: req.headers.parkid}).fetch().then(parks => {
+        chosenPark = parks.attributes.parkName;
+      })
+      rides.forEach(ride => {
+        ride.attributes.parkName = chosenPark;
+        ride.save();
+      })
+        res.send(rides);
     }).catch(err => {
       res.status(404).send(err);
       console.error('GET Rides Error:', err);
