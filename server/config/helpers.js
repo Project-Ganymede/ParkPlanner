@@ -11,17 +11,20 @@ const RideWaitTimes = require('../collections/rideWaitTimes');
 const RideWaitTime = require('../models/rideWaitTimeModel');
 // const WeatherEntries = require('../collections/WeatherEntries');
 const Weather = require('../models/weatherModel');
-
+let data = require('../../data/parkLocations');
+const request = require('request');
+const express = require('express');
+const app = express();
 
 
 
 // Helper Functions
 
 
-let helper = {
+let helpers = {
 
   returnWaitTimes : rideIdList => {
-    
+
     return Promise.all(eval(rideIdList).map(rideId => {
       return new Promise((resolve, reject) => {
           RideWaitTime.where({'rideId' : rideId}).fetchAll()
@@ -228,6 +231,30 @@ let helper = {
       .then(exists => !!exists)
       .catch(err => console.error(err));
   },
+
+
+  getWeather : () => {
+    data.forEach(loc => {
+      let long = loc.location.longitude;
+      let lat = loc.location.latitude;
+      request(`https://api.darksky.net/forecast/aa3cddeea13fba1dc59180cfbbd62dbc/${lat},${long}`, (err, res, body) => {
+        if(err) {
+          console.error(err);
+        } else {
+          console.log('~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log('Precip:', body);
+          console.log('temp:', body.currently.temperature);
+        }
+      })
+    })
+  }
+
+
+
+
+
+
+
 };
 
-module.exports = helper;
+module.exports = helpers;

@@ -55,6 +55,11 @@ module.exports = (app, express) => {
   //   });
   // });
 
+  app.get('/test', (req, res) => {
+    helpers.getWeather();
+    res.render('index.html');
+  })
+
   app.get('/rideList', (req, res) => {
     console.log(req.headers.rides);
     helpers.returnWaitTimes(req.headers.rides)

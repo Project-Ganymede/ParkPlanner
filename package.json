@@ -19,10 +19,6 @@
   "dependencies": {
     "angular": "^1.6.4",
     "angular-chart.js": "^1.1.1",
-<<<<<<< HEAD
-=======
-    "async": "^2.4.0",
->>>>>>> v1.0/test/entering_waitTime_data
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "bookshelf": "^0.10.3",
