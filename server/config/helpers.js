@@ -45,13 +45,14 @@ let helper = {
     .then(rideInfoArray => {
       // Should return an array of objs: [{rideData: {}, timeData: []}]
       return  rideInfoArray.map(rideObj => {
-        let timeArr = [];
+        let timeObj = {};
+        console.log(rideObj);
         Object.keys(rideObj.timeData).sort().forEach( key => {
           let waitTotal = rideObj.timeData[key].reduce((acc, item) =>  acc + item);
           let waitAvg = waitTotal / rideObj.timeData[key].length;
-          timeArr.push(waitAvg);
+          timeObj[key] = waitAvg;
         });
-        rideObj.timeData = timeArr;
+        rideObj.timeData = timeObj;
         return rideObj;
       });
     })
