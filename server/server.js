@@ -26,26 +26,32 @@ if(!module.parent) {
  // Weather API
 
  // let getCurrentPosition = function(position) {
- let data = require('../data/parkLocations');
 
- data.forEach(loc => {
- 	let long = loc.location.longitude;
- 	let lat = loc.location.latitude;
- 	request(`https://api.darksky.net/forecast/c2d6de716a385a456114233b74fe0d50/${lat},${long}`, (err, res, body) => {
+ // let data = require('../data/parkLocations');
 
- 	})
- })
- //THIS IS A TEST
- // app.get('/weather', function(request, response) {
- // 	let coordinates = WeatherAPI.findWeather(temp);
- // 	Weather.location({})
- // 	 .then(function(results) {
- // 	 	console.log(results)
- // 	 	response.send(results);
- // 	 });
- // });
+ // data.forEach(loc => {
+ // 	let long = loc.location.longitude;
+ // 	let lat = loc.location.latitude;
+ // 	request(`https://api.darksky.net/forecast/c2d6de716a385a456114233b74fe0d50/${lat},${long}`, (err, res, body) => {
+ // 		console.error(err);
+ // 		console.log('BODY:', body);
+ // 	})
+ // })
+ // //THIS IS A TEST
+ // // app.get('/weather', function(request, response) {
+ // // 	let coordinates = WeatherAPI.findWeather(temp);
+ // // 	Weather.location({})
+ // // 	 .then(function(results) {
+ // // 	 	console.log(results)
+ // // 	 	response.send(results);
+ // // 	 });
+ // // });
+ //
+ //
+ // const db = require('./config/config');
+<<<<<<< HEAD
 
-
- const db = require('./config/config');
+=======
+>>>>>>> 7735d37bd0b7e80c643f00cb764600d024ee284f
 
 module.exports = app;
