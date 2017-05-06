@@ -1,31 +1,34 @@
-<div id='container'>
+<div id="container">
+  <div class="top">
+    <div class="gallery col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <h1 class="gallery-title">Select your rides for the day</h1>
+    </div>
+    <div class="searchbar input-group input-group-lg">
+      <span class=" side-span input-group-addon"><span class="glyphicon glyphicon-search"></span> </span>
+      <input type="text" class='form-control' ng-model="search" placeholder="Filter rides...">
+    </div>
+
+    <div align="center">
+       <button ng-repeat='rideSelected in rideList'
+               ng-click="removeRideFromList($index)"
+               class="btn btn-default filter-button">
+          {{rideSelected.displayName}}
+        </button>
+    </div>
+
+    <div class="submit-button">
+      <button ng-click="setRideQueueAndParkIdAndChangePage()">Submit</button>
+    </div>
+  </div>
+
   <div class="col-md-12">
-    <div class="col-md-offset-2 col-md-8">
-      <div class="input-group">
-        <input type="text" class="form-control" ng-model="search" placeholder="Filter">
-        <span class="input-group-addon">
-          <i class="glyphicon glyphicon-search"></i>
-        </span>
-      </div>
-      <button class="btn btn-success text-center" ng-click="setRideQueueAndParkIdAndChangePage()">Get Ride Info!</button>
-    </div>
-  </div>
-  <div class="col-md-12" style="margin-top: 3%;">
-    <div class="col-md-1"></div>
-    <div ng-repeat='rideSelected in rideList' class="col-md-2" style="margin: 2% 0">
-      <div class="col-md-12" ng-click="removeRideFromList($index)">
-        <p class="text-center">{{ rideSelected.id + '-' + rideSelected.rideName }}</p>
-        <img ng-src="{{ rideSelected.image }}" class="img-circle img-thumbnail">
-      </div>
-    </div>
-  </div>
-  <div class="col-md-12" style="margin-top: 3%;">
-    <div ng-repeat='ride in rides' class="col-md-3" style="margin: 2% 0;">
-      <div class="col-md-12" ng-click="addRideToList(ride)">
-        <p>{{ ride.id + '-' + ride.rideName }}</p>
-        <img ng-src="{{ ride.image }}" class="img-responsive img-rounded">
-        <p style="margin-top: 2%;">{{ ride.opening_time }}</p>
-        <p>{{ ride.closing_time }}</p>
+    <div ng-repeat='ride in rides | filter:search' class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6">
+      <div class="col-md-12" ng-click="addRideToList(ride)"
+      ng-style="rideList.includes(ride) ? {'background-image': 'linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 100%), url({{ride.imageUrl}})'} : {'background-image': 'linear-gradient(to bottom, rgba(0,0,0,.3) 0%,rgba(0,0,0,.3) 100%), url({{ride.imageUrl}})'}"
+      >
+
+        <h3>{{ride.displayName}}</h3>
+        <!-- <img src='{{ride.imageUrl}}' class="img-responsive img-rounded" style='height: 150px; width: 100%;' ng-class="rideList.includes(ride) ? 'img-responsive img-rounded selected' : 'img-responsive img-rounded'"> -->
       </div>
     </div>
   </div>

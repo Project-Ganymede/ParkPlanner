@@ -24,7 +24,6 @@ const app = express();
 let helpers = {
 
   returnWaitTimes : rideIdList => {
-
     return Promise.all(eval(rideIdList).map(rideId => {
       return new Promise((resolve, reject) => {
           RideWaitTime.where({'rideId' : rideId}).fetchAll()
@@ -46,13 +45,14 @@ let helpers = {
     .then(rideInfoArray => {
       // Should return an array of objs: [{rideData: {}, timeData: []}]
       return  rideInfoArray.map(rideObj => {
-        let timeArr = [];
+        let timeObj = {};
+        console.log(rideObj);
         Object.keys(rideObj.timeData).sort().forEach( key => {
           let waitTotal = rideObj.timeData[key].reduce((acc, item) =>  acc + item);
           let waitAvg = waitTotal / rideObj.timeData[key].length;
-          timeArr.push(waitAvg);
+          timeObj[key] = waitAvg;
         });
-        rideObj.timeData = timeArr;
+        rideObj.timeData = timeObj;
         return rideObj;
       });
     })
@@ -62,46 +62,39 @@ let helpers = {
   getWaitTimes : () => {
     util.gatherParks()
       .then(parks => {
-        Promise.all(
-          parks.map(park => {
-            return new Promise((resolve, reject) => {
-              util.gatherWeather(park.attributes.location)
-                .then(weather => {
-                  util.gatherWaitTimes(park.attributes.apiParkName)
-                  .then(waitTimes => {
-                        Promise.all(
-                          waitTimes.map(waitTimeObj => {
-                            return new Promise((resolve, reject) => {
-                              util.gatherRide(waitTimeObj.id)
-                                .then(ride => {
-                                  resolve({
-                                    'ride' : ride,
-                                    'waitTime' : waitTimeObj
-                                  });
-                                });
-                            });
-                          })
-                        )
-                        .then(promises => {
-                          resolve(
-                            promises.map(promise => {
-                              promise['weather'] = weather;
-                              return promise;
-                            })
-                          );
-                        })
-                        .catch(err => console.error(err));
-                  });
+        parks.forEach(park => {
+          util.gatherWeather(park.attributes.location)
+            .then(weather => {
+              util.gatherWaitTimes(park.attributes.apiParkName)
+              .then(waitTimes => {
+                waitTimes.forEach(waitTimeObj => {
+                  util.gatherRide(waitTimeObj.id)
+                    .then(ride => {
+                      helper.createNewWaitEntry(ride, waitTimeObj, weather);
+                    })
+                    .catch(err => {
+                      process.on('uncaughtException', function (err) {
+                        console.log(err);
+                      });
+                    });
                 });
+              })
+              .catch(err => {
+                process.on('uncaughtException', function (err) {
+                  console.log(err);
+                });
+              });
+            })
+            .catch(err => {
+              process.on('uncaughtException', function (err) {
+                console.log(err);
+              });
             });
-          })
-        )
-        .then(promises => {
-          promises.forEach(promise => {
-            promise.forEach(entryData => {
-              helper.createNewWaitEntry(entryData.ride, entryData.waitTime, entryData.weather);
-            });
-          });
+        });
+      })
+      .catch(err => {
+        process.on('uncaughtException', function (err) {
+          console.log(err);
         });
       });
   },
@@ -109,7 +102,7 @@ let helpers = {
   createNewWaitEntry : (rideModel, waitTimeObj, weatherModel) => {
         return new RideWaitTime({
           rideId: rideModel.attributes.id,
-          waitTime: waitTimeObj.active === true ? waitTimeObj.waitTime : null,
+          waitTime: waitTimeObj.waitTime,
           status: waitTimeObj.status,
           isActive: waitTimeObj.active,
           temp: /*weatherModel.weather.currently.apparentTemperature ||*/ null,
@@ -118,12 +111,33 @@ let helpers = {
           hour : moment().format('LT'),
         }).save()
         .then(newModel => {
-          console.log('~~~~~~~~~~~~~~~~~~~~~~~');
-          console.log('Stored new model: ', newModel);
+          console.log('Stored new model: ', newModel.attributes);
         })
         .catch(err => console.error(err));
   },
 
+  optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
+    helpers.returnWaitTimes(rideIdList)
+      .then(rideInfoList => {
+        let possibilities = [];
+        util.optimize(rideInfoList, route, time);
+        // scan possibilities for shortest queue
+        let shortest;
+        possibilities.forEach(possibility => {
+          if(shortest === undefined) {
+            shortest = possibility;
+          } else {
+            if(possibility.time.total < shortest.time.total) {
+              shortest = possibility;
+            }
+          }
+        });
+        let results = shortest.route.map(ride => {
+          return ride.rideData;
+        });
+        return results;
+      });
+  },
   /*======================================
     ======     POPULATION HELPERS    =====
     The functions below serve only to populate
@@ -232,7 +246,6 @@ let helpers = {
       .catch(err => console.error(err));
   },
 
-
   getWeather : () => {
     data.forEach(loc => {
       let long = loc.location.longitude;
@@ -298,6 +311,39 @@ let helpers = {
         }
       })
     })
+  },
+  
+  addRideDescriptions: () => {
+    console.log('ADDING RIDE DESCRIPTIONS');
+    Ride.fetchAll()
+      .then(rides => {
+        rides.forEach(ride => {
+          var options = {
+            url: `https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=explaintext&titles=${ride.attributes.rideName}&redirects=1`,
+            port: 3000,
+            json: true
+          };
+          request(options, (err, res, body) => {
+            if (body !== undefined && body.query !== undefined) {
+              for (var key in body.query.pages) {
+                var pageid = key;
+              }
+              var description = body.query.pages[pageid].extract;
+              if (description !== null && description !== undefined) {
+                description = description.replace(/<{1}[^<>]{1,}>{1}/g,"");
+                ride.attributes.description = description;
+                ride.save();
+              } else {
+                ride.attributes.description = 'No Description!';
+                ride.save();
+              }
+            } else {
+              ride.attributes.description = 'No Description!';
+              ride.save();
+            }
+          });
+        });
+      });
   }
 };
 

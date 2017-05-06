@@ -1,35 +1,15 @@
-<div id="container">
-  <div class="col-xs-12">
-    <h1>Park Planner</h1>
-  </div>
-  <div class="col-xs-5"></div>
-    <div class="dropdown col-xs-2" style="text-align: center">
-      <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Select a Park
-      <span class="caret"></span></button>
-      <ul class="dropdown-menu centered" role="menu" aria-labelledby="menu1">
-        <li ng-repeat="park in data.parks" role="presentation"><a role="menuitem" tabindex="-1" ng-href="#!/park/{{ park.id }}">{{park.parkName}}</a></li>
-      </ul>
+<div id="home-container">
+  <div class="layer">
+    <div class="col-xs-12 title">
+      <h1>Park Planner</h1>
     </div>
-  <div class="col-xs-5"></div>
+    <div class="col-xs-5"></div>
+      <div class="dropdown col-xs-2" style="text-align: center">
+        <button class="btn btn-default btn-lg dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Select a Park</button>
+        <ul class="dropdown-menu centered scrollable-menu" role="menu" aria-labelledby="menu1">
+          <li ng-repeat="park in data.parks" role="presentation"><a role="menuitem" tabindex="-1" ng-href="#!/park/{{ park.id }}">{{park.parkName}}</a></li>
+        </ul>
+      </div>
+    <div class="col-xs-5"></div>
+  </div>
 </div>
-<style>
-  body {
-    background-image: url("assets/images/theme-park.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
-  }
-  h1 {
-    color: white;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-size: 10em;
-    font-weight: bold;
-    letter-spacing: -1px;
-    line-height: 1;
-    text-align: center;
-    max-width: 50%;
-    margin-left: auto;
-    margin-right: auto
-  }
-</style>
