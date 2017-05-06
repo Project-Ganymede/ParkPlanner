@@ -51,8 +51,10 @@ let utils = {
   },
 
   gatherWeather : location => {
-    return Weather.where({'location' : location}).fetch()
-      .then(model => model);
+    return Weather.where({'location' : JSON.stringify(location)}).fetch()
+      .then(weather => {
+        return weather;
+      });
   },
 
   gatherWaitTimes : parkName => {

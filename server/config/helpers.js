@@ -11,16 +11,17 @@ const RideWaitTimes = require('../collections/rideWaitTimes');
 const RideWaitTime = require('../models/rideWaitTimeModel');
 // const WeatherEntries = require('../collections/WeatherEntries');
 const Weather = require('../models/weatherModel');
+let data = require('../../data/parkLocations');
 const request = require('request');
-const regex = require('regex');
-
+const express = require('express');
+const app = express();
 
 
 
 // Helper Functions
 
 
-let helper = {
+let helpers = {
 
   returnWaitTimes : rideIdList => {
     return Promise.all(eval(rideIdList).map(rideId => {
@@ -245,6 +246,73 @@ let helper = {
       .catch(err => console.error(err));
   },
 
+  getWeather : () => {
+    data.forEach(loc => {
+      let long = loc.location.longitude;
+      let lat = loc.location.latitude;
+      request(`https://api.darksky.net/forecast/aa3cddeea13fba1dc59180cfbbd62dbc/${lat},${long}`, (err, res, body) => {
+        if(err) {
+          console.error(err);
+        } else {
+          console.log('~~~~~~~~~~~~~~~~~~~~~~~');
+          console.log('Precip:', body);
+          console.log('temp:', body.currently.temperature);
+        }
+      })
+    })
+  },
+
+  createWeatherEntry: (loc, weatherObj) => {
+    return new Weather({
+      location : JSON.stringify(loc),
+      weatherObj : JSON.stringify(weatherObj)
+    }).save()
+    .then( weatherEntry => {
+      console.log(weatherEntry);
+    })
+    .catch( err => {
+      console.error(err);
+    });
+  },
+
+  updateWeatherEntry: (loc, weatherObj) => {
+    return new Weather({
+      location : JSON.stringify(loc),
+      weatherObj : JSON.stringify(weatherObj)
+    }).save()
+    .then( weatherEntry => {
+      console.log(weatherEntry);
+    })
+    .catch( err => {
+      console.error(err);
+    });
+  },
+
+  getCurrentPosition: () => {
+    let data = require('../data/parkLocations');
+
+    data.forEach(loc => {
+      let long = loc.location.longitude;
+      let lat = loc.location.latitude;
+      request(`https://api.darksky.net/forecast/aa3cddeea13fba1dc59180cfbbd62dbc/${lat},${long}`, (err, res, body) => {
+        if (err) console.error(err);
+        else {
+          util.gatherWeather({latitude: lat, longitude: long}).then( weather => {
+            console.log(weather);
+            if (weather) {
+              console.log('it exists');
+              weather.attributes.weatherObj = JSON.stringify({precipIntensity: JSON.parse(body).currently.precipIntensity, temperature: JSON.parse(body).currently.temperature});
+              weather.save();
+            } else {
+              console.log('it does not exists');
+              helper.createWeatherEntry({latitude: lat, longitude: long}, {precipIntensity: JSON.parse(body).currently.precipIntensity, temperature: JSON.parse(body).currently.temperature});
+            }
+          })
+        }
+      })
+    })
+  },
+  
   addRideDescriptions: () => {
     console.log('ADDING RIDE DESCRIPTIONS');
     Ride.fetchAll()
@@ -275,8 +343,8 @@ let helper = {
             }
           });
         });
-    });
+      });
   }
 };
 
-module.exports = helper;
+module.exports = helpers;
