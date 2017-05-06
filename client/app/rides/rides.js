@@ -11,7 +11,16 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
       $scope.rideList.push(ride);
     }
   };
-
+  $scope.isChosen = function(ride) {
+    if (!$scope.rideList.includes(ride)) {
+      $scope.rideList.push(ride);
+    } else {
+      $scope.rideList.splice($scope.rideList.indexOf(ride), 1);
+    }
+  };
+  $scope.inQueue = function(ride) {
+    return $scope.rideList.includes(ride);
+  };
   $scope.removeRideFromList = function(indexToRemove) {
     $scope.rideList.splice(indexToRemove, 1);
   };

@@ -88,30 +88,32 @@ button {
 .filter-button
 {
     font-size: 24px !important;
-    border: 1px solid #d97a17;
+    border: 1px solid #FC8000;
     border-radius: 5px;
     text-align: center;
-    color: #d97a17;
+    color: #FC8000;
     margin-top: 15px;
     margin-bottom: 10px;
     width: 30%;
+    background-color: rgba(0, 0, 0, 0);
+    text-shadow: -0.75px 0 black, 0 0.75px black, 0.75px 0 black, 0 -0.75px black;
 }
 
 .filter-button:hover
 {
     font-size: 18px;
     font-weight: 200 !important;
-    border: 1px solid #d97a17;
+    border: 1px solid #FC8000;
     border-radius: 5px;
     text-align: center;
     color: #ffffff;
-    background-color: #d97a17;
+    background-color: #FC8000;
 
 }
 
 .btn-default:active .filter-button:active
 {
-    background-color: #d97a17;
+    background-color: #FC8000;
     color: white;
 }
 
