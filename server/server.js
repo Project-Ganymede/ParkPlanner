@@ -26,8 +26,8 @@ if(!module.parent) {
  // Weather API
 
  // let getCurrentPosition = function(position) {
- // let data = require('../data/parkLocations');
 
+ // let data = require('../data/parkLocations');
 
  // data.forEach(loc => {
  // 	let long = loc.location.longitude;
@@ -49,6 +49,9 @@ if(!module.parent) {
  //
  //
  // const db = require('./config/config');
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7735d37bd0b7e80c643f00cb764600d024ee284f
 
 module.exports = app;
