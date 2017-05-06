@@ -15,11 +15,13 @@
           <p class="h5 text-center">(Click for Details)</p>
         </div>
         <div class="col-xs-9 waitData">
-            <canvas id="line" class="chart chart-line" chart-data="times" chart-labels="labels" style="margin-top: 5%;" chart-options="options" chart-colors="colors"></canvas>
+            <canvas id="line" class="chart chart-line" chart-data="rideSelected.data" chart-labels="labels" style="margin-top: 5%;" chart-options="options" chart-colors="colors"></canvas>
         </div>
       </div>
       <div class="col-xs-12 face back">
-        {{rideSelected.description}}
+        <p class="descText">
+          {{rideSelected.description}}
+        </p>
       </div>
     </div>
 </div>
@@ -31,9 +33,14 @@
     background-position: center center;
     background-attachment: fixed;
     text-align: center;
+    background-image: url("../assets/images/theme-park.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
   }
   h1 {
-    color: black;
+    color: white;
     font-family: 'Helvetica Neue', sans-serif;
     font-size: 10em;
     font-weight: bold;
@@ -49,15 +56,20 @@
   vertical-align: middle;
 }
 .flip .card.flipped {
-  -webkit-transform: rotatex(-180deg);
+  -webkit-transform: rotateY(-180deg);
 }
 .flip .card {
   margin-top: 3%;
-  border: 5px solid black;
+  border: 1px solid black;
   border-radius: 20px;
   width: 600px;
   -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
   -webkit-transition: 0.5s;
+  word-wrap: break-word;
 }
 .flip .card .face {
   position: relative;
@@ -71,19 +83,26 @@
 }
 .flip .card .back {
   position: absolute;
-  display: flex;
-  justify-content: center;
-  top: 100%;
+  top: 0;
   left: 0;
-  bottom: 0;
   right: 0;
-  -webkit-transform: rotatex(-180deg);
+  transform: translateY(50%);
+  -webkit-transform: rotateY(180deg);
     color: black;
     font-size: 16px;
     cursor: pointer;
-    z-index: 2;
+}
+.back:before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
 }
 .waitData {
   width: 550px;
+}
+.descText {
+  display: inline-block;
+  vertical-align: middle;
 }
 </style>
