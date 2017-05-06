@@ -23,7 +23,6 @@ const regex = require('regex');
 let helper = {
 
   returnWaitTimes : rideIdList => {
-
     return Promise.all(eval(rideIdList).map(rideId => {
       return new Promise((resolve, reject) => {
           RideWaitTime.where({'rideId' : rideId}).fetchAll()
@@ -116,6 +115,28 @@ let helper = {
         .catch(err => console.error(err));
   },
 
+  optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
+    helpers.returnWaitTimes(rideIdList)
+      .then(rideInfoList => {
+        let possibilities = [];
+        util.optimize(rideInfoList, route, time);
+        // scan possibilities for shortest queue
+        let shortest;
+        possibilities.forEach(possibility => {
+          if(shortest === undefined) {
+            shortest = possibility;
+          } else {
+            if(possibility.time.total < shortest.time.total) {
+              shortest = possibility;
+            }
+          }
+        });
+        let results = shortest.route.map(ride => {
+          return ride.rideData;
+        });
+        return results;
+      });
+  }
   /*======================================
     ======     POPULATION HELPERS    =====
     The functions below serve only to populate
