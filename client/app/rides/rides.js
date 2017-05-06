@@ -48,10 +48,10 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
   //DATA FOR THE PURPOSE OF TESTING THE RIDES-LIST-VIEW
   // $scope.rideQueue = [{name: 'Space Mountain', image: 'https://secure.parksandresorts.wdpromedia.com/resize/mwImage/1/630/354/75/wdpromedia.disney.go.com/media/wdpro-assets/parks-and-tickets/attractions/magic-kingdom/space-mountain/space-mountain-00.jpg?18072014133917'}, {name: 'Thunder Mountain Railroad', image: 'https://secure.parksandresorts.wdpromedia.com/resize/mwImage/1/630/354/75/wdpromedia.disney.go.com/media/wdpro-assets/parks-and-tickets/attractions/magic-kingdom/big-thunder-mountain-railroad/big-thunder-mountain-railroad-00.jpg?17072014165020'}];
   // $scope.data = [10, 20, 10, 20, 10, 20, 10];
-  $scope.labels = [];
   $scope.getTimes = function(ridesArr) {
     Rides.getTimes(ridesArr).then(function(data) {
       for (var i = 0; i < $scope.rideQueue.length; i++) {
+        $scope.labels = [];
         $scope.times = [];
         for (var key in data[i].timeData) {
           $scope.labels.push(key);
@@ -68,6 +68,7 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
         // $scope.rideQueue[i].times = Object.keys(data[i].timeData);
 
         $scope.rideQueue[i].data = $scope.times;
+        $scope.rideQueue[i].labels = $scope.labels;
       }
     });
   };
