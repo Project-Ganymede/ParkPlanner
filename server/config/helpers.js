@@ -136,7 +136,7 @@ let helper = {
         });
         return results;
       });
-  }
+  },
   /*======================================
     ======     POPULATION HELPERS    =====
     The functions below serve only to populate
