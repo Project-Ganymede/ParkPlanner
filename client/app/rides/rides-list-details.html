@@ -1,30 +1,34 @@
 <div id="container" style="text-align: center">
-  <div class="col-xs-12" style="margin-top: 3%;">
-      <h1 class="text-center">Your Rides</h1>
-  </div>
-  <div class="col-xs-5"></div>
-  <div class="col-xs-2" style="text-align: center">
-    <a href="#!/park/{{ parkId }}" class="btn btn-danger text-center">Add More Rides</a>
-  </div>
-  <!-- <div class="col-xs-offset-3 col-xs-6" ng-repeat="rideSelected in rideQueue" style="margin-top: 3%; border: 5px solid black; border-radius: 20px; background-image: linear-gradient(to right, #ffffff, #999999);"> -->
-  <div class="flip">
-    <div class="col-xs-offset-3 col-xs-6 card" ng-class="{'flipped':isFlipped}" ng-click="isFlipped=!isFlipped" ng-repeat="rideSelected in rideQueue">
-      <div class="col-xs-3 face front">
-        <div class="col-xs-12">
-          <p class="h3 text-center">{{ rideSelected.rideName }}</p>
-          <p class="h5 text-center">(Click for Details)</p>
-        </div>
-        <div class="col-xs-9 waitData">
-            <canvas id="line" class="chart chart-line" chart-data="rideSelected.data" chart-labels="rideSelected.labels" style="margin-top: 5%;" chart-options="options" chart-colors="colors"></canvas>
-        </div>
-      </div>
-      <div class="col-xs-12 face back">
-        <p class="descText">
-          {{rideSelected.description}}
-        </p>
-      </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top: 3%;">
+        <h1 class="text-center">Your Rides</h1>
     </div>
+    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5"></div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" style="text-align: center">
+      <a href="#!/park/{{ parkId }}" class="btn btn-danger text-center">Add More Rides</a>
+    </div>
+    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5"></div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center" ng-repeat="rideSelected in rideQueue">
+      <div class="flip">
+        <div class="card centered col-xs-offset-3 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 col-xl-offset-3 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" ng-class="{'flipped':isFlipped}" ng-click="isFlipped=!isFlipped" style="padding-left: 0">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 face front" style="margin-right: 0">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <p class="h3 text-center">{{ rideSelected.rideName }}</p>
+              <p class="h5 text-center">(Click for Details)</p>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 waitData">
+                <canvas id="line" class="chart chart-line" chart-data="rideSelected.data" chart-labels="rideSelected.labels" style="margin-top: 5%;" chart-options="options" chart-colors="colors"></canvas>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 face back">
+            <p class="descText">
+              {{rideSelected.description}}
+            </p>
+          </div>
+        </div>
+    </div>
+  </div>
 </div>
+
 
 <style>
   body {
@@ -57,48 +61,55 @@
   vertical-align: middle;
 }
 .flip .card.flipped {
-  -webkit-transform: rotateY(-180deg);
+  transform: rotatey(-180deg);
+  -moz-transform: rotatey(-180deg);
+  -webkit-transform: rotatey(-180deg);
 }
 .flip .card {
   margin-top: 3%;
   border: 1px solid black;
   border-radius: 20px;
   width: 600px;
+  perspective: 800;
+  -moz-perspective: 800;
+  -webkit-perspective: 800;
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   -ms-transform-style: preserve-3d;
   -o-transform-style: preserve-3d;
   transform-style: preserve-3d;
   -webkit-transition: 0.5s;
-  word-wrap: break-word;
 }
 .flip .card .face {
   position: relative;
   width: 600px;
+  backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  z-index: 2;
 }
-.flip .card .front {
-  z-index: 1;
+.front {
     cursor: pointer;
+    display: block;
 }
-.flip .card .back {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+
+.flipped .front {
+  display: none;
+}
+
+.back {
+  background: 'white';
+  color: black;
   transform: translateY(50%);
   -webkit-transform: rotateY(180deg);
-    color: black;
     font-size: 16px;
     cursor: pointer;
+    display: none;
 }
-.back:before {
-  content: '';
-  display: inline-block;
-  vertical-align: middle;
-  height: 100%;
+
+.flipped .back {
+  display: block;
 }
+
 .waitData {
   width: 550px;
 }
@@ -106,4 +117,63 @@
   display: inline-block;
   vertical-align: middle;
 }
+
+/*old code*/
+/*.flip {
+-webkit-perspective: 800;
+vertical-align: middle;
+}
+.flip .card.flipped {
+-webkit-transform: rotateY(-180deg);
+}
+.flip .card {
+margin-top: 3%;
+border: 1px solid black;
+border-radius: 20px;
+width: 600px;
+-webkit-transform-style: preserve-3d;
+-moz-transform-style: preserve-3d;
+-ms-transform-style: preserve-3d;
+-o-transform-style: preserve-3d;
+transform-style: preserve-3d;
+-webkit-transition: 0.5s;
+word-wrap: break-word;
+}
+.flip .card .face {
+position: relative;
+width: 600px;
+-webkit-backface-visibility: hidden;
+z-index: 2;
+}
+.flip .card .front {
+z-index: 1;
+  cursor: pointer;
+  display: block;
+}
+.flip .card .back {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+transform: translateY(50%);
+-webkit-transform: rotateY(180deg);
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+}
+.back:before {
+content: '';
+display: inline-block;
+vertical-align: middle;
+height: 100%;
+}
+
+.waitData {
+width: 550px;
+}
+.descText {
+display: inline-block;
+vertical-align: middle;
+}*/
 </style>
