@@ -27,14 +27,6 @@ module.exports = grunt => {
       }
     },
 
-    eslint: {
-      target: [
-        'Gruntfile.js',
-        'client/**/*.js',
-        'server/**/*.js',
-        'workers/**/*.js'
-      ]
-    },
 
     watch: {
       scripts: {
@@ -58,7 +50,6 @@ module.exports = grunt => {
   ////////////////////////////////////////
 
   grunt.registerTask('build', [
-    'eslint',
     'concat',
     'uglify'
   ]);
