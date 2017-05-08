@@ -15,7 +15,7 @@ A data driven app to optimize your theme-park experience. Utilizing IMB Watson a
 
 ## Tech Stack
 
-![AngularJS](/images/2017/05/angularjs.png)
+![AngularJS](https://code-maven.com/img/angularjs.png)
 ![ExpressJS & NodeJS](/images/2017/05/express-js.jpg)
 ![MySQL](/images/2017/05/serveimage.png)
 ![Bookshelf](/images/2017/05/4448260.png)
