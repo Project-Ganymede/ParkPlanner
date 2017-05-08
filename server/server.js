@@ -2,9 +2,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const request = require('request');
-const util = require('./config/utils');
-const helper = require('./config/helpers');
+
 // CONFIGURATION ===========================================
 
 // configure our server with all the middleware and routing
@@ -20,9 +18,5 @@ if(!module.parent) {
   app.listen(port);
   console.log('Listening on:', port);
 }
-
-// Testing helpers populate functions.
- //const help = require('./config/helpers');
- //help.populateRidesTable();
 
 module.exports = app;

@@ -2,33 +2,25 @@ const CronJob = require('cron').CronJob;
 const helpers = require('../server/config/helpers');
 const Rides = require('../server/collections/rides');
 
-var job = new CronJob({
+var waitTimeJob = new CronJob({
   cronTime: '00 */15 * * * *',
   onTick: function() {
-    /*
-     * Runs every weekday (Monday through Friday)
-     * at 11:30:00 AM. It does not run on Saturday
-     * or Sunday.
-     */
-     helpers.getWaitTimes();
-     console.log('CronJob Tick...');
+    // Runs every 15 minutes on the minute.
+    helpers.getWaitTimes();
+    console.log('getWaitTime CronJob Tick...');
   },
   start: true,
   timeZone: 'America/Los_Angeles'
 });
-job.start();
+waitTimeJob.start();
 
 
 var weatherJob = new CronJob({
   cronTime: '0 0 */2 * * *',
   onTick: function() {
-    /*
-     * Runs every weekday (Monday through Friday)
-     * at 11:30:00 AM. It does not run on Saturday
-     * or Sunday.
-     */
-     helpers.getCurrentWeather();
-     console.log('Weather CronJob Tick...');
+    // Runs every other hour on the hour
+    helpers.getWeatherAtPosition();
+    console.log('getCurrentWeather CronJob Tick...');
   },
   start: true,
   timeZone: 'America/Los_Angeles'

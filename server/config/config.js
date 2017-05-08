@@ -23,19 +23,7 @@ db.knex.schema.hasTable('parks').then((exists) => {
         park.date('created_at');
         park.date('updated_at');
         park.bool('hasFastPass');
-
-        //park.date('updated_at');
-        // API references parks by name
-        // park.integer('api_code').notNullable();
-
-        // API includes Company in name
-        // park.string('company_name', 100).notNullable();
-
-        /* This park's location as a "GeoLocation" object. Inputs will need to be stringified from
-        // API call before construction of new park and JSON.parsed when used.
-        // See GeoLocation Docs for available methods/properties) */
-        park.json('location');
-
+        park.json('location'); //This park's location as a "GeoLocation" object
       }).then((table) => {
         console.log('Created "parks" Table', table);
       });
