@@ -59,6 +59,9 @@
   .flip {
   -webkit-perspective: 800;
   vertical-align: middle;
+  position: relative;
+  margin: 0 auto;
+  width: 1000px;
 }
 .flip .card.flipped {
   transform: rotatey(-180deg);
@@ -78,7 +81,7 @@
   -ms-transform-style: preserve-3d;
   -o-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-transition: 0.5s;
+  -webkit-transition: 1s;
 }
 .flip .card .face {
   position: relative;
@@ -129,62 +132,4 @@
 .waitTimeButton {
   word-wrap: break-word;
 }
-/*old code*/
-/*.flip {
--webkit-perspective: 800;
-vertical-align: middle;
-}
-.flip .card.flipped {
--webkit-transform: rotateY(-180deg);
-}
-.flip .card {
-margin-top: 3%;
-border: 1px solid black;
-border-radius: 20px;
-width: 600px;
--webkit-transform-style: preserve-3d;
--moz-transform-style: preserve-3d;
--ms-transform-style: preserve-3d;
--o-transform-style: preserve-3d;
-transform-style: preserve-3d;
--webkit-transition: 0.5s;
-word-wrap: break-word;
-}
-.flip .card .face {
-position: relative;
-width: 600px;
--webkit-backface-visibility: hidden;
-z-index: 2;
-}
-.flip .card .front {
-z-index: 1;
-  cursor: pointer;
-  display: block;
-}
-.flip .card .back {
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-transform: translateY(50%);
--webkit-transform: rotateY(180deg);
-  color: black;
-  font-size: 16px;
-  cursor: pointer;
-  display: block;
-}
-.back:before {
-content: '';
-display: inline-block;
-vertical-align: middle;
-height: 100%;
-}
-
-.waitData {
-width: 550px;
-}
-.descText {
-display: inline-block;
-vertical-align: middle;
-}*/
 </style>
