@@ -100,18 +100,20 @@ let helpers = {
   },
 
   createNewWaitEntry : (rideModel, waitTimeObj, weatherModel) => {
-        Park.where({'id' : rideModel.parkId}).fetch()
-          .then(parkModel => {
-            Weather.where({'location' : parkModel.attributes.location}).fetch()
-            .then(model => {
-              console.log(model);
+    // Commented out code is close to functional. Could not finish implementing weather due to code free.
+
+        // Park.where({'id' : rideModel.parkId}).fetch()
+        //   .then(parkModel => {
+        //     Weather.where({'location' : parkModel.attributes.location}).fetch()
+        //     .then(model => {
+        //       console.log(model);
               return new RideWaitTime({
                 rideId: rideModel.attributes.id,
                 waitTime: waitTimeObj.waitTime,
                 status: waitTimeObj.status,
                 isActive: waitTimeObj.active,
-                temp: JSON.parse(model.attributes.weatherObj).temperature || null,
-                precip: JSON.parse(model.attributes.weatherObj).precipIntensity || null,
+                temp: /*JSON.parse(model.attributes.weatherObj).temperature ||*/ null,
+                precip: /*JSON.parse(model.attributes.weatherObj).precipIntensity ||*/ null,
                 date : moment().format('L'),
                 hour : moment().format('LT'),
               }).save()
@@ -120,10 +122,10 @@ let helpers = {
               })
               .catch(err => console.error(err));
 
-            })
-            .catch(err => console.log(err));
-          })
-          .catch(err => console.log(err));
+          //   })
+          //   .catch(err => console.log(err));
+          // })
+          // .catch(err => console.log(err));
   },
 
   optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
