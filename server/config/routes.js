@@ -6,7 +6,6 @@ const Ride = require('../models/rideModel.js');
 const helpers = require('./helpers');
 const BING_API_KEY = require('./apiKey');
 
-
 module.exports = (app, express) => {
 
   app.get('/', (req, res) => {
