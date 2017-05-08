@@ -78,8 +78,6 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
         $scope.labels = [];
         $scope.times = [];
         for (var key in data[i].timeData) {
-          // $scope.labels.push(key);
-          console.log(data[i].timeData);
           var hour = key.slice(0, 2);
           if (hour === '10' || hour === '11') {
             var newKey = key.replace('P', 'A');
@@ -91,7 +89,6 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
             $scope.times.push(data[i].timeData[newKey]);
           } else {
             $scope.labels.push(key);
-            console.log(key);
             $scope.times.push(data[i].timeData[key]);
           }
         }
