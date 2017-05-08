@@ -19,7 +19,7 @@ var weatherJob = new CronJob({
   cronTime: '0 0 */2 * * *',
   onTick: function() {
     // Runs every other hour on the hour
-    helpers.getWeatherAtPosition();
+    helpers.getCurrentWeather();
     console.log('getCurrentWeather CronJob Tick...');
   },
   start: true,
