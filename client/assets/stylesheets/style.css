@@ -1,0 +1,226 @@
+#home-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-image: url("../images/theme-park.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+.layer {
+    background-color: rgba(0 , 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+.title {
+  margin-top: 120px;
+  margin-bottom: 50px;
+}
+
+
+.title > h1 {
+  color: white;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 10em;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-align: center;
+  max-width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 300px;
+    overflow-x: hidden;
+    left: 50% !important;
+    right: auto !important;
+    text-align: center !important;
+    transform: translate(-50%, 0) !important;
+}
+
+#container {
+  margin-top: 25px;
+  margin-left: 5%;
+  width: 90%;
+}
+
+
+
+.submit-button {
+  margin-top: 20px;
+  margin-left: 45%;
+  width: 10%;
+}
+
+button {
+  width: 100%;
+  font-size: 20px;
+}
+
+.gallery-title
+{
+    font-size: 36px;
+    color: #42B32F;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 40px;
+}
+
+.gallery-title:after {
+    content: "";
+    position: absolute;
+    width: 70%;
+    left: 15%;
+    height: 45px;
+    border-bottom: 1px solid #5e5e5e;
+}
+
+.filter-button
+{
+    font-size: 24px !important;
+    border: 1px solid #FC8000 !important;
+    border-radius: 5px;
+    margin: 15px 2.5px 10px 2.5px;
+    text-align: center;
+    color: #FC8000;
+    width: auto;
+    background-color: rgba(0, 0, 0, 0);
+    text-shadow: -0.75px 0 black, 0 0.75px black, 0.75px 0 black, 0 -0.75px black;
+}
+
+.filter-button:hover
+{
+    font-size: 24px;
+    border: 1px solid #FC8000;
+    border-radius: 5px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #FC8000;
+    margin: 15px 2.5px 10px 2.5px;
+
+}
+
+.btn-default:active .filter-button:active
+{
+    background-color: #FC8000;
+    color: white;
+}
+
+
+.gallery_product
+{
+  margin-top: 15px;
+}
+
+.gallery_product > div
+{
+  height: 200px;
+  border-radius: 10px;
+
+  background-size: cover;
+
+}
+
+.gallery_product > div > h3 {
+  color: white;
+  position: absolute;
+  bottom: 15px;
+  left: 0px;
+  right: 0px;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  text-align: center;
+}
+
+
+.ride_name {
+  border-left: 10px;
+}
+.selected {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+}
+
+.multi-column-list {
+  columns: 6;
+  -webkit-columns: 6;
+  -moz-columns: 6;
+}
+
+.multi-column-list > li > a {
+  color: white;
+}
+.searchSpan {
+  width: 10% !important;
+}
+.userInput {
+  width: 50% !important;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.parkList {
+  margin-top: 15px;
+  border: 1px solid #26B5EB;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+.parkList > ul {
+  margin: 5px;
+}
+.parkList > ul > li {
+  white-space: pre-line;
+  break-inside: avoid-column;
+  margin: 0 5px 15px 5px;
+  font-size: 16px;
+}
+.parkList > ul > li > a {
+  text-decoration: none;
+}
+.parkList > ul > li:hover a {
+  color: #FC8000;
+  text-shadow: none !important;
+}
+.switch-parks {
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+.switch-parks > button {
+  background-color: #26B5EB;
+  font-size: 18px;
+  margin-top: 15px;
+  width: 50%;
+  left: 50%;
+  transform: translateX(50%);
+}
+
+.getWaitTimesButton {
+  border: 2px solid #28A745 !important;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 18px !important;
+  color: white;
+  border-radius: 5px;
+  white-space: nowrap;
+  width: auto;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.getWaitTimesButton:hover {
+  background-color: #28A745;
+  color: white;
+}

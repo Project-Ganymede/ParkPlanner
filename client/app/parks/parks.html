@@ -1,0 +1,18 @@
+<div id="home-container">
+  <div class="layer">
+    <div class="col-xs-12 title">
+      <h1>Park Planner</h1>
+    </div>
+    
+    <div class="col-xs-5"></div>
+      <div class="dropdown col-xs-2" style="text-align: center">
+        <button class="btn btn-default btn-lg dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+          Select a Park
+        </button>
+        <ul class="dropdown-menu centered scrollable-menu" role="menu" aria-labelledby="menu1">
+          <li ng-repeat="park in data.parks" role="presentation"><a role="menuitem" tabindex="-1" ng-href="#!/park/{{ park.id }}">{{park.parkName}}</a></li>
+        </ul>
+      </div>
+    <div class="col-xs-5"></div>
+  </div>
+</div>
