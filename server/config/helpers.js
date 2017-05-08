@@ -116,7 +116,7 @@ let helpers = {
                 precip: /*JSON.parse(model.attributes.weatherObj).precipIntensity ||*/ null,
                 temp: JSON.parse(model.attributes.weatherObj).temperature || null,
                 precip: JSON.parse(model.attributes.weatherObj).precipIntensity || null,
-          //   })
+             })
           //   .catch(err => console.log(err));
           // })
           // .catch(err => console.log(err));

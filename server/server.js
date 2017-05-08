@@ -1,3 +1,7 @@
+// modules ================================================
+require('dotenv').config();
+const express = require('express');
+const app = express();
 // CONFIGURATION ===========================================
 
 // configure our server with all the middleware and routing
