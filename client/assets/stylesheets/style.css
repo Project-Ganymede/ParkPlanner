@@ -94,7 +94,7 @@ button {
     color: #FC8000;
     margin-top: 15px;
     margin-bottom: 10px;
-    width: 30%;
+    width: auto;
     background-color: rgba(0, 0, 0, 0);
     text-shadow: -0.75px 0 black, 0 0.75px black, 0.75px 0 black, 0 -0.75px black;
 }
