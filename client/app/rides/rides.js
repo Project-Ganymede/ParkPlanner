@@ -76,30 +76,23 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
       for (var i = 0; i < $scope.rideQueue.length; i++) {
         $scope.labels = [];
         $scope.times = [];
+        var tempArr = [];
+
         for (var key in data[i].timeData) {
-          var hour = key.slice(0, 2);
-          if (hour === '10' || hour === '11') {
-            var newKey = key.replace('P', 'A');
-            $scope.labels.push(newKey);
-            $scope.times.push(data[i].timeData[newKey]);
-          } else if (hour === '12') {
-            var newKey = key.replace('A', 'P');
-            $scope.labels.push(newKey);
-            $scope.times.push(data[i].timeData[newKey]);
-          } else {
-            $scope.labels.push(key);
-            $scope.times.push(data[i].timeData[key]);
-          }
+          tempArr.push([key, data[i].timeData[key]]);
         }
-        $scope.labels = $scope.labels.sort(function(a, b) {
-          return new Date('1970/01/01 ' + a) - new Date('1970/01/01 ' + b);
-        });
-        $scope.times = $scope.times.sort(function(a, b) {
-          return new Date('1970/01/01 ' + a) - new Date('1970/01/01 ' + b);
+
+        tempArr.sort(function(a, b) {
+          return new Date('1970/01/01 ' + a[0]) - new Date('1970/01/01 ' + b[0]);
         });
 
-        // $scope.rideQueue[i].data = data[i].timeData[i];
-        // $scope.rideQueue[i].times = Object.keys(data[i].timeData);
+        for (var j = 0; j < tempArr.length; j++) {
+          $scope.labels.push(tempArr[j][0]);
+          $scope.times.push(tempArr[j][1]);
+        }
+
+        console.log('scope.labels',$scope.labels);
+        console.log('scope.times',$scope.times);
 
         $scope.rideQueue[i].data = $scope.times;
         $scope.rideQueue[i].labels = $scope.labels;

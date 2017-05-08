@@ -312,7 +312,7 @@ let helpers = {
       })
     })
   },
-  
+
   addRideDescriptions: () => {
     console.log('ADDING RIDE DESCRIPTIONS');
     Ride.fetchAll()
