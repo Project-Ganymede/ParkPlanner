@@ -11,7 +11,7 @@
     </div>
 
     <div class="switch-parks">
-      <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Switch Parks?</button>
+      <button class="btn btn-info" data-toggle="collapse" data-target="#demo">Select a Different Themepark</button>
       <div id="demo" class="collapse">
           <ul class="multi-column-list" style="list-style-type:none">
               <li ng-repeat="park in parks"><a ng-href="#!/park/{{ park.id }}">{{park.parkName}}</a></li>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="submit-button">
-      <button ng-click="setRideQueueAndParkIdAndChangePage()">Submit</button>
+      <button class="btn getWaitTimesButton" ng-click="setRideQueueAndParkIdAndChangePage()">Get Wait Times!</button>
     </div>
   </div>
 

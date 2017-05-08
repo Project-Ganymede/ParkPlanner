@@ -165,6 +165,29 @@ button {
   color: white;
 }
 
+.switch-parks {
+  font-size: 18px;
+}
+
 .switch-parks > button {
-  margin-top: 1%;
+  background-color: #26B5EB;
+  font-size: 18px;
+}
+
+.getWaitTimesButton {
+  border: 2px solid #28A745 !important;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 18px !important;
+  color: white;
+  border-radius: 5px;
+  white-space: nowrap;
+  width: auto;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.getWaitTimesButton:hover {
+  background-color: #28A745;
+  color: white;
 }
