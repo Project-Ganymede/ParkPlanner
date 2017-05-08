@@ -9,9 +9,9 @@ A data driven app to optimize your theme-park experience. Utilizing IMB Watson a
 - See the average wait time for almost any ride of one of the supported themeparks!
 - Get descriptions of any ride straight from Wikipedia!
 
-![](/images/2017/05/Screen Shot 2017-05-08 at 3.48.54 PM.png)
-![](/images/2017/05/Screen Shot 2017-05-08 at 3.51.00 PM.png)
-![](/images/2017/05/Screen Shot 2017-05-08 at 3.51.35 PM.png)
+![](http://i.imgur.com/PfnmteT.jpg)
+![](http://i.imgur.com/7zKgzlj.jpg)
+![](http://i.imgur.com/Ktg2vkh.png)
 
 ## Tech Stack
 
