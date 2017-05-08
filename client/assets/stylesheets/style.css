@@ -33,9 +33,6 @@
   letter-spacing: -1px;
   line-height: 1;
   text-align: center;
-  max-width: 50%;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .scrollable-menu {
@@ -47,7 +44,18 @@
     text-align: center !important;
     transform: translate(-50%, 0) !important;
 }
-
+.dropdownDiv {
+  position: relative;
+  width: 100%;
+}
+.dropdownMenu {
+  max-width: 300px;
+  height: 5vh;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
 #container {
   margin-top: 25px;
   margin-left: 5%;
@@ -167,9 +175,8 @@ button {
   width: 10% !important;
 }
 .userInput {
-  width: 50% !important;
-  left: 50%;
-  transform: translateX(-50%);
+  min-width: 50% !important;
+  margin: 0 auto;
 }
 .parkList {
   margin-top: 15px;
@@ -196,15 +203,16 @@ button {
 .switch-parks {
   font-size: 18px;
   vertical-align: middle;
+  width: 100%;
 }
 
 .switch-parks > button {
   background-color: #26B5EB;
   font-size: 18px;
   margin-top: 15px;
-  width: 50%;
-  left: 50%;
-  transform: translateX(50%);
+  max-width: auto;
+  min-width: 50%;
+
 }
 
 .getWaitTimesButton {

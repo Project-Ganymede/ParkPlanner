@@ -7,11 +7,11 @@
 
     <div class="searchbar input-group input-group-lg userInput">
       <span class="searchSpan side-span input-group-addon"><span class="glyphicon glyphicon-search"></span> </span>
-      <input type="text" class='form-control' ng-model="search" placeholder="Filter rides...">
+      <input type="text" class='form-control searchBar' ng-model="search" placeholder="Filter rides...">
     </div>
 
     <div class="switch-parks">
-      <button class="btn btn-info" data-toggle="collapse" data-target="#demo">Select a Different Themepark</button>
+      <button class="btn btn-info changePark" data-toggle="collapse" data-target="#demo">Select a Different Themepark</button>
       <div id="demo" class="collapse parkList">
           <ul class="multi-column-list" style="list-style-type:none">
               <li ng-repeat="park in parks"><a ng-href="#!/park/{{ park.id }}">{{park.parkName}}</a></li>
@@ -49,7 +49,7 @@
     width: 100%;
     height: 100%;
     background: url('../assets/images/blue.jpg') center center fixed;
-    background-repeat: repeat;
+    background-repeat: repeat-y;
     text-shadow: -0.75px 0 black, 0 0.75px black, 0.75px 0 black, 0 -0.75px black;
   }
 </style>
