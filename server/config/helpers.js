@@ -114,14 +114,8 @@ let helpers = {
                 isActive: waitTimeObj.active,
                 temp: /*JSON.parse(model.attributes.weatherObj).temperature ||*/ null,
                 precip: /*JSON.parse(model.attributes.weatherObj).precipIntensity ||*/ null,
-                date : moment().format('L'),
-                hour : moment().format('LT'),
-              }).save()
-              .then(newModel => {
-                console.log('Stored new model: ', newModel.attributes);
-              })
-              .catch(err => console.error(err));
-
+                temp: JSON.parse(model.attributes.weatherObj).temperature || null,
+                precip: JSON.parse(model.attributes.weatherObj).precipIntensity || null,
           //   })
           //   .catch(err => console.log(err));
           // })
