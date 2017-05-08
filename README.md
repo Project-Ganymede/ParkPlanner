@@ -15,14 +15,14 @@ A data driven app to optimize your theme-park experience. Utilizing IMB Watson a
 
 ## Tech Stack
 
-![AngularJS](https://code-maven.com/img/angularjs.png)
-![NodeJS](https://raygun.com/blog/wp-content/uploads/2016/05/nodejs-logo.png)
-![ExpressJS](http://mean.io/wp-content/themes/twentysixteen-child/images/express.png)
+![AngularJS](http://d3gnp09177mxuh.cloudfront.net/tech-page-images/angularjs.png)
+![NodeJS](http://d3gnp09177mxuh.cloudfront.net/tech-page-images/nodejs.png)
+![ExpressJS](http://www.madisonabshire.com/img/tech-svg/Express.png)
 ![MySQL](https://www.electricmonk.nl/log/wp-content/uploads/2016/11/serveimage.png)
 ![Bookshelf](https://avatars3.githubusercontent.com/u/4448260?v=3&s=200)
 ![KnexJS](http://knexjs.org/assets/images/knex.png)
-![jQuery](http://www.milspecweb.com/img/jquery.png)
-![Bootstrap](http://www.unixstickers.com/image/cache/data/stickers/bootstrap/bootstrap.sh-600x600.png)
+![jQuery](https://www.wpfaster.org/wp-content/uploads/2013/06/jquery-logo.png)
+![Bootstrap](http://www.idevlive.com/media/images/services/thumb/bootstrap-logo.png)
 
 ### The Project Ganymede Team
 [Alex Biczak](https://github.com/biczak)
