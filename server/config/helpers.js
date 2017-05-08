@@ -70,7 +70,7 @@ let helpers = {
                 waitTimes.forEach(waitTimeObj => {
                   util.gatherRide(waitTimeObj.id)
                     .then(ride => {
-                      helper.createNewWaitEntry(ride, waitTimeObj, weather);
+                      helpers.createNewWaitEntry(ride, waitTimeObj, weather);
                     })
                     .catch(err => {
                       process.on('uncaughtException', function (err) {
@@ -100,20 +100,30 @@ let helpers = {
   },
 
   createNewWaitEntry : (rideModel, waitTimeObj, weatherModel) => {
-        return new RideWaitTime({
-          rideId: rideModel.attributes.id,
-          waitTime: waitTimeObj.waitTime,
-          status: waitTimeObj.status,
-          isActive: waitTimeObj.active,
-          temp: /*weatherModel.weather.currently.apparentTemperature ||*/ null,
-          precip: /*weatherModel.weather.currently.precipIntensity ||*/ null,
-          date : moment().format('L'),
-          hour : moment().format('LT'),
-        }).save()
-        .then(newModel => {
-          console.log('Stored new model: ', newModel.attributes);
-        })
-        .catch(err => console.error(err));
+        Park.where({'id' : rideModel.parkId}).fetch()
+          .then(parkModel => {
+            Weather.where({'location' : parkModel.attributes.location}).fetch()
+            .then(model => {
+              console.log(model);
+              return new RideWaitTime({
+                rideId: rideModel.attributes.id,
+                waitTime: waitTimeObj.waitTime,
+                status: waitTimeObj.status,
+                isActive: waitTimeObj.active,
+                temp: JSON.parse(model.attributes.weatherObj).temperature || null,
+                precip: JSON.parse(model.attributes.weatherObj).precipIntensity || null,
+                date : moment().format('L'),
+                hour : moment().format('LT'),
+              }).save()
+              .then(newModel => {
+                console.log('Stored new model: ', newModel.attributes);
+              })
+              .catch(err => console.error(err));
+
+            })
+            .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
   },
 
   optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
@@ -215,12 +225,12 @@ let helpers = {
       }
     }
     parkArr.forEach(parkObj => {
-      helper.createNewPark(parkObj);
+      helpers.createNewPark(parkObj);
     });
   },
 
   createNewPark: parkObj => {
-    helper.checkIfParkExists(parkObj)
+    helpers.checkIfParkExists(parkObj)
       .then(exists => {
         if(!exists) {
           return new Park({
@@ -244,22 +254,6 @@ let helpers = {
     return Parks.fetchOne({'apiId': apiParkObj.id})
       .then(exists => !!exists)
       .catch(err => console.error(err));
-  },
-
-  getWeather : () => {
-    data.forEach(loc => {
-      let long = loc.location.longitude;
-      let lat = loc.location.latitude;
-      request(`https://api.darksky.net/forecast/aa3cddeea13fba1dc59180cfbbd62dbc/${lat},${long}`, (err, res, body) => {
-        if(err) {
-          console.error(err);
-        } else {
-          console.log('~~~~~~~~~~~~~~~~~~~~~~~');
-          console.log('Precip:', body);
-          console.log('temp:', body.currently.temperature);
-        }
-      })
-    })
   },
 
   createWeatherEntry: (loc, weatherObj) => {
@@ -288,29 +282,30 @@ let helpers = {
     });
   },
 
-  getCurrentPosition: () => {
+  getWeatherAtPosition: () => {
     let data = require('../data/parkLocations');
 
     data.forEach(loc => {
       let long = loc.location.longitude;
       let lat = loc.location.latitude;
-      request(`https://api.darksky.net/forecast/aa3cddeea13fba1dc59180cfbbd62dbc/${lat},${long}`, (err, res, body) => {
-        if (err) console.error(err);
-        else {
+      request(`https://api.darksky.net/forecast/${process.env.DARK_SKY_API}/${lat},${long}`, (err, res, body) => {
+        if (err) {
+          console.error(err);
+        } else {
+          let currentWeather = JSON.parse(body).currently;
           util.gatherWeather({latitude: lat, longitude: long}).then( weather => {
-            console.log(weather);
             if (weather) {
-              console.log('it exists');
-              weather.attributes.weatherObj = JSON.stringify({precipIntensity: JSON.parse(body).currently.precipIntensity, temperature: JSON.parse(body).currently.temperature});
+              console.log('Model at location exists. Overwriting...');
+              weather.attributes.weatherObj = JSON.stringify({precipIntensity: currentWeather.precipIntensity, temperature: currentWeather.temperature});
               weather.save();
             } else {
-              console.log('it does not exists');
-              helper.createWeatherEntry({latitude: lat, longitude: long}, {precipIntensity: JSON.parse(body).currently.precipIntensity, temperature: JSON.parse(body).currently.temperature});
+              console.log('Model at location does not exists. Creating new model.');
+              helpers.createWeatherEntry({latitude: lat, longitude: long}, {precipIntensity: currentWeather.precipIntensity, temperature: currentWeather.temperature});
             }
-          })
+          });
         }
-      })
-    })
+      });
+    });
   },
 
   addRideDescriptions: () => {
@@ -325,10 +320,10 @@ let helpers = {
           };
           request(options, (err, res, body) => {
             if (body !== undefined && body.query !== undefined) {
-              for (var key in body.query.pages) {
-                var pageid = key;
+              for (let key in body.query.pages) {
+                let pageid = key;
               }
-              var description = body.query.pages[pageid].extract;
+              let description = body.query.pages[pageid].extract;
               if (description !== null && description !== undefined) {
                 description = description.replace(/<{1}[^<>]{1,}>{1}/g,"");
                 ride.attributes.description = description;
