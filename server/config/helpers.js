@@ -13,9 +13,6 @@ const RideWaitTime = require('../models/rideWaitTimeModel');
 const Weather = require('../models/weatherModel');
 let data = require('../../data/parkLocations');
 const request = require('request');
-const express = require('express');
-const app = express();
-
 
 
 // Helper Functions
@@ -24,6 +21,8 @@ const app = express();
 let helpers = {
 
   returnWaitTimes : rideIdList => {
+    // Loops through input list & fetches every wait_time_entry model for a given id.
+    // Then returns an array of the data for those entries.
     return Promise.all(eval(rideIdList).map(rideId => {
       return new Promise((resolve, reject) => {
           RideWaitTime.where({'rideId' : rideId}).fetchAll()
@@ -59,7 +58,45 @@ let helpers = {
     .catch(err => console.error(err));
   },
 
+
+  optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
+    /*
+    Unfinished outline to create a tree of all possible
+    queue options and then analyze the routes for shortest
+    overall wait time.
+    */
+    helpers.returnWaitTimes(rideIdList)
+      .then(rideInfoList => {
+        let possibilities = [];
+        util.optimize(rideInfoList, route, time);
+        // scan possibilities for shortest queue
+        let shortest;
+        possibilities.forEach(possibility => {
+          if(shortest === undefined) {
+            shortest = possibility;
+          } else {
+            if(possibility.time.total < shortest.time.total) {
+              shortest = possibility;
+            }
+          }
+        });
+        let results = shortest.route.map(ride => {
+          return ride.rideData;
+        });
+        return results;
+      });
+  },
+  /*======================================
+    ======     SCHEDULED JOB HELPERS  ====
+    The functions below are called by Cron jobs to populate databases/
+    ====================================== */
+
+
   getWaitTimes : () => {
+    // Called every 15 minutes by Cron job to fetch the wait times for every ride provided
+    // by the Themeparks API. Use UTIL functions to minimize debugging headache.
+    // NOTE: uncaughtException is a way to gracefully handle a function failure so that the server
+    // doesn't crash if one of the 1786 park wait times isn't returned.
     util.gatherParks()
       .then(parks => {
         parks.forEach(park => {
@@ -100,8 +137,11 @@ let helpers = {
   },
 
   createNewWaitEntry : (rideModel, waitTimeObj, weatherModel) => {
-    // Commented out code is close to functional. Could not finish implementing weather due to code free.
-
+    /*
+    Need to debug the commented code to correctly fetch the most recent weather data
+    at each location each time a new wait time is entered into the database. Works otherwise and
+    not necessary unless you want to expand optimization algorithm to include weather data...MACHINE LEARNING!!!
+    */
         // Park.where({'id' : rideModel.parkId}).fetch()
         //   .then(parkModel => {
         //     Weather.where({'location' : parkModel.attributes.location}).fetch()
@@ -114,36 +154,52 @@ let helpers = {
                 isActive: waitTimeObj.active,
                 temp: /*JSON.parse(model.attributes.weatherObj).temperature ||*/ null,
                 precip: /*JSON.parse(model.attributes.weatherObj).precipIntensity ||*/ null,
-                temp: JSON.parse(model.attributes.weatherObj).temperature || null,
-                precip: JSON.parse(model.attributes.weatherObj).precipIntensity || null,
-             })
+             });
           //   .catch(err => console.log(err));
           // })
           // .catch(err => console.log(err));
   },
 
-  optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
-    helpers.returnWaitTimes(rideIdList)
-      .then(rideInfoList => {
-        let possibilities = [];
-        util.optimize(rideInfoList, route, time);
-        // scan possibilities for shortest queue
-        let shortest;
-        possibilities.forEach(possibility => {
-          if(shortest === undefined) {
-            shortest = possibility;
-          } else {
-            if(possibility.time.total < shortest.time.total) {
-              shortest = possibility;
+  getCurrentWeather: () => {
+    // Run every 2 hours to update weather table. Constant updating is used to avoid API daily call limits.
+    let data = require('../data/parkLocations');
+
+    data.forEach(loc => {
+      let long = loc.location.longitude;
+      let lat = loc.location.latitude;
+      request(`https://api.darksky.net/forecast/${process.env.DARK_SKY_API}/${lat},${long}`, (err, res, body) => {
+        if (err) {
+          console.error(err);
+        } else {
+          let currentWeather = JSON.parse(body).currently;
+          util.gatherWeather({latitude: lat, longitude: long}).then( weather => {
+            if (weather) {
+              console.log('Model at location exists. Overwriting...');
+              weather.attributes.weatherObj = JSON.stringify({precipIntensity: currentWeather.precipIntensity, temperature: currentWeather.temperature});
+              weather.save();
+            } else {
+              console.log('Model at location does not exists. Creating new model.');
+              helpers.createWeatherEntry({latitude: lat, longitude: long}, {precipIntensity: currentWeather.precipIntensity, temperature: currentWeather.temperature});
             }
-          }
-        });
-        let results = shortest.route.map(ride => {
-          return ride.rideData;
-        });
-        return results;
+          });
+        }
       });
+    });
   },
+
+  createWeatherEntry: (loc, weatherObj) => {
+    return new Weather({
+      location : JSON.stringify(loc),
+      weatherObj : JSON.stringify(weatherObj)
+    }).save()
+    .then( weatherEntry => {
+      console.log(weatherEntry);
+    })
+    .catch( err => {
+      console.error(err);
+    });
+  },
+
   /*======================================
     ======     POPULATION HELPERS    =====
     The functions below serve only to populate
@@ -252,57 +308,8 @@ let helpers = {
       .catch(err => console.error(err));
   },
 
-  createWeatherEntry: (loc, weatherObj) => {
-    return new Weather({
-      location : JSON.stringify(loc),
-      weatherObj : JSON.stringify(weatherObj)
-    }).save()
-    .then( weatherEntry => {
-      console.log(weatherEntry);
-    })
-    .catch( err => {
-      console.error(err);
-    });
-  },
 
-  updateWeatherEntry: (loc, weatherObj) => {
-    return new Weather({
-      location : JSON.stringify(loc),
-      weatherObj : JSON.stringify(weatherObj)
-    }).save()
-    .then( weatherEntry => {
-      console.log(weatherEntry);
-    })
-    .catch( err => {
-      console.error(err);
-    });
-  },
 
-  getWeatherAtPosition: () => {
-    let data = require('../data/parkLocations');
-
-    data.forEach(loc => {
-      let long = loc.location.longitude;
-      let lat = loc.location.latitude;
-      request(`https://api.darksky.net/forecast/${process.env.DARK_SKY_API}/${lat},${long}`, (err, res, body) => {
-        if (err) {
-          console.error(err);
-        } else {
-          let currentWeather = JSON.parse(body).currently;
-          util.gatherWeather({latitude: lat, longitude: long}).then( weather => {
-            if (weather) {
-              console.log('Model at location exists. Overwriting...');
-              weather.attributes.weatherObj = JSON.stringify({precipIntensity: currentWeather.precipIntensity, temperature: currentWeather.temperature});
-              weather.save();
-            } else {
-              console.log('Model at location does not exists. Creating new model.');
-              helpers.createWeatherEntry({latitude: lat, longitude: long}, {precipIntensity: currentWeather.precipIntensity, temperature: currentWeather.temperature});
-            }
-          });
-        }
-      });
-    });
-  },
 
   addRideDescriptions: () => {
     console.log('ADDING RIDE DESCRIPTIONS');
