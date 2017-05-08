@@ -232,3 +232,106 @@ button {
   background-color: #28A745;
   color: white;
 }
+
+.rides-list-details h1 {
+  color: white;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 7em;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+  text-align: center;
+  max-width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3%;
+  text-shadow: -0.75px 0 black, 0 0.75px black, 0.75px 0 black, 0 -0.75px black;
+}
+
+
+.rides-list-details .flip {
+  -webkit-perspective: 800;
+  vertical-align: middle;
+}
+.rides-list-details .flip .card.flipped {
+  transform: rotatey(-180deg);
+  -moz-transform: rotatey(-180deg);
+  -webkit-transform: rotatey(-180deg);
+}
+.rides-list-details .flip .card {
+  width: 98%;
+  margin-left: 1%;
+  border: 1px solid black;
+  border-radius: 20px;
+  perspective: 800;
+  -moz-perspective: 800;
+  -webkit-perspective: 800;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: 1s;
+}
+.rides-list-details .flip .card .face {
+  position: relative;
+  width: auto;
+  backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rides-list-details .front {
+    cursor: pointer;
+    display: block;
+}
+
+.rides-list-details .flipped .front {
+  display: none;
+}
+
+.rides-list-details .back {
+  background: 'white';
+  color: black;
+  transform: translateY(50%);
+  -webkit-transform: rotateY(180deg);
+    font-size: 16px;
+    cursor: pointer;
+    display: none;
+}
+
+.rides-list-details .flipped .back {
+  display: block;
+}
+
+.rides-list-details .waitData {
+  width: 100%;
+}
+.rides-list-details .descText {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: auto;
+}
+
+.rides-list-details  .selectNewRidesButton {
+  background-color: #FC8000;
+  font-size: auto;
+  border-radius: 5px;
+  width: auto;
+  margin: 0 auto;
+  text-align: center !important;
+  word-wrap: break-word !important;
+}
+.rides-list-details > a {
+  width: 10%;
+  margin-left: 45%;
+}
+.waitTimeButton {
+  word-wrap: break-word;
+}
+.parentDiv {
+  text-align: center;
+}
+.firstDiv {
+  display: inline-block;
+  margin: 10px 0;
+}

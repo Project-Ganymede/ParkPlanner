@@ -1,145 +1,42 @@
-<div id="container" style="text-align: center">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top: 3%;">
-        <h1 class="text-center">Your Rides</h1>
-    </div>
+<div id="container" class="rides-list-details">
 
-    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5"></div>
-
-
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 waitTimeButton" style="text-align: center">
-
-      <a href="#!/park/{{ parkId }}" class="btn btn-danger text-center selectNewRidesButton">Select New Rides</a>
-    </div>
-
-    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5"></div>
-
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="text-align: center" ng-repeat="rideSelected in rideQueue">
-      <div class="flip">
-        <div class="card centered col-xs-offset-3 col-sm-offset-3 col-md-offset-3 col-lg-offset-3 col-xl-offset-3 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" ng-class="{'flipped':isFlipped}" ng-click="isFlipped=!isFlipped" style="padding-left: 0">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 face front" style="margin-right: 0">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-              <p class="h3 text-center">{{ rideSelected.rideName }}</p>
-              <p class="h5 text-center">(Click for Details)</p>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 waitData">
-                <canvas id="line" class="chart chart-line" chart-data="rideSelected.data" chart-labels="rideSelected.labels" style="margin-top: 5%;" chart-options="options" chart-colors="colors"></canvas>
-            </div>
+  <div align="center">
+      <h1>Your Rides</h1>
+  </div>
+  <div align="center">
+    <a href="#!/park/{{ parkId }}" class="btn btn-danger selectNewRidesButton">Select New Rides</a>
+  </div>
+  <div align="center" class="col-xs-12 firstDiv" ng-repeat="rideSelected in rideQueue">
+    <div class="flip">
+      <div class="card centered col-xs-offset-3 col-xs-6" ng-class="{'flipped':isFlipped}" ng-click="isFlipped=!isFlipped">
+        <div class="col-xs-12 face front">
+          <div class="col-xs-12">
+            <p class="h3 text-center">{{ rideSelected.rideName }}</p>
+            <p class="h5 text-center">(Click for Details)</p>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 face back">
-            <p class="descText">
-              {{rideSelected.description}}
-            </p>
+          <div class="col-xs-12 waitData">
+              <canvas id="line" class="chart chart-line" chart-data="rideSelected.data" chart-labels="rideSelected.labels" chart-options="options" chart-colors="colors"></canvas>
           </div>
         </div>
+        <div class="col-xs-12 face back">
+          <p class="descText">{{rideSelected.description}}</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
-
 <style>
-  body {
-    width: 100%;
-    min-height: 100%;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
-    text-align: center;
-    background-image: url("../assets/images/theme-park.jpg");
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
-    margin: 0;
-  }
-  h1 {
-    color: white;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-size: 10em;
-    font-weight: bold;
-    letter-spacing: -1px;
-    line-height: 1;
-    text-align: center;
-    max-width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    text-shadow: -0.75px 0 black, 0 0.75px black, 0.75px 0 black, 0 -0.75px black;
-  }
-  .flip {
-  -webkit-perspective: 800;
-  vertical-align: middle;
-  position: relative;
-  margin: 0 auto;
-  max-width: 1000px;
+body {
+width: 100%;
+min-height: 100%;
+background-repeat: no-repeat;
+background-position: center center;
+background-attachment: fixed;
+text-align: center;
+background-image: url("../assets/images/theme-park.jpg");
+background-repeat: no-repeat;
+background-position: center center;
+background-attachment: fixed;
+margin: 0;
 }
-.flip .card.flipped {
-  transform: rotatey(-180deg);
-  -moz-transform: rotatey(-180deg);
-  -webkit-transform: rotatey(-180deg);
-}
-.flip .card {
-  margin-top: 3%;
-  border: 1px solid black;
-  border-radius: 20px;
-  width: 600px;
-  perspective: 800;
-  -moz-perspective: 800;
-  -webkit-perspective: 800;
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  -ms-transform-style: preserve-3d;
-  -o-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  -webkit-transition: 1s;
-}
-.flip .card .face {
-  position: relative;
-  width: 600px;
-  backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.front {
-    cursor: pointer;
-    display: block;
-}
-
-.flipped .front {
-  display: none;
-}
-
-.back {
-  background: 'white';
-  color: black;
-  transform: translateY(50%);
-  -webkit-transform: rotateY(180deg);
-    font-size: 16px;
-    cursor: pointer;
-    display: none;
-}
-
-.flipped .back {
-  display: block;
-}
-
-.waitData {
-  width: 550px;
-}
-.descText {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.selectNewRidesButton {
-  background-color: #FC8000;
-  font-size: 18px;
-  border-radius: 5px;
-  width: auto;
-  margin: 0 auto;
-  text-align: center !important;
-  word-wrap: break-word !important;
-}
-
-.waitTimeButton {
-  word-wrap: break-word;
-}
-
 </style>
