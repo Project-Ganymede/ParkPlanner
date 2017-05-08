@@ -1,4 +1,18 @@
-angular.module('app.rides', []).controller('RidesController', function($scope, $routeParams, $location, Rides) {
+angular.module('app.rides', []).controller('RidesController', function($scope, $routeParams, $location, Rides, Parks) {
+
+  var initializeParks = function () {
+    Parks.getParks()
+      .then(function (parks) {
+        $scope.parks = parks;
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+
+  initializeParks();
+
+
   Rides.getParkRides($routeParams.id).then(function(data) {
     $scope.rides = data;
   });
@@ -63,8 +77,19 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
         $scope.labels = [];
         $scope.times = [];
         for (var key in data[i].timeData) {
-          $scope.labels.push(key);
-          $scope.times.push(data[i].timeData[key]);
+          var hour = key.slice(0, 2);
+          if (hour === '10' || hour === '11') {
+            var newKey = key.replace('P', 'A');
+            $scope.labels.push(newKey);
+            $scope.times.push(data[i].timeData[newKey]);
+          } else if (hour === '12') {
+            var newKey = key.replace('A', 'P');
+            $scope.labels.push(newKey);
+            $scope.times.push(data[i].timeData[newKey]);
+          } else {
+            $scope.labels.push(key);
+            $scope.times.push(data[i].timeData[key]);
+          }
         }
         $scope.labels = $scope.labels.sort(function(a, b) {
           return new Date('1970/01/01 ' + a) - new Date('1970/01/01 ' + b);
