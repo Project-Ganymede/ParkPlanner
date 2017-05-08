@@ -51,7 +51,7 @@
 #container {
   margin-top: 25px;
   margin-left: 5%;
-  width: 90%
+  width: 90%;
 }
 
 
@@ -153,4 +153,18 @@ button {
   -moz-filter: grayscale(100%);
   -ms-filter: grayscale(100%);
   -o-filter: grayscale(100%);
+}
+
+.multi-column-list {
+  columns: 6;
+  -webkit-columns: 6;
+  -moz-columns: 6;
+}
+
+.multi-column-list > li > a {
+  color: white;
+}
+
+.switch-parks > button {
+  margin-top: 1%;
 }

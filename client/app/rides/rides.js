@@ -1,4 +1,18 @@
-angular.module('app.rides', []).controller('RidesController', function($scope, $routeParams, $location, Rides) {
+angular.module('app.rides', []).controller('RidesController', function($scope, $routeParams, $location, Rides, Parks) {
+
+  var initializeParks = function () {
+    Parks.getParks()
+      .then(function (parks) {
+        $scope.parks = parks;
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+
+  initializeParks();
+
+
   Rides.getParkRides($routeParams.id).then(function(data) {
     $scope.rides = data;
   });
