@@ -9,6 +9,7 @@ require('./config/middleware.js')(app, express);
 require('./config/routes.js')(app, express);
 //require('../workers/WaitTime');
 
+
 // Sets the port to either the Process Environment's or 3000.
 let port = process.env.PORT || 3000;
 
