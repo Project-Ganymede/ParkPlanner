@@ -3,7 +3,7 @@
         <h1 class="text-center">Your Rides</h1>
     </div>
     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5"></div>
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2" style="text-align: center">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 waitTimeButton" style="text-align: center">
       <a href="#!/park/{{ parkId }}" class="btn btn-danger text-center selectNewRidesButton">Select New Rides</a>
     </div>
     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 col-xl-5"></div>
@@ -120,10 +120,14 @@
 .selectNewRidesButton {
   background-color: #FC8000;
   font-size: 18px;
-  width: auto;
   border-radius: 5px;
   width: auto;
+  margin: 0 auto;
   text-align: center !important;
+  word-wrap: break-word !important;
+}
+.waitTimeButton {
+  word-wrap: break-word;
 }
 /*old code*/
 /*.flip {
