@@ -3,6 +3,7 @@ Project Ganymede's Greenfield Project
 
 ## Park Planner
 A data driven app to optimize your theme-park experience. Utilizing real time data, Park Planner will provide the best plan of action to experience all your favorite rides. Park Planner uses historical and real time ride wait-time, weather, and event data to design the best schedule for you.
+[Check it out!](http://vast-forest-36845.herokuapp.com/#!/)
 
 ## Key Features
 - Pick from a wide variety of Themeparks across the world!
