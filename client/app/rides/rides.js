@@ -20,11 +20,6 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
 
   $scope.rideList = [];
 
-  $scope.addRideToList = function(ride) {
-    if (!$scope.rideList.includes(ride)) {
-      $scope.rideList.push(ride);
-    }
-  };
   $scope.isChosen = function(ride) {
     if (!$scope.rideList.includes(ride)) {
       $scope.rideList.push(ride);
@@ -32,11 +27,9 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
       $scope.rideList.splice($scope.rideList.indexOf(ride), 1);
     }
   };
+
   $scope.inQueue = function(ride) {
     return $scope.rideList.includes(ride);
-  };
-  $scope.removeRideFromList = function(indexToRemove) {
-    $scope.rideList.splice(indexToRemove, 1);
   };
 
   $scope.setRideQueueAndParkIdAndChangePage = function() {
