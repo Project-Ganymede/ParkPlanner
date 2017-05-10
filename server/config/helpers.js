@@ -29,6 +29,8 @@ let helpers = {
             .then(modelArray => {
             // timeData will be a reduction of the list of RideN entries to a single object :
             // { '12:00am': [45, 20, 16, 25, 52], '12.15am' : [60, 50, 55 ...], ....}
+              // console.log('In runWaitTimes ----------------------')
+              // console.log(modelArray);
               let rideInfo = {'timeData' : util.reduceTimeData(modelArray.models)};
               // Get the modelObj from the 'rides' table to pass back data about each ride
               Ride.where({'id' : modelArray.models[0].attributes.rideId}).fetch()
@@ -45,7 +47,6 @@ let helpers = {
       // Should return an array of objs: [{rideData: {}, timeData: []}]
       return  rideInfoArray.map(rideObj => {
         let timeObj = {};
-        console.log(rideObj);
         Object.keys(rideObj.timeData).sort().forEach( key => {
           let waitTotal = rideObj.timeData[key].reduce((acc, item) =>  acc + item);
           let waitAvg = waitTotal / rideObj.timeData[key].length;
@@ -58,6 +59,30 @@ let helpers = {
     .catch(err => console.error(err));
   },
 
+  returnDayOfWeekData: (rideId, dayOfWeek) => {
+    const dayMatch = (dateStr) => {
+      return moment(dateStr, 'MM/DD/YYYY').days() === dayOfWeek;
+    }
+    return new Promise((resolve, reject) => {
+      RideWaitTime.where({rideId}).fetchAll()
+        .then(modelArray => {
+          resolve(modelArray);
+        })
+    })
+    .then(modelArray => {
+      return modelArray.filter(model => dayMatch(model.get('date'), dayOfWeek));
+    })
+
+    // fetch all data, then filter out the data for dates that do not fall on dayOfWeek
+
+
+    // convert stored time string to hour and minute with
+    // moment(hour, 'h:mm a').hours() / .minutes()
+
+    // convert stored day to day-of-week with:
+    // m(date, 'MM/DD/YYYY').days()
+
+  },
 
   optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
     /*
@@ -195,7 +220,6 @@ let helpers = {
       weatherObj : JSON.stringify(weatherObj)
     }).save()
     .then( weatherEntry => {
-      console.log(weatherEntry);
     })
     .catch( err => {
       console.error(err);
@@ -294,7 +318,6 @@ let helpers = {
           hasFastPass : parkObj.fastPass,
         }).save()
           .then( themepark => {
-            console.log(themepark);
           })
           .catch( err => {
             console.error(err);
