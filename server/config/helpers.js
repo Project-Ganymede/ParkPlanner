@@ -154,6 +154,8 @@ let helpers = {
                 isActive: waitTimeObj.active,
                 temp: /*JSON.parse(model.attributes.weatherObj).temperature ||*/ null,
                 precip: /*JSON.parse(model.attributes.weatherObj).precipIntensity ||*/ null,
+                // add date
+                // add hour
              });
           //   .catch(err => console.log(err));
           // })
