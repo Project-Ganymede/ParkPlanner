@@ -8,6 +8,11 @@ const BING_API_KEY = require('./apiKey');
 
 module.exports = (app, express) => {
 
+  app.get('/test', (req, res) => {
+    helpers.getWaitTimes();
+    res.send();
+  })
+
   app.get('/', (req, res) => {
     res.render('index');
   });
