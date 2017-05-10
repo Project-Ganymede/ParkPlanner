@@ -155,7 +155,9 @@ let helpers = {
                 temp: /*JSON.parse(model.attributes.weatherObj).temperature ||*/ null,
                 precip: /*JSON.parse(model.attributes.weatherObj).precipIntensity ||*/ null,
                 // add date
+                date: moment(waitTimeObj.lastUpdate).format('L'),
                 // add hour
+                hour: moment(waitTimeObj.lastUpdate).format('LT'),
              });
           //   .catch(err => console.log(err));
           // })
