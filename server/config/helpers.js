@@ -158,7 +158,7 @@ let helpers = {
                 date: moment(waitTimeObj.lastUpdate).format('L'),
                 // add hour
                 hour: moment(waitTimeObj.lastUpdate).format('LT'),
-             });
+             }).save();
           //   .catch(err => console.log(err));
           // })
           // .catch(err => console.log(err));
@@ -230,7 +230,14 @@ let helpers = {
             .then(apiRidesArr => {
               apiRidesArr.forEach(apiRideObj=> {
                 helper.createNewRide(apiRideObj, parkEntry);
-              });
+              })
+              .then(() => {
+                console.log('in the .then');
+              })
+              .catch(() => {
+                console.log('in the .catch')
+              })
+              ;
             });
         });
       }
