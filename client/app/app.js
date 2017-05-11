@@ -2,6 +2,7 @@ angular
   .module('app', [
       'app.parks',
       'app.rides',
+      'app.leo',
       'app.services',
       'ngRoute',
       'chart.js'
