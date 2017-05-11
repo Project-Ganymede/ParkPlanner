@@ -22,7 +22,7 @@ angular
         templateUrl: 'app/rides/rides-list-details.html',
         controller: 'RidesController'
       })
-      .when('/leoridelist', {
+      .when('/leoridelist/:id/:day', {
         templateUrl: 'app/rides/leos-list.html',
         controller: 'LeosController'
       })
