@@ -1,4 +1,4 @@
-angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($scope, Rides) {
+angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($scope, $routeParams, Rides) {
 
   $scope.getDayAverages = function (rideId, day) {
     // make a GET request to get the data for the ride on a particular day of the week
@@ -37,7 +37,7 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
       //   console.log(data);
       // })
   }
-  $scope.getOverallAverages(519)
+  $scope.getOverallAverages($routeParams.id)
 
   $scope.labels = [];
   $scope.data = [ [], [] ];
