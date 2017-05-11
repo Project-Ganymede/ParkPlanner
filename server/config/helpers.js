@@ -11,7 +11,7 @@ const RideWaitTimes = require('../collections/rideWaitTimes');
 const RideWaitTime = require('../models/rideWaitTimeModel');
 // const WeatherEntries = require('../collections/WeatherEntries');
 const Weather = require('../models/weatherModel');
-let data = require('../../data/parkLocations');
+let data = require('../../data/parkLocations.json');
 const request = require('request');
 
 
@@ -60,6 +60,7 @@ let helpers = {
   },
 
   returnDayOfWeekData: (rideId, dayOfWeek) => {
+    // fetch all data, then filter out the data for dates that do not fall on dayOfWeek
     const dayMatch = (dateStr) => {
       return moment(dateStr, 'MM/DD/YYYY').days() === dayOfWeek;
     }
@@ -72,16 +73,37 @@ let helpers = {
     .then(modelArray => {
       return modelArray.filter(model => dayMatch(model.get('date'), dayOfWeek));
     })
+  },
 
-    // fetch all data, then filter out the data for dates that do not fall on dayOfWeek
-
-
+  returnAveragesForDay: (ride, dayOfWeek) => {
     // convert stored time string to hour and minute with
     // moment(hour, 'h:mm a').hours() / .minutes()
 
-    // convert stored day to day-of-week with:
-    // m(date, 'MM/DD/YYYY').days()
+    // Normalizes times to quarter-hours (13:00, 13:15, 13:30, etc.)
+    const toQuarterHour = (hourStr) => {
+      const time = moment(hourStr, 'h:mm a');
+      return `${time.hour()}:${Math.floor(time.minute() / 15) * 15}`;
+    }
+    
+    // get all the data points for the selected ride and day
+    returnDayOfWeekData(ride, dayOfWeek)
+      .then(modelArray => {
+        return modelArray.pick(['hour', 'waitTime']);
+      })
+      .then(waitTimes => {
+        return waitTimes.reduce((acc, {hour, waitTime}) => {
+          const curr = acc[toQuarterHour(hour)];
+          if (curr) curr.push(waitTime);
+          else acc[toQuarterHour(hour)] = [waitTime];
+          return acc;
+        }, {})
+      })
 
+    // group all wait times for the same quarter hour in a histogram
+
+    // average the times in the histogram
+
+    // return an object of averages
   },
 
   optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
@@ -189,7 +211,7 @@ let helpers = {
 
   getCurrentWeather: () => {
     // Run every 2 hours to update weather table. Constant updating is used to avoid API daily call limits.
-    let data = require('../data/parkLocations');
+    let data = require('../data/parkLocations.json');
 
     data.forEach(loc => {
       let long = loc.location.longitude;
