@@ -8,9 +8,11 @@ const BING_API_KEY = require('./apiKey');
 
 module.exports = (app, express) => {
 
-  app.get('/test', (req, res) => {
-    helpers.getWaitTimes();
-    res.send();
+  app.get('/test/:rideId/:day', (req, res) => {
+    helpers.returnDayOfWeekData(parseInt(req.params.rideId), parseInt(req.params.day))
+      .then(data => {
+        res.send(data);
+      })
   })
 
   app.get('/', (req, res) => {
@@ -47,7 +49,6 @@ module.exports = (app, express) => {
   });
 
   app.get('/rideList', (req, res) => {
-    console.log(req.headers.rides);
     helpers.returnWaitTimes(req.headers.rides)
       .then(data => {
       res.status(200).send(data);

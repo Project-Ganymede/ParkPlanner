@@ -21,6 +21,10 @@ angular
         templateUrl: 'app/rides/rides-list-details.html',
         controller: 'RidesController'
       })
+      .when('/leoridelist', {
+        templateUrl: 'app/rides/leos-list.html',
+        controller: 'LeosController'
+      })
       .otherwise({
         redirectTo: '/'
       });
