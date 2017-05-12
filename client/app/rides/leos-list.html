@@ -1,4 +1,11 @@
-<div>
+<div id="container" class="rides-list-details">
+
+    <div align="center">
+        <h1>Your Rides</h1>
+    </div>
+    <div align="center">
+        <a href="#!/park/{{ parkId }}" class="btn btn-danger selectNewRidesButton">Select New Rides</a>
+    </div>
     <ol>
         <li><a ng-href="#!/leoridelist/{{rideId}}/{{0}}">Sunday</a></li>
         <li><a ng-href="#!/leoridelist/{{rideId}}/{{1}}">Monday</a></li>
@@ -8,14 +15,31 @@
         <li><a ng-href="#!/leoridelist/{{rideId}}/{{5}}">Friday</a></li>
         <li><a ng-href="#!/leoridelist/{{rideId}}/{{6}}">Saturday</a></li>
     </ol>
-    <canvas 
-        id="line"
-        class="chart chart-line"
-        chart-data="data"
-        chart-labels="labels"
-        chart-series="series"
-        chart-options="options"
-        chart-dataset-override="datasetOverride"
-        chart-click="onClick" >
-    </canvas>
+    <!--<div align="center" class="col-xs-12 firstDiv" ng-repeat="rideSelected in rideQueue">-->
+        <div style="background-color:blanchedalmond">
+            <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+                chart-dataset-override="datasetOverride" chart-click="onClick">
+            </canvas>
+        </div>
+    <!--</div>5-->
 </div>
+<style>
+    body {
+        width: 100%;
+        min-height: 100%;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        text-align: center;
+        background-image: url("../assets/images/theme-park.jpg");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        margin: 0;
+    }
+</style>
+
+
+
+
+

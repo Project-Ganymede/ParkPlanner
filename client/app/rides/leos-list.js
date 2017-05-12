@@ -78,10 +78,14 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
   $scope.datasetOverride = [
     {
       yAxisID: 'y-axis-1',
-      fill: false
+      fill: false,
+      borderColor: 'black',
+      pointBackgroundColor: 'black',
     }, {
       yAxisID: 'y-axis-1',
       fill: false,
+      borderColor: 'red',
+      pointBackgroundColor: 'red',
     }
   ];
 
