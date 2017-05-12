@@ -4,15 +4,21 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
     const time = new Date('1970/01/01 ' + str)
     return time.getHours() + (time.getMinutes() / 60);
   };
+  const timeStrCompFunc = (a, b) => {
+    return new Date('1970/01/01 ' + a[0]) - new Date('1970/01/01 ' + b[0]);
+  }
 
   $scope.getDayAverages = function (rideId, day) {
     // make a GET request to get the data for the ride on a particular day of the week
     Rides.getDayTimes(rideId, day)
       .then(dataObj => {
+        const arr = [];
         for (let k in dataObj) {
           const timeInt = timeStrToNum(k);
-          $scope.data[1].push({x: timeInt, y: dataObj[k]});
+          arr.push({x: timeInt, y: dataObj[k]});
         }
+        arr.sort((a,b) => a.x - b.x);
+        $scope.data[1] = arr;
       })
   };
 
@@ -32,9 +38,7 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
       .then(timeData => {
         // Weird sorting function because times are stores as strings.
         // Maybe the server should serve this data as an appropriate datatype?
-        timeData.sort((a, b) => {
-          return new Date('1970/01/01 ' + a[0]) - new Date('1970/01/01 ' + b[0]);
-        })
+        timeData.sort(timeStrCompFunc);
         return timeData;
       })
       .then(data => {
