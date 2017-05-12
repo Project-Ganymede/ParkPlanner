@@ -1,7 +1,19 @@
 angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($scope, $routeParams, Rides) {
 
+  const timeStrToNum = (str) => {
+    const time = new Date('1970/01/01 ' + str)
+    return time.getHours() + (time.getMinutes() / 60);
+  };
+
   $scope.getDayAverages = function (rideId, day) {
     // make a GET request to get the data for the ride on a particular day of the week
+    Rides.getDayTimes(rideId, day)
+      .then(dataObj => {
+        for (let k in dataObj) {
+          const timeInt = timeStrToNum(k);
+          $scope.data[1].push({x: timeInt, y: dataObj[k]});
+        }
+      })
   };
 
   $scope.getOverallAverages = function (rideId) {
@@ -27,17 +39,14 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
       })
       .then(data => {
         data.forEach(datum => {
-          const time = new Date('1970/01/01 ' + datum[0])
-          const timeInt = time.getHours() + (time.getMinutes() / 60);
+          const timeInt = timeStrToNum(datum[0]);
           $scope.data[0].push({x: timeInt, y: datum[1]});
         });
         console.log(data)
       })
-      // .then(data => {
-      //   console.log(data);
-      // })
-  }
-  $scope.getOverallAverages($routeParams.id)
+  };
+  $scope.getOverallAverages($routeParams.id);
+  $scope.getDayAverages($routeParams.id, $routeParams.day);
 
   $scope.labels = [];
   $scope.data = [ [], [] ];
@@ -65,7 +74,7 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
       yAxisID: 'y-axis-1',
       fill: false
     }, {
-      yAxisID: 'y-axis-2',
+      yAxisID: 'y-axis-1',
       fill: false,
     }
   ];

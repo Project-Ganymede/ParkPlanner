@@ -56,6 +56,15 @@ angular.module('app.services', [])
     });
   };
 
+  const getDayTimes = (rideId, day) => {
+    return $http({
+      method: 'GET',
+      url: `test/${rideId}/${day}`,
+    }).then(resp => {
+      return resp.data;
+    });
+  };
+
   var getRideQueueAndParkId = function() {
     return {rideQueue: rideQueue, parkId: parkId};
   };
@@ -64,6 +73,7 @@ angular.module('app.services', [])
     getParkRides: getParkRides,
     setRideQueueAndParkId: setRideQueueAndParkId,
     getRideQueueAndParkId: getRideQueueAndParkId,
-    getTimes: getTimes
+    getTimes: getTimes,
+    getDayTimes
   };
 });
