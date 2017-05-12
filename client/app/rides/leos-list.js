@@ -8,6 +8,8 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
     return new Date('1970/01/01 ' + a[0]) - new Date('1970/01/01 ' + b[0]);
   }
 
+  $scope.rideId = $routeParams.id;
+
   $scope.getDayAverages = function (rideId, day) {
     // make a GET request to get the data for the ride on a particular day of the week
     Rides.getDayTimes(rideId, day)
