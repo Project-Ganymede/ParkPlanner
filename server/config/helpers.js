@@ -15,6 +15,21 @@ let data = require('../../data/parkLocations.json');
 const request = require('request');
 
 
+const returnDayOfWeekData = (rideId, dayOfWeek) => {
+  // fetch all data, then filter out the data for dates that do not fall on dayOfWeek
+  const dayMatch = (dateStr) => {
+    return moment(dateStr, 'MM/DD/YYYY').days() === dayOfWeek;
+  }
+  return new Promise((resolve, reject) => {
+    RideWaitTime.where({rideId}).fetchAll()
+      .then(modelArray => {
+        resolve(modelArray);
+      })
+  })
+  .then(modelArray => {
+    return modelArray.filter(model => dayMatch(model.get('date'), dayOfWeek));
+  })
+}
 // Helper Functions
 
 
@@ -59,21 +74,6 @@ let helpers = {
     .catch(err => console.error(err));
   },
 
-  returnDayOfWeekData: (rideId, dayOfWeek) => {
-    // fetch all data, then filter out the data for dates that do not fall on dayOfWeek
-    const dayMatch = (dateStr) => {
-      return moment(dateStr, 'MM/DD/YYYY').days() === dayOfWeek;
-    }
-    return new Promise((resolve, reject) => {
-      RideWaitTime.where({rideId}).fetchAll()
-        .then(modelArray => {
-          resolve(modelArray);
-        })
-    })
-    .then(modelArray => {
-      return modelArray.filter(model => dayMatch(model.get('date'), dayOfWeek));
-    })
-  },
 
   returnAveragesForDay: (ride, dayOfWeek) => {
     // convert stored time string to hour and minute with
@@ -84,13 +84,14 @@ let helpers = {
       const time = moment(hourStr, 'h:mm a');
       return `${time.hour()}:${Math.floor(time.minute() / 15) * 15}`;
     }
-    
     // get all the data points for the selected ride and day
-    returnDayOfWeekData(ride, dayOfWeek)
+    return returnDayOfWeekData(ride, dayOfWeek)
       .then(modelArray => {
-        return modelArray.pick(['hour', 'waitTime']);
+        console.log(modelArray)
+        return modelArray.map(m => m.pick(['hour', 'waitTime']));
       })
       .then(waitTimes => {
+        // group all wait times for the same quarter hour in a histogram
         return waitTimes.reduce((acc, {hour, waitTime}) => {
           const curr = acc[toQuarterHour(hour)];
           if (curr) curr.push(waitTime);
@@ -98,12 +99,16 @@ let helpers = {
           return acc;
         }, {})
       })
+      .then(obj => {
+        // average the times in the histogram
+        for (let k in obj) {
+          const nums = obj[k];
+          obj[k] = nums.reduce((acc, n) => acc + n) / nums.length;
+        }
+        // return an object of averages
+        return obj;
+      })
 
-    // group all wait times for the same quarter hour in a histogram
-
-    // average the times in the histogram
-
-    // return an object of averages
   },
 
   optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
