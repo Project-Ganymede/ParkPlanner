@@ -10,6 +10,12 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
 
   $scope.rideId = $routeParams.id;
 
+  // copied over from rides.js
+  $scope.getRideQueueAndParkId = function() {
+    var data = Rides.getRideQueueAndParkId();
+    $scope.rideQueue = data.rideQueue;
+  };
+
   $scope.getDayAverages = function (rideId, day) {
     // make a GET request to get the data for the ride on a particular day of the week
     Rides.getDayTimes(rideId, day)
