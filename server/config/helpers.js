@@ -21,7 +21,7 @@ const returnDayOfWeekData = (rideId, dayOfWeek) => {
     return moment(dateStr, 'MM/DD/YYYY').days() === dayOfWeek;
   }
   return new Promise((resolve, reject) => {
-    RideWaitTime.where({rideId}).fetchAll()
+    RideWaitTime.where({rideId, status: 'Operating'}).fetchAll()
       .then(modelArray => {
         resolve(modelArray);
       })
@@ -40,7 +40,7 @@ let helpers = {
     // Then returns an array of the data for those entries.
     return Promise.all(eval(rideIdList).map(rideId => {
       return new Promise((resolve, reject) => {
-          RideWaitTime.where({'rideId' : rideId}).fetchAll()
+          RideWaitTime.where({'rideId' : rideId, status: 'Operating'}).fetchAll()
             .then(modelArray => {
             // timeData will be a reduction of the list of RideN entries to a single object :
             // { '12:00am': [45, 20, 16, 25, 52], '12.15am' : [60, 50, 55 ...], ....}
