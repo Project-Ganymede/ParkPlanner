@@ -22,8 +22,8 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
       .then(dataObj => {
         const arr = [];
         for (let k in dataObj) {
-          const timeInt = timeStrToNum(k);
-          arr.push({x: timeInt, y: dataObj[k]});
+          const timeNum = timeStrToNum(k);
+          if (timeNum >= 9) arr.push({x: timeNum, y: dataObj[k]});
         }
         arr.sort((a,b) => a.x - b.x);
         $scope.data[1] = arr;
@@ -34,6 +34,7 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
     // use Rides.getTimes to get the overall averages
     Rides.getTimes([rideId])
       .then(result => {
+        $scope.rideData = result[0].rideData;
         return result[0].timeData;
       })
       .then(obj => {
@@ -51,8 +52,8 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
       })
       .then(data => {
         data.forEach(datum => {
-          const timeInt = timeStrToNum(datum[0]);
-          $scope.data[0].push({x: timeInt, y: datum[1]});
+          const timeNum = timeStrToNum(datum[0]);
+          if (timeNum >= 9) $scope.data[0].push({x: timeNum, y: datum[1]});
         });
         console.log(data)
       })
@@ -96,13 +97,19 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
   ];
 
   $scope.options = {
+    legend: {
+      display: true,
+      labels: {
+        fontColor: 'black',
+      }
+    },
     scales: {
       xAxes: [
         {
           type: 'linear',
           position: 'bottom',
           ticks: {
-            min: 0,
+            min: 9,
             max: 24,
             stepSize: 1
           }
