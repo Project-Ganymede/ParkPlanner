@@ -1,0 +1,31 @@
+<div id="container" class="rides-list-details">
+
+  <div align="center">
+      <h1>Your Optimized Schedule</h1>
+  </div>
+  <div align="center">
+    <a href="#!/park/{{ parkId }}" class="btn btn-danger selectNewRidesButton">Select New Rides</a>
+  </div>
+  <div align="center" class="col-xs-12 firstDiv" >
+      <div class="card centered col-xs-offset-3 col-xs-6" ng-class="{'flipped':isFlipped}" ng-click="isFlipped=!isFlipped">
+        <div class="col-xs-12">
+          <p class="descText">Schedule: {{optimizedSched}}</p>
+        </div>
+      </div>
+  </div>
+</div>
+<style>
+body {
+width: 100%;
+min-height: 100%;
+background-repeat: no-repeat;
+background-position: center center;
+background-attachment: fixed;
+text-align: center;
+background-image: url("../assets/images/theme-park.jpg");
+background-repeat: no-repeat;
+background-position: center center;
+background-attachment: fixed;
+margin: 0;
+}
+</style>

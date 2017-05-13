@@ -215,7 +215,7 @@ button {
 
 }
 
-.getWaitTimesButton {
+.getWaitTimesButton, .getOptimizedButton {
   border: 2px solid #28A745 !important;
   background-color: rgba(0, 0, 0, 0);
   font-size: 18px !important;
@@ -228,7 +228,7 @@ button {
   transform: translateX(-50%);
 }
 
-.getWaitTimesButton:hover {
+.getWaitTimesButton:hover, .getOptimizedButton:hover {
   background-color: #28A745;
   color: white;
 }
