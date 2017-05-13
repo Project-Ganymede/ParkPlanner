@@ -12,33 +12,36 @@ const RideWaitTime = require('../models/rideWaitTimeModel');
 // const WeatherEntries = require('../collections/WeatherEntries');
 const Weather = require('../models/weatherModel');
 
+// Normalizes times to quarter-hours (13:00, 13:15, 13:30, etc.)
+const toQuarterHour = (hourStr) => {
+  const time = moment(hourStr, 'h:mm a');
+  return `${time.hour()}:${Math.floor(time.minute() / 15) * 15}`;
+}
+
 let utils = {
   reduceTimeData : modelArray => {
     /* accepts arrays of RideWaitTimes table models */
     return modelArray.reduce((acc, model, index) => {
       let atts = model.attributes;
+      const currentHour = toQuarterHour(atts.hour);
       if(atts.isActive) {
-        if(acc[atts.hour]) {
-          acc[atts.hour].push(atts.waitTime);
-          console.log(acc);
+        if(acc[currentHour]) {
+          acc[currentHour].push(atts.waitTime);
           return acc;
         } else {
-          acc[atts.hour] = [atts.waitTime];
-          console.log(acc);
+          acc[currentHour] = [atts.waitTime];
           return acc;
         }
       } else {
-        if(acc[atts.hour]) {
-          acc[atts.hour].push(null);
-          console.log(acc);
+        // if(acc[currentHour]) {
+        //   acc[currentHour].push(null);
+
+        //   return acc;
+        // } else {
+        //   acc[currentHour] = [null];
 
           return acc;
-        } else {
-          acc[atts.hour] = [null];
-          console.log(acc);
-
-          return acc;
-        }
+        // }
       }
     }, {});
   },
