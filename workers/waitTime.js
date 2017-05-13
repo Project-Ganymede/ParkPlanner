@@ -3,7 +3,7 @@ const helpers = require('../server/config/helpers');
 const Rides = require('../server/collections/rides');
 
 var waitTimeJob = new CronJob({
-  cronTime: '00 */15 * * * *',
+  cronTime: '00 */10 * * * *',
   onTick: function() {
     // Runs every 15 minutes on the minute.
     helpers.getWaitTimes();

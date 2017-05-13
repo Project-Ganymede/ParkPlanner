@@ -7,7 +7,7 @@ const app = express();
 // configure our server with all the middleware and routing
 require('./config/middleware.js')(app, express);
 require('./config/routes.js')(app, express);
-//require('../workers/WaitTime');
+require('../workers/waitTime');
 
 
 // Sets the port to either the Process Environment's or 3000.
