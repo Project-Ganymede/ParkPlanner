@@ -9,6 +9,7 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
   }
 
   $scope.rideId = $routeParams.id;
+  $scope.day = $routeParams.day;
 
   // copied over from rides.js
   $scope.getRideQueueAndParkId = function() {
@@ -67,7 +68,7 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
   console.log('Ride name', Rides.getRideName())
   $scope.rideName = Rides.getRideName();
 
-  $scope.labels = [];
+  $scope.labels = ["Wait Times (Minutes)", "Time of Day"];
   $scope.data = [ [], [] ];
 
   // for (let h = 0; h < 24; h++) {
@@ -118,6 +119,10 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
             min: 9,
             max: 24,
             stepSize: 1
+          },
+          scaleLabel: {
+            display: true,
+            labelString: "Time of Day"
           }
         }
       ],
@@ -131,6 +136,10 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
             // max: 20,
             min: 0,
             stepSize: 5
+          },
+          scaleLabel: {
+            display: true,
+            labelString: "Wait Time"
           }
         },
         {
