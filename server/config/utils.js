@@ -26,24 +26,14 @@ let utils = {
       let atts = model.attributes;
       const currentHour = toQuarterHour(atts.hour);
       if(atts.isActive) {
-        if(acc[atts.hour]) {
-          acc[atts.hour].push(atts.waitTime);
-          // console.log(acc);
+        if(acc[currentHour]) {
+          acc[currentHour].push(atts.waitTime);
           return acc;
         } else {
-          acc[atts.hour] = [atts.waitTime];
-          // console.log(acc);
+          acc[currentHour] = [atts.waitTime];
           return acc;
         }
       } else {
-        if(acc[atts.hour]) {
-          acc[atts.hour].push(null);
-          // console.log(acc);
-
-          return acc;
-        } else {
-          acc[atts.hour] = [null];
-          // console.log(acc);
           return acc;
         }
       }
@@ -96,8 +86,6 @@ let utils = {
   findRoutes: (rideWaitTimes, ridesLeft, currentMoment, route = [], totalWait = 0, totalTime = 0) => {
     ridesLeft = ridesLeft.slice();
     route = route.slice();
-    const rideName = rideWaitTimes.rideData.get('rideName');
-    console.log(rideName);
 
     // find waitTime closest to currentMoment
     const waitTime = _.reduce(rideWaitTimes.timeData, (result, value, key) => {
@@ -113,7 +101,7 @@ let utils = {
     // update trackers
     currentMoment = currentMoment.add(waitTime.minutes + 15, 'm');
     totalWait += waitTime.minutes;
-    totalTime += waitTime.minutes;
+    totalTime += waitTime.minutes + 15;
     // set object props, new currTime, totalWait
     const ride = {
       waitTime,
