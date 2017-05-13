@@ -3,10 +3,7 @@
     <div align="center">
         <h1>{{rideData.rideName}}</h1>
     </div>
-    <div align="center">
-        <a href="#!/park/{{ parkId }}" class="btn btn-danger selectNewRidesButton">Select New Rides</a>
-    </div>
-    <div class"btn-group btn-group-justified" role="group" aria-label="qwerty">
+    <div class="day-btns" role="group" aria-label="qwerty">
         <a role="button" class="btn btn-default" ng-href="#!/leoridelist/{{rideId}}/{{0}}">Sunday</a>
         <a role="button" class="btn btn-default" ng-href="#!/leoridelist/{{rideId}}/{{1}}">Monday</a>
         <a role="button" class="btn btn-default" ng-href="#!/leoridelist/{{rideId}}/{{2}}">Tuesday</a>
@@ -15,11 +12,11 @@
         <a role="button" class="btn btn-default" ng-href="#!/leoridelist/{{rideId}}/{{5}}">Friday</a>
         <a role="button" class="btn btn-default" ng-href="#!/leoridelist/{{rideId}}/{{6}}">Saturday</a>
     </div>
-        <div style="background-color:blanchedalmond">
-            <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
-                chart-dataset-override="datasetOverride" chart-click="onClick">
-            </canvas>
-        </div>
+    <div style="background-color:blanchedalmond">
+        <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+            chart-dataset-override="datasetOverride" chart-click="onClick">
+        </canvas>
+    </div>
 </div>
 <style>
     body {
@@ -36,8 +33,3 @@
         margin: 0;
     }
 </style>
-
-
-
-
-
