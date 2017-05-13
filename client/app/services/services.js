@@ -63,7 +63,7 @@ angular.module('app.services', [])
   const getDayTimes = (rideId, day) => {
     return $http({
       method: 'GET',
-      url: `test/${rideId}/${day}`,
+      url: `daydata/${rideId}/${day}`,
     }).then(resp => {
       return resp.data;
     });
