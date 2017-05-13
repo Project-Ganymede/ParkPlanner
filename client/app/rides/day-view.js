@@ -1,4 +1,4 @@
-angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($scope, $routeParams, Rides) {
+angular.module("app.dayview", ["chart.js"]).controller("DayViewController", function ($scope, $routeParams, Rides) {
 
   const timeStrToNum = (str) => {
     const time = new Date('1970/01/01 ' + str)
