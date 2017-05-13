@@ -5,6 +5,7 @@ const Rides = require('../collections/rides.js');
 const Ride = require('../models/rideModel.js');
 const helpers = require('./helpers');
 const BING_API_KEY = require('./apiKey');
+const moment = require('moment');
 
 module.exports = (app, express) => {
 
@@ -60,6 +61,13 @@ module.exports = (app, express) => {
       .catch(err => {
         res.status(404).send(err);
         console.error('GET Rides Error:', err);
+      });
+  });
+
+  app.get('/optimize', (req, res) => {
+    helpers.optimizeSchedule(req.headers.rides, req.headers.start)
+      .then(schedule => {
+        res.send(schedule);
       });
   });
 };

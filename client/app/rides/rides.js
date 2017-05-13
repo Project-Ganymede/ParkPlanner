@@ -43,6 +43,11 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
     $scope.rideQueue = data.rideQueue;
   };
 
+  $scope.getOptimizedSchedAndChangePage = function() {
+    Rides.setRideQueueAndParkId($scope.rideList, $routeParams.id);
+    $location.path(`/schedule/${$routeParams.id}`);
+  };
+
   $scope.parkId = $routeParams.id;
 
   $scope.getRideQueueAndParkId();

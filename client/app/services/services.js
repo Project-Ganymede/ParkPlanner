@@ -69,6 +69,18 @@ angular.module('app.services', [])
     });
   };
 
+  var getOptimizedSched = function (ridesArr) {
+    return $http({
+      method: 'GET',
+      url: 'optimize',
+      headers: {
+        'rides': JSON.stringify(ridesArr)
+      }
+    }).then(function(resp) {
+      return resp.data;
+    });
+  };
+
   var getRideQueueAndParkId = function() {
     return {rideQueue: rideQueue, parkId: parkId};
   };
@@ -80,6 +92,7 @@ angular.module('app.services', [])
     getTimes: getTimes,
     getDayTimes,
     setRideName,
-    getRideName
+    getRideName,
+    getOptimizedSched: getOptimizedSched
   };
 });

@@ -1,6 +1,7 @@
 const moment = require('moment');
 const Themeparks = require('themeparks');
 const async = require('async');
+const _ = require('lodash');
 
 const util = require('./utils');
 const Rides = require('../collections/rides');
@@ -32,13 +33,12 @@ const returnDayOfWeekData = (rideId, dayOfWeek) => {
 }
 // Helper Functions
 
-
 let helpers = {
 
   returnWaitTimes : rideIdList => {
     // Loops through input list & fetches every wait_time_entry model for a given id.
     // Then returns an array of the data for those entries.
-    return Promise.all(eval(rideIdList).map(rideId => {
+    return Promise.all(JSON.parse(rideIdList).map(rideId => {
       return new Promise((resolve, reject) => {
           RideWaitTime.where({'rideId' : rideId, status: 'Operating'}).fetchAll()
             .then(modelArray => {
@@ -87,7 +87,6 @@ let helpers = {
     // get all the data points for the selected ride and day
     return returnDayOfWeekData(ride, dayOfWeek)
       .then(modelArray => {
-        console.log(modelArray)
         return modelArray.map(m => m.pick(['hour', 'waitTime']));
       })
       .then(waitTimes => {
@@ -111,33 +110,13 @@ let helpers = {
 
   },
 
-  optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
-    /*
-    Unfinished outline to create a tree of all possible
-    queue options and then analyze the routes for shortest
-    overall wait time.
-    */
-    helpers.returnWaitTimes(rideIdList)
+  optimizeSchedule: (rideIdList, startTime = moment().format('LT')) => {
+    return helpers.returnWaitTimes(rideIdList)
       .then(rideInfoList => {
-        let possibilities = [];
-        util.optimize(rideInfoList, route, time);
-        // scan possibilities for shortest queue
-        let shortest;
-        possibilities.forEach(possibility => {
-          if(shortest === undefined) {
-            shortest = possibility;
-          } else {
-            if(possibility.time.total < shortest.time.total) {
-              shortest = possibility;
-            }
-          }
-        });
-        let results = shortest.route.map(ride => {
-          return ride.rideData;
-        });
-        return results;
-      });
+        return util.optimize(rideInfoList, startTime);
+      })
   },
+
   /*======================================
     ======     SCHEDULED JOB HELPERS  ====
     The functions below are called by Cron jobs to populate databases/
@@ -260,7 +239,8 @@ let helpers = {
     Do not call these functions once the tables
     have been created as they do not check if the
     model already exists and will duplicate entries,
-    doubling the run time of functions that iterate through each park or ride.
+    doubling the run time of functions that iterate
+    through each park or ride.
     ====================================== */
 
 
