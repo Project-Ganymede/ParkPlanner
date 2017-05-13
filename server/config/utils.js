@@ -2,6 +2,7 @@
 const moment = require('moment');
 const Themeparks = require('themeparks');
 const async = require('async');
+const _ = require('lodash');
 
 const Rides = require('../collections/rides');
 const Ride = require('../models/rideModel');
@@ -79,25 +80,66 @@ let utils = {
       });
   },
 
-  optimize : (remainingRides, time={'total' : 0, 'current' :'8:00 AM' }, route=[]) => {
-    if(remainingRides.length === 1) {
-      route.push(remainingRides[0]);
-      time.total = time.total + remainingRides[0].timeData[time.current];
-      time.current = time.current + remainingRides[0].timeData[time.current];
-      possibilities.push({
-        'route' : route,
-        'stats' : time,
-      });
+  // optimize : (remainingRides, time={'total' : 0, 'current' :'8:00 AM' }, route=[]) => {
+  //   if(remainingRides.length === 1) {
+  //     route.push(remainingRides[0]);
+  //     time.total = time.total + remainingRides[0].timeData[time.current];
+  //     time.current = time.current + remainingRides[0].timeData[time.current];
+  //     possibilities.push({
+  //       'route' : route,
+  //       'stats' : time,
+  //     });
+  //   } else {
+  //     remainingRides.forEach((ride, index) => {
+  //       time.total = time.total + ride.timeData[time.current] + 20;
+  //       time.current = time.current + ride.timeData[time.current] + 20;
+  //       route.push(ride);
+  //       remainingRides.splice(index, 1);
+  //       utils.optimize(remainingRides, time, route);
+  //     });
+  //   }
+  // },
+
+  findRoutes: (waitTimes, ridesLeft, currentMoment, possibilities, route = [], totalWait = 0) => {
+    // console.log('here are the rides left: ', ridesLeft);
+    ridesLeft = ridesLeft.slice();
+    route = route.slice();
+    const id = waitTimes.rideData.get('id')
+
+    // find waitTime closes to currentMoment
+    const waitTime = _.reduce(waitTimes.timeData, (result, value, key) => {
+      const diffFromCurrent = Math.abs(moment(key, 'hh:mm a') - currentMoment);
+      if (diffFromCurrent < result.diffFromCurrent && value > 0) {
+        return { diffFromCurrent, minutes: value }
+      }
+      return result;
+    }, { diffFromCurrent: Infinity });
+
+    // set object props, new currTime, totalWait
+    const ride = {
+      id,
+      waitTime,
+      rideTime: currentMoment.format('hh:mm a')
+      // rideName:
+    };
+
+    // update trackers
+    currentMoment = currentMoment.add(waitTime.minutes + 15, 'm');
+    totalWait += waitTime.minutes;
+    // console.log('here\'s a ride: ',ride);
+    route.push(ride);
+    _.remove(ridesLeft, r => r === waitTimes);
+
+    if (ridesLeft.length) {
+      // console.log('HELLO!!!!')
+      ridesLeft.forEach(ride => {
+        utils.findRoutes(ride, ridesLeft, currentMoment, possibilities, route, totalWait);
+      })
     } else {
-      remainingRides.forEach((ride, index) => {
-        time.total = time.total + ride.timeData[time.current] + 20;
-        time.current = time.current + ride.timeData[time.current] + 20;
-        route.push(ride);
-        remainingRides.splice(index, 1);
-        utils.optimize(remainingRides, time, route);
-      });
+      possibilities.push({ route, totalWait });
     }
   }
+
 };
 
 module.exports = utils;
