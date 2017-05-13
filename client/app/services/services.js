@@ -7,10 +7,6 @@ angular.module('app.services', [])
       method: 'GET',
       url: '/parks'
     }).then(function (resp) {
-<<<<<<< HEAD
-=======
-      // console.log(resp.data);
->>>>>>> set up optimized schedule view and format data
       return resp.data;
     });
   };
@@ -64,13 +60,15 @@ angular.module('app.services', [])
     });
   };
 
-<<<<<<< HEAD
   const getDayTimes = (rideId, day) => {
     return $http({
       method: 'GET',
       url: `daydata/${rideId}/${day}`,
     }).then(resp => {
-=======
+      return resp.data;
+    });
+  };
+
   var getOptimizedSched = function (ridesArr) {
     return $http({
       method: 'GET',
@@ -79,8 +77,6 @@ angular.module('app.services', [])
         'rides': JSON.stringify(ridesArr)
       }
     }).then(function(resp) {
-      console.log('here\'s the response: ', resp);
->>>>>>> set up optimized schedule view and format data
       return resp.data;
     });
   };
@@ -94,12 +90,9 @@ angular.module('app.services', [])
     setRideQueueAndParkId: setRideQueueAndParkId,
     getRideQueueAndParkId: getRideQueueAndParkId,
     getTimes: getTimes,
-<<<<<<< HEAD
     getDayTimes,
     setRideName,
-    getRideName
-=======
-    getOptimizedSched: getOptimizedSched,
->>>>>>> set up optimized schedule view and format data
+    getRideName,
+    getOptimizedSched: getOptimizedSched
   };
 });
