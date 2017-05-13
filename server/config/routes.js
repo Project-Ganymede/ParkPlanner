@@ -5,6 +5,7 @@ const Rides = require('../collections/rides.js');
 const Ride = require('../models/rideModel.js');
 const helpers = require('./helpers');
 const BING_API_KEY = require('./apiKey');
+const moment = require('moment');
 
 module.exports = (app, express) => {
 
@@ -64,11 +65,9 @@ module.exports = (app, express) => {
   });
 
   app.get('/optimize', (req, res) => {
-    console.log('/optimize req.headers.rides: ', req.headers.rides);
-    res.send('yo')
     helpers.optimizeSchedule(req.headers.rides, req.headers.start)
-      // .then(schedule => {
-      //   res.send(schedule);
-      // });
+      .then(schedule => {
+        res.send(schedule);
+      });
   });
 };

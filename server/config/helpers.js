@@ -111,56 +111,23 @@ let helpers = {
 
   },
 
-  optimizeSchedule : (rideIdList, startTime='8:00 AM') => {
-    /*
-    Unfinished outline to create a tree of all possible
-    queue options and then analyze the routes for shortest
-    overall wait time.
-    */
-    helpers.returnWaitTimes(rideIdList)
+  optimizeSchedule: (rideIdList, startTime='10:00 AM') => {
+    return helpers.returnWaitTimes(rideIdList)
       .then(rideInfoList => {
         // console.log(rideInfoList);
+        const currentMoment = moment(startTime, 'hh:mm a');
         const possibilities = [];
-        const optimize = (ride, ridesLeft, route = [], totalTime = 0, currTime = '8:00 AM') => {
-          ridesLeft = ridesLeft.slice();
-          route = route.slice();
-          route.push(_.remove(ridesLeft, r => r === ride));
-          let wait;
-          Object.keys(ride.timeData).forEach(time => {
-            console.log(!wait && moment(time, 'hh:mm a') > moment(currTime))
-          })
-
-
-          let id = ride.rideData.get('id');
-          console.log(id);
-          if (ridesLeft.length === 0) {
-            possibilities.push({route, totalTime, currTime});
-          } else {
-
-            // ridesLeft.forEach(r => optimize(r, ridesLeft, route, ))
-            // });
-          }
-        }
-        rideInfoList.forEach(ride => optimize(ride, rideInfoList));
-
-        // let possibilities = [];
-        // util.optimize(rideInfoList, route, time);
-        // // scan possibilities for shortest queue
-        // let shortest;
-        // possibilities.forEach(possibility => {
-        //   if(shortest === undefined) {
-        //     shortest = possibility;
-        //   } else {
-        //     if(possibility.time.total < shortest.time.total) {
-        //       shortest = possibility;
-        //     }
-        //   }
-        // });
-        // let results = shortest.route.map(ride => {
-        //   return ride.rideData;
-        // });
-        // return results;
-      });
+        rideInfoList.forEach(ride => {
+          util.findRoutes(ride, rideInfoList, currentMoment, possibilities);
+        });
+        // console.log('all possible routes: ', JSON.stringify(possibilities));
+        const shortestWait = possibilities.reduce((result, route) => {
+          if (route.totalWait < result.totalWait) return route;
+          return result;
+        }, { totalWait: Infinity });
+        console.log('shortest wait: ', JSON.stringify(shortestWait));
+        return shortestWait;
+      })
   },
   /*======================================
     ======     SCHEDULED JOB HELPERS  ====
@@ -230,16 +197,9 @@ let helpers = {
                 isActive: waitTimeObj.active,
                 temp: /*JSON.parse(model.attributes.weatherObj).temperature ||*/ null,
                 precip: /*JSON.parse(model.attributes.weatherObj).precipIntensity ||*/ null,
-<<<<<<< HEAD
                 date: moment(waitTimeObj.lastUpdate).format('L'),
                 hour: moment(waitTimeObj.lastUpdate).format('LT'),
              }).save();
-=======
-             }).save()
-             .then(newModel => {
-               console.log('stored new rideWaitTime model: ', newModel);
-             });
->>>>>>> set up optimized schedule view and format data
           //   .catch(err => console.log(err));
           // })
           // .catch(err => console.log(err));
@@ -291,7 +251,8 @@ let helpers = {
     Do not call these functions once the tables
     have been created as they do not check if the
     model already exists and will duplicate entries,
-    doubling the run time of functions that iterate through each park or ride.
+    doubling the run time of functions that iterate
+    through each park or ride.
     ====================================== */
 
 
