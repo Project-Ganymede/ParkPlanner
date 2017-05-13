@@ -8,6 +8,8 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
     return new Date('1970/01/01 ' + a[0]) - new Date('1970/01/01 ' + b[0]);
   }
 
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
   $scope.rideId = $routeParams.id;
   $scope.day = $routeParams.day;
 
@@ -71,17 +73,9 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
   $scope.labels = ["Wait Times (Minutes)", "Time of Day"];
   $scope.data = [ [], [] ];
 
-  // for (let h = 0; h < 24; h++) {
-  //   for (let m = 0; m < 60; m += 15) {
-  //     $scope.labels.push(`${h}:${m}`)
-  //     $scope.data[0].push(9);
-  //     $scope.data[1].push(3);
-  //   }
-  // }
-
   $scope.series = [
     'Overall Average',
-    'Day Average'
+    dayNames[$scope.day] + ' Average'
   ]
 
 
