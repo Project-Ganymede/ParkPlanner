@@ -83,9 +83,6 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
           times.push(tempArr[j][1]);
         }
 
-        console.log('scope.labels',$scope.labels);
-        console.log('scope.times',$scope.times);
-
         $scope.rideQueue[i].data = times;
         $scope.rideQueue[i].labels = labels;
       }

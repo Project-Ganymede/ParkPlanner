@@ -7,7 +7,6 @@ angular.module('app.services', [])
       method: 'GET',
       url: '/parks'
     }).then(function (resp) {
-      console.log(resp.data);
       return resp.data;
     });
   };
@@ -26,7 +25,6 @@ angular.module('app.services', [])
         'parkId': parkID
       },
     }).then(function (resp) {
-      console.log(resp.data);
       return resp.data;
     })
     .catch(function (err) {
@@ -38,8 +36,6 @@ angular.module('app.services', [])
   var parkId;
 
   var setRideQueueAndParkId = function (rides, park) {
-    console.log('SETTING');
-    console.log('rides',rides);
     rideQueue = rides;
     parkId = park;
   };

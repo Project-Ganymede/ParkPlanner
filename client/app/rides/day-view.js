@@ -13,12 +13,6 @@ angular.module("app.dayview", ["chart.js"]).controller("DayViewController", func
   $scope.rideId = $routeParams.id;
   $scope.day = $routeParams.day;
 
-  // copied over from rides.js
-  $scope.getRideQueueAndParkId = function() {
-    var data = Rides.getRideQueueAndParkId();
-    $scope.rideQueue = data.rideQueue;
-  };
-
   $scope.getDayAverages = function (rideId, day) {
     // make a GET request to get the data for the ride on a particular day of the week
     Rides.getDayTimes(rideId, day)
@@ -39,7 +33,6 @@ angular.module("app.dayview", ["chart.js"]).controller("DayViewController", func
       .then(result => {
         $scope.rideData = result[0].rideData;
         Rides.setRideName($scope.rideData.rideName);
-        console.log($scope.rideData);
         return result[0].timeData;
       })
       .then(obj => {
@@ -60,14 +53,12 @@ angular.module("app.dayview", ["chart.js"]).controller("DayViewController", func
           const timeNum = timeStrToNum(datum[0]);
           if (timeNum >= 9) $scope.data[0].push({x: timeNum, y: datum[1]});
         });
-        console.log(data)
       })
   };
   $scope.getOverallAverages($routeParams.id);
   $scope.getDayAverages($routeParams.id, $routeParams.day);
 
 
-  console.log('Ride name', Rides.getRideName())
   $scope.rideName = Rides.getRideName();
 
   $scope.labels = ["Wait Times (Minutes)", "Time of Day"];
@@ -78,10 +69,6 @@ angular.module("app.dayview", ["chart.js"]).controller("DayViewController", func
     dayNames[$scope.day] + ' Average'
   ]
 
-
-  $scope.onClick = (points, evt) => {
-    console.log(points, evt);
-  }
 
   $scope.datasetOverride = [
     {
