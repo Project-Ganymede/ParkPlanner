@@ -9,7 +9,27 @@
   <div align="center" class="col-xs-12 firstDiv" >
       <div class="card centered col-xs-offset-3 col-xs-6" ng-class="{'flipped':isFlipped}" ng-click="isFlipped=!isFlipped">
         <div class="col-xs-12">
-          <p class="descText">Schedule: {{optimizedSched}}</p>
+          <h2>{{header}}</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Ride:</th>
+                <th>Ride at:</th>
+                <th>Wait Time:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="ride in optimizedRoute track by $index">
+                <th scope="row">{{$index + 1}}</th>
+                <!-- <td><img src={{ride.imageUrl}}/></td> -->
+                <td>{{ride.rideName}}</td>
+                <td>{{ride.rideTime}}</td>
+                <td>{{ride.waitTime.minutes | number : 0}} minutes</td>
+              </tr>
+            </tbody>
+          </table>
+          <h4>{{totalWait}}</h4>
         </div>
       </div>
   </div>
