@@ -48,6 +48,7 @@ let helpers = {
               // console.log(modelArray);
               let rideInfo = {'timeData' : util.reduceTimeData(modelArray.models)};
               // Get the modelObj from the 'rides' table to pass back data about each ride
+              console.log('modelArray: ', modelArray);
               Ride.where({'id' : modelArray.models[0].attributes.rideId}).fetch()
                 .then(rideModel => {
                   rideInfo['rideData'] = rideModel;

@@ -36,6 +36,7 @@ let utils = {
           return acc;
         }
       } else {
+<<<<<<< HEAD
         if(acc[atts.hour]) {
           acc[atts.hour].push(null);
           // console.log(acc);
@@ -45,6 +46,9 @@ let utils = {
           acc[atts.hour] = [null];
           // console.log(acc);
           return acc;
+=======
+          return acc;
+>>>>>>> optimizeMore
         }
       }
     }, {});
@@ -96,8 +100,6 @@ let utils = {
   findRoutes: (rideWaitTimes, ridesLeft, currentMoment, route = [], totalWait = 0, totalTime = 0) => {
     ridesLeft = ridesLeft.slice();
     route = route.slice();
-    const rideName = rideWaitTimes.rideData.get('rideName');
-    console.log(rideName);
 
     // find waitTime closest to currentMoment
     const waitTime = _.reduce(rideWaitTimes.timeData, (result, value, key) => {
@@ -113,7 +115,7 @@ let utils = {
     // update trackers
     currentMoment = currentMoment.add(waitTime.minutes + 15, 'm');
     totalWait += waitTime.minutes;
-    totalTime += waitTime.minutes;
+    totalTime += waitTime.minutes + 15;
     // set object props, new currTime, totalWait
     const ride = {
       waitTime,
