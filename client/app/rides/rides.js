@@ -12,6 +12,7 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
 
   initializeParks();
 
+  $scope.dayOfWeek = (new Date()).getDay();
 
   Rides.getParkRides($routeParams.id).then(function(data) {
     $scope.rides = data;
