@@ -44,6 +44,14 @@ angular.module('app.services', [])
     parkId = park;
   };
 
+  let rideName;
+  const setRideName = (name) => {
+    rideName = name;
+  }
+  const getRideName = () => {
+    return rideName;
+  }
+
   var getTimes = function (ridesArr) {
     return $http({
       method: 'GET',
@@ -74,6 +82,8 @@ angular.module('app.services', [])
     setRideQueueAndParkId: setRideQueueAndParkId,
     getRideQueueAndParkId: getRideQueueAndParkId,
     getTimes: getTimes,
-    getDayTimes
+    getDayTimes,
+    setRideName,
+    getRideName
   };
 });

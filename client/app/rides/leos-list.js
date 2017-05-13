@@ -35,6 +35,8 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
     Rides.getTimes([rideId])
       .then(result => {
         $scope.rideData = result[0].rideData;
+        Rides.setRideName($scope.rideData.rideName);
+        console.log($scope.rideData);
         return result[0].timeData;
       })
       .then(obj => {
@@ -61,16 +63,20 @@ angular.module("app.leo", ["chart.js"]).controller("LeosController", function ($
   $scope.getOverallAverages($routeParams.id);
   $scope.getDayAverages($routeParams.id, $routeParams.day);
 
+
+  console.log('Ride name', Rides.getRideName())
+  $scope.rideName = Rides.getRideName();
+
   $scope.labels = [];
   $scope.data = [ [], [] ];
 
-  for (let h = 0; h < 24; h++) {
-    for (let m = 0; m < 60; m += 15) {
-      $scope.labels.push(`${h}:${m}`)
-      $scope.data[0].push(9);
-      $scope.data[1].push(3);
-    }
-  }
+  // for (let h = 0; h < 24; h++) {
+  //   for (let m = 0; m < 60; m += 15) {
+  //     $scope.labels.push(`${h}:${m}`)
+  //     $scope.data[0].push(9);
+  //     $scope.data[1].push(3);
+  //   }
+  // }
 
   $scope.series = [
     'Overall Average',

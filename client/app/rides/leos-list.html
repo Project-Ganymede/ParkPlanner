@@ -1,7 +1,7 @@
 <div id="container" class="rides-list-details">
 
     <div align="center">
-        <h1>{{rideData.rideName}}</h1>
+        <h1>{{rideName || rideData.rideName}}</h1>
     </div>
     <div class="day-btns" role="group" aria-label="qwerty">
         <a role="button" class="btn btn-default" ng-href="#!/leoridelist/{{rideId}}/{{0}}">Sunday</a>
