@@ -48,7 +48,6 @@ let helpers = {
               // console.log(modelArray);
               let rideInfo = {'timeData' : util.reduceTimeData(modelArray.models)};
               // Get the modelObj from the 'rides' table to pass back data about each ride
-              console.log('modelArray: ', modelArray);
               Ride.where({'id' : modelArray.models[0].attributes.rideId}).fetch()
                 .then(rideModel => {
                   rideInfo['rideData'] = rideModel;
@@ -88,7 +87,6 @@ let helpers = {
     // get all the data points for the selected ride and day
     return returnDayOfWeekData(ride, dayOfWeek)
       .then(modelArray => {
-        console.log(modelArray)
         return modelArray.map(m => m.pick(['hour', 'waitTime']));
       })
       .then(waitTimes => {

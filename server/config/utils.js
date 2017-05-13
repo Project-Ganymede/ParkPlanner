@@ -26,30 +26,17 @@ let utils = {
       let atts = model.attributes;
       const currentHour = toQuarterHour(atts.hour);
       if(atts.isActive) {
-        if(acc[atts.hour]) {
-          acc[atts.hour].push(atts.waitTime);
+        if(acc[currentHour]) {
+          acc[currentHour].push(atts.waitTime);
           // console.log(acc);
           return acc;
         } else {
-          acc[atts.hour] = [atts.waitTime];
+          acc[currentHour] = [atts.waitTime];
           // console.log(acc);
           return acc;
         }
       } else {
-<<<<<<< HEAD
-        if(acc[atts.hour]) {
-          acc[atts.hour].push(null);
-          // console.log(acc);
-
-          return acc;
-        } else {
-          acc[atts.hour] = [null];
-          // console.log(acc);
-          return acc;
-=======
-          return acc;
->>>>>>> optimizeMore
-        }
+        return acc;
       }
     }, {});
   },
@@ -86,14 +73,11 @@ let utils = {
 
   optimize: (rideInfoList, startTime) => {
     const currentMoment = moment(startTime, 'LT');
-    utils.possibilities = [];
     utils.shortestTime = Infinity;
 
     rideInfoList.forEach(rideWaitTimes => {
       utils.findRoutes(rideWaitTimes, rideInfoList, currentMoment);
     });
-    console.log('possibilities: ', utils.possibilities);
-    console.log('shortest route: ', utils.shortestRoute);
     return utils.shortestRoute;
   },
 
@@ -109,7 +93,6 @@ let utils = {
       }
       return result;
     }, { diffFromCurrent: Infinity });
-    console.log('minutes: ', waitTime.minutes);
     // overwrite waitTime.minutes if it is null
     waitTime.minutes = waitTime.minutes || 0;
     // update trackers
@@ -135,7 +118,6 @@ let utils = {
       } else {
         utils.shortestTime = totalTime;
         utils.shortestRoute = { route, totalWait, totalTime };
-        utils.possibilities.push(utils.shortestRoute);
       }
     }
   }
