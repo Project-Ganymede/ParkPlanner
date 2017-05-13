@@ -111,24 +111,13 @@ let helpers = {
 
   },
 
-  optimizeSchedule: (rideIdList, startTime='10:00 AM') => {
+  optimizeSchedule: (rideIdList, startTime = moment().format('LT')) => {
     return helpers.returnWaitTimes(rideIdList)
       .then(rideInfoList => {
-        // console.log(rideInfoList);
-        const currentMoment = moment(startTime, 'hh:mm a');
-        const possibilities = [];
-        rideInfoList.forEach(ride => {
-          util.findRoutes(ride, rideInfoList, currentMoment, possibilities);
-        });
-        // console.log('all possible routes: ', JSON.stringify(possibilities));
-        const shortestWait = possibilities.reduce((result, route) => {
-          if (route.totalWait < result.totalWait) return route;
-          return result;
-        }, { totalWait: Infinity });
-        console.log('shortest wait: ', JSON.stringify(shortestWait));
-        return shortestWait;
+        return util.optimize(rideInfoList, startTime);
       })
   },
+
   /*======================================
     ======     SCHEDULED JOB HELPERS  ====
     The functions below are called by Cron jobs to populate databases/
