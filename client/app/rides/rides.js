@@ -89,16 +89,8 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
           times.push(tempArr[j][1]);
         }
 
-<<<<<<< HEAD
         $scope.rideQueue[i].data = times;
         $scope.rideQueue[i].labels = labels;
-=======
-        // console.log('scope.labels',$scope.labels);
-        // console.log('scope.times',$scope.times);
-
-        $scope.rideQueue[i].data = $scope.times;
-        $scope.rideQueue[i].labels = $scope.labels;
->>>>>>> set up optimized schedule view and format data
       }
     });
   };

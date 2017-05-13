@@ -23,17 +23,15 @@ angular
         templateUrl: 'app/rides/rides-list-details.html',
         controller: 'RidesController'
       })
-<<<<<<< HEAD
       .when('/dayview/:id/:day', {
         templateUrl: 'app/rides/day-view.html',
         controller: 'DayViewController'
-=======
+      })
       .when('/schedule/:id', {
         templateUrl: 'app/schedule/schedule.html',
         controller: 'ScheduleController'
->>>>>>> set up optimized schedule view and format data
       })
       .otherwise({
         redirectTo: '/'
-      });
+      })
   });

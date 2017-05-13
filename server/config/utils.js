@@ -45,7 +45,7 @@ let utils = {
           acc[atts.hour] = [null];
           // console.log(acc);
           return acc;
-        // }
+        }
       }
     }, {});
   },
