@@ -1,6 +1,7 @@
 const moment = require('moment');
 const Themeparks = require('themeparks');
 const async = require('async');
+const _ = require('lodash');
 
 const util = require('./utils');
 const Rides = require('../collections/rides');
@@ -32,13 +33,12 @@ const returnDayOfWeekData = (rideId, dayOfWeek) => {
 }
 // Helper Functions
 
-
 let helpers = {
 
   returnWaitTimes : rideIdList => {
     // Loops through input list & fetches every wait_time_entry model for a given id.
     // Then returns an array of the data for those entries.
-    return Promise.all(eval(rideIdList).map(rideId => {
+    return Promise.all(JSON.parse(rideIdList).map(rideId => {
       return new Promise((resolve, reject) => {
           RideWaitTime.where({'rideId' : rideId, status: 'Operating'}).fetchAll()
             .then(modelArray => {
@@ -119,23 +119,47 @@ let helpers = {
     */
     helpers.returnWaitTimes(rideIdList)
       .then(rideInfoList => {
-        let possibilities = [];
-        util.optimize(rideInfoList, route, time);
-        // scan possibilities for shortest queue
-        let shortest;
-        possibilities.forEach(possibility => {
-          if(shortest === undefined) {
-            shortest = possibility;
+        // console.log(rideInfoList);
+        const possibilities = [];
+        const optimize = (ride, ridesLeft, route = [], totalTime = 0, currTime = '8:00 AM') => {
+          ridesLeft = ridesLeft.slice();
+          route = route.slice();
+          route.push(_.remove(ridesLeft, r => r === ride));
+          let wait;
+          Object.keys(ride.timeData).forEach(time => {
+            console.log(!wait && moment(time, 'hh:mm a') > moment(currTime))
+          })
+
+
+          let id = ride.rideData.get('id');
+          console.log(id);
+          if (ridesLeft.length === 0) {
+            possibilities.push({route, totalTime, currTime});
           } else {
-            if(possibility.time.total < shortest.time.total) {
-              shortest = possibility;
-            }
+
+            // ridesLeft.forEach(r => optimize(r, ridesLeft, route, ))
+            // });
           }
-        });
-        let results = shortest.route.map(ride => {
-          return ride.rideData;
-        });
-        return results;
+        }
+        rideInfoList.forEach(ride => optimize(ride, rideInfoList));
+
+        // let possibilities = [];
+        // util.optimize(rideInfoList, route, time);
+        // // scan possibilities for shortest queue
+        // let shortest;
+        // possibilities.forEach(possibility => {
+        //   if(shortest === undefined) {
+        //     shortest = possibility;
+        //   } else {
+        //     if(possibility.time.total < shortest.time.total) {
+        //       shortest = possibility;
+        //     }
+        //   }
+        // });
+        // let results = shortest.route.map(ride => {
+        //   return ride.rideData;
+        // });
+        // return results;
       });
   },
   /*======================================
@@ -206,9 +230,16 @@ let helpers = {
                 isActive: waitTimeObj.active,
                 temp: /*JSON.parse(model.attributes.weatherObj).temperature ||*/ null,
                 precip: /*JSON.parse(model.attributes.weatherObj).precipIntensity ||*/ null,
+<<<<<<< HEAD
                 date: moment(waitTimeObj.lastUpdate).format('L'),
                 hour: moment(waitTimeObj.lastUpdate).format('LT'),
              }).save();
+=======
+             }).save()
+             .then(newModel => {
+               console.log('stored new rideWaitTime model: ', newModel);
+             });
+>>>>>>> set up optimized schedule view and format data
           //   .catch(err => console.log(err));
           // })
           // .catch(err => console.log(err));

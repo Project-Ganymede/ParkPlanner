@@ -43,6 +43,11 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
     $scope.rideQueue = data.rideQueue;
   };
 
+  $scope.getOptimizedSchedAndChangePage = function() {
+    Rides.setRideQueueAndParkId($scope.rideList, $routeParams.id);
+    $location.path(`/schedule/${$routeParams.id}`);
+  };
+
   $scope.parkId = $routeParams.id;
 
   $scope.getRideQueueAndParkId();
@@ -84,8 +89,16 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
           times.push(tempArr[j][1]);
         }
 
+<<<<<<< HEAD
         $scope.rideQueue[i].data = times;
         $scope.rideQueue[i].labels = labels;
+=======
+        // console.log('scope.labels',$scope.labels);
+        // console.log('scope.times',$scope.times);
+
+        $scope.rideQueue[i].data = $scope.times;
+        $scope.rideQueue[i].labels = $scope.labels;
+>>>>>>> set up optimized schedule view and format data
       }
     });
   };

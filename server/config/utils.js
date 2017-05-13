@@ -25,21 +25,24 @@ let utils = {
       let atts = model.attributes;
       const currentHour = toQuarterHour(atts.hour);
       if(atts.isActive) {
-        if(acc[currentHour]) {
-          acc[currentHour].push(atts.waitTime);
+        if(acc[atts.hour]) {
+          acc[atts.hour].push(atts.waitTime);
+          // console.log(acc);
           return acc;
         } else {
-          acc[currentHour] = [atts.waitTime];
+          acc[atts.hour] = [atts.waitTime];
+          // console.log(acc);
           return acc;
         }
       } else {
-        // if(acc[currentHour]) {
-        //   acc[currentHour].push(null);
+        if(acc[atts.hour]) {
+          acc[atts.hour].push(null);
+          // console.log(acc);
 
-        //   return acc;
-        // } else {
-        //   acc[currentHour] = [null];
-
+          return acc;
+        } else {
+          acc[atts.hour] = [null];
+          // console.log(acc);
           return acc;
         // }
       }

@@ -2,6 +2,8 @@ const CronJob = require('cron').CronJob;
 const helpers = require('../server/config/helpers');
 const Rides = require('../server/collections/rides');
 
+console.log('Robots activate')
+
 var waitTimeJob = new CronJob({
   cronTime: '00 */10 * * * *',
   onTick: function() {

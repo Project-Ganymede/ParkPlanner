@@ -62,4 +62,13 @@ module.exports = (app, express) => {
         console.error('GET Rides Error:', err);
       });
   });
+
+  app.get('/optimize', (req, res) => {
+    console.log('/optimize req.headers.rides: ', req.headers.rides);
+    res.send('yo')
+    helpers.optimizeSchedule(req.headers.rides, req.headers.start)
+      // .then(schedule => {
+      //   res.send(schedule);
+      // });
+  });
 };
