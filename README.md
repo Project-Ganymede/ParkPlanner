@@ -7,6 +7,11 @@ A data driven app to optimize your theme-park experience. Utilizing real time da
 - See the average wait time for almost any ride at one of the supported themeparks!
 - Get descriptions of any ride straight from Wikipedia!
 
+##Preview
+![Gif of application](/client/assets/ParkPlanner.gif)
+
+***
+
 ![](http://i.imgur.com/PfnmteT.jpg)
 ![](http://i.imgur.com/7zKgzlj.jpg)
 ![](http://i.imgur.com/Ktg2vkh.png)
