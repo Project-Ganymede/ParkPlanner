@@ -2,6 +2,7 @@
 const moment = require('moment');
 const Themeparks = require('themeparks');
 const async = require('async');
+const _ = require('lodash');
 
 const Rides = require('../collections/rides');
 const Ride = require('../models/rideModel');
@@ -12,33 +13,30 @@ const RideWaitTime = require('../models/rideWaitTimeModel');
 // const WeatherEntries = require('../collections/WeatherEntries');
 const Weather = require('../models/weatherModel');
 
+// Normalizes times to quarter-hours (13:00, 13:15, 13:30, etc.)
+const toQuarterHour = (hourStr) => {
+  const time = moment(hourStr, 'h:mm a');
+  return `${time.hour()}:${Math.floor(time.minute() / 15) * 15}`;
+}
+
 let utils = {
   reduceTimeData : modelArray => {
     /* accepts arrays of RideWaitTimes table models */
     return modelArray.reduce((acc, model, index) => {
       let atts = model.attributes;
+      const currentHour = toQuarterHour(atts.hour);
       if(atts.isActive) {
-        if(acc[atts.hour]) {
-          acc[atts.hour].push(atts.waitTime);
-          console.log(acc);
+        if(acc[currentHour]) {
+          acc[currentHour].push(atts.waitTime);
+          // console.log(acc);
           return acc;
         } else {
-          acc[atts.hour] = [atts.waitTime];
-          console.log(acc);
+          acc[currentHour] = [atts.waitTime];
+          // console.log(acc);
           return acc;
         }
       } else {
-        if(acc[atts.hour]) {
-          acc[atts.hour].push(null);
-          console.log(acc);
-
-          return acc;
-        } else {
-          acc[atts.hour] = [null];
-          console.log(acc);
-
-          return acc;
-        }
+        return acc;
       }
     }, {});
   },
@@ -73,25 +71,57 @@ let utils = {
       });
   },
 
-  optimize : (remainingRides, time={'total' : 0, 'current' :'8:00 AM' }, route=[]) => {
-    if(remainingRides.length === 1) {
-      route.push(remainingRides[0]);
-      time.total = time.total + remainingRides[0].timeData[time.current];
-      time.current = time.current + remainingRides[0].timeData[time.current];
-      possibilities.push({
-        'route' : route,
-        'stats' : time,
-      });
-    } else {
-      remainingRides.forEach((ride, index) => {
-        time.total = time.total + ride.timeData[time.current] + 20;
-        time.current = time.current + ride.timeData[time.current] + 20;
-        route.push(ride);
-        remainingRides.splice(index, 1);
-        utils.optimize(remainingRides, time, route);
-      });
+  optimize: (rideInfoList, startTime) => {
+    const currentMoment = moment(startTime, 'LT');
+    utils.shortestTime = Infinity;
+
+    rideInfoList.forEach(rideWaitTimes => {
+      utils.findRoutes(rideWaitTimes, rideInfoList, currentMoment);
+    });
+    return utils.shortestRoute;
+  },
+
+  findRoutes: (rideWaitTimes, ridesLeft, currentMoment, route = [], totalWait = 0, totalTime = 0) => {
+    ridesLeft = ridesLeft.slice();
+    route = route.slice();
+
+    // find waitTime closest to currentMoment
+    const waitTime = _.reduce(rideWaitTimes.timeData, (result, value, key) => {
+      const diffFromCurrent = Math.abs(moment(key, 'LT') - currentMoment);
+      if (diffFromCurrent < result.diffFromCurrent && value ) {
+        return { diffFromCurrent, minutes: value || 0 }
+      }
+      return result;
+    }, { diffFromCurrent: Infinity });
+    // overwrite waitTime.minutes if it is null
+    waitTime.minutes = waitTime.minutes || 0;
+    // update trackers
+    currentMoment = currentMoment.add(waitTime.minutes + 15, 'm');
+    totalWait += waitTime.minutes;
+    totalTime += waitTime.minutes + 15;
+    // set object props, new currTime, totalWait
+    const ride = {
+      waitTime,
+      rideName: rideWaitTimes.rideData.get('rideName'),
+      rideTime: currentMoment.format('LT'),
+      imageUrl: rideWaitTimes.rideData.get('imageUrl')
+    };
+
+    route.push(ride);
+    _.remove(ridesLeft, r => r === rideWaitTimes);
+
+    if (totalTime < utils.shortestTime) {
+      if (ridesLeft.length) {
+        ridesLeft.forEach(ride => {
+          utils.findRoutes(ride, ridesLeft, currentMoment, route, totalWait, totalTime);
+        })
+      } else {
+        utils.shortestTime = totalTime;
+        utils.shortestRoute = { route, totalWait, totalTime };
+      }
     }
   }
+
 };
 
 module.exports = utils;

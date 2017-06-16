@@ -5,8 +5,20 @@ const Rides = require('../collections/rides.js');
 const Ride = require('../models/rideModel.js');
 const helpers = require('./helpers');
 const BING_API_KEY = require('./apiKey');
+const moment = require('moment');
 
 module.exports = (app, express) => {
+
+  app.get('/daydata/:rideId/:day', (req, res) => {
+    helpers.returnAveragesForDay(parseInt(req.params.rideId), parseInt(req.params.day))
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        console.log(err)
+        res.send(err)
+      })
+  })
 
   app.get('/', (req, res) => {
     res.render('index');
@@ -42,7 +54,6 @@ module.exports = (app, express) => {
   });
 
   app.get('/rideList', (req, res) => {
-    console.log(req.headers.rides);
     helpers.returnWaitTimes(req.headers.rides)
       .then(data => {
       res.status(200).send(data);
@@ -50,6 +61,13 @@ module.exports = (app, express) => {
       .catch(err => {
         res.status(404).send(err);
         console.error('GET Rides Error:', err);
+      });
+  });
+
+  app.get('/optimize', (req, res) => {
+    helpers.optimizeSchedule(req.headers.rides, req.headers.start)
+      .then(schedule => {
+        res.send(schedule);
       });
   });
 };

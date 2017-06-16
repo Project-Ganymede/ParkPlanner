@@ -7,7 +7,6 @@ angular.module('app.services', [])
       method: 'GET',
       url: '/parks'
     }).then(function (resp) {
-      console.log(resp.data);
       return resp.data;
     });
   };
@@ -26,7 +25,6 @@ angular.module('app.services', [])
         'parkId': parkID
       },
     }).then(function (resp) {
-      console.log(resp.data);
       return resp.data;
     })
     .catch(function (err) {
@@ -38,11 +36,17 @@ angular.module('app.services', [])
   var parkId;
 
   var setRideQueueAndParkId = function (rides, park) {
-    console.log('SETTING');
-    console.log('rides',rides);
     rideQueue = rides;
     parkId = park;
   };
+
+  let rideName;
+  const setRideName = (name) => {
+    rideName = name;
+  }
+  const getRideName = () => {
+    return rideName;
+  }
 
   var getTimes = function (ridesArr) {
     return $http({
@@ -56,6 +60,27 @@ angular.module('app.services', [])
     });
   };
 
+  const getDayTimes = (rideId, day) => {
+    return $http({
+      method: 'GET',
+      url: `daydata/${rideId}/${day}`,
+    }).then(resp => {
+      return resp.data;
+    });
+  };
+
+  var getOptimizedSched = function (ridesArr) {
+    return $http({
+      method: 'GET',
+      url: 'optimize',
+      headers: {
+        'rides': JSON.stringify(ridesArr)
+      }
+    }).then(function(resp) {
+      return resp.data;
+    });
+  };
+
   var getRideQueueAndParkId = function() {
     return {rideQueue: rideQueue, parkId: parkId};
   };
@@ -64,6 +89,10 @@ angular.module('app.services', [])
     getParkRides: getParkRides,
     setRideQueueAndParkId: setRideQueueAndParkId,
     getRideQueueAndParkId: getRideQueueAndParkId,
-    getTimes: getTimes
+    getTimes: getTimes,
+    getDayTimes,
+    setRideName,
+    getRideName,
+    getOptimizedSched: getOptimizedSched
   };
 });

@@ -12,6 +12,7 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
 
   initializeParks();
 
+  $scope.dayOfWeek = (new Date()).getDay();
 
   Rides.getParkRides($routeParams.id).then(function(data) {
     $scope.rides = data;
@@ -42,6 +43,11 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
     $scope.rideQueue = data.rideQueue;
   };
 
+  $scope.getOptimizedSchedAndChangePage = function() {
+    Rides.setRideQueueAndParkId($scope.rideList, $routeParams.id);
+    $location.path(`/schedule/${$routeParams.id}`);
+  };
+
   $scope.parkId = $routeParams.id;
 
   $scope.getRideQueueAndParkId();
@@ -56,7 +62,6 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
         return rideObj;
       }
     });
-    console.log(temp);
     $scope.rides = temp;
   });
 
@@ -67,8 +72,8 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
   $scope.getTimes = function(ridesArr) {
     Rides.getTimes(ridesArr).then(function(data) {
       for (var i = 0; i < $scope.rideQueue.length; i++) {
-        $scope.labels = [];
-        $scope.times = [];
+        var labels = [];
+        var times = [];
         var tempArr = [];
 
         for (var key in data[i].timeData) {
@@ -80,15 +85,12 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
         });
 
         for (var j = 0; j < tempArr.length; j++) {
-          $scope.labels.push(tempArr[j][0]);
-          $scope.times.push(tempArr[j][1]);
+          labels.push(tempArr[j][0]);
+          times.push(tempArr[j][1]);
         }
 
-        console.log('scope.labels',$scope.labels);
-        console.log('scope.times',$scope.times);
-
-        $scope.rideQueue[i].data = $scope.times;
-        $scope.rideQueue[i].labels = $scope.labels;
+        $scope.rideQueue[i].data = times;
+        $scope.rideQueue[i].labels = labels;
       }
     });
   };
@@ -112,7 +114,7 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
       xAxes: [
         {
           position: 'bottom',
-          sclaeLabel: {
+          scaleLabel: {
             display: true,
             labelString: 'Time'
           }
@@ -129,5 +131,5 @@ angular.module('app.rides', []).controller('RidesController', function($scope, $
       ]
     }
   };
-  $scope.colors = ['white'];
+  $scope.colors = ['yellow'];
 });
